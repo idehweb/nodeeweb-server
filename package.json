@@ -1,6 +1,6 @@
 {
   "name": "@nodeeweb/server",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "type": "module",
   "dependencies": {
     "@babel/preset-react": "^7.17.12",
@@ -136,10 +136,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/react-dropzone/react-dropzone.git"
+    "url": "https://github.com/idehweb/nodeeweb-server"
   },
   "bugs": {
-    "url": "https://github.com/react-dropzone/react-dropzone/issues"
+    "url": "https://github.com/idehweb/nodeeweb-server/issues"
   },
   "main": "index.mjs"
 }
