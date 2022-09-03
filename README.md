@@ -1,4 +1,4 @@
-# [Nodeeweb | create website, CMS, or application with nodejs reactjs mongodb | ](https://idehweb.com/product/creare-website-or-application-with-nodeeweb/)
+# [Nodeeweb | create website, CMS, or application with nodejs reactjs mongodb](https://idehweb.com/product/creare-website-or-application-with-nodeeweb/)
 
 Nodeeweb is a free and open source WebApplication Builder , a [CMS] which helps building and handling pages, products, posts and other models.
 It is powerful and fast. many modules are built-in and ready to use, it is modular and easily you can join modules or plugins, you can export android and iOS applications too.
@@ -16,8 +16,8 @@ You can do many things.
 * [Testing](#testing)
 * [Plugins](#plugins)
 * [Support](#support)
-* [Changelog](https://github.com/idehweb/nodeeweb/releases)
-* [Contributing](https://github.com/idehweb/nodeeweb/blob/master/CONTRIBUTING.md)
+* [Changelog](https://github.com/idehweb/nodeeweb-server/releases)
+* [Contributing](https://github.com/idehweb/nodeeweb-server/blob/master/CONTRIBUTING.md)
 * [License](#license)
 * [Changelogs](#Changelogs)
 
