@@ -1,0 +1,71 @@
+head
+    title installation wizard
+form(action='/' method='POST')
+    table(style='margin:auto')
+        tbody
+            tr
+                td(colspan='2' style='text-align:center;padding-top:10px')
+                    | welcome to wizard
+            tr
+                td
+                    label(for='dbName') dbName:
+                td
+                    input(type='text' id='dbName' name='dbName' value=dbName)
+            tr
+                td
+                    label(for='mongodbConnectionUrl') mongodbConnectionUrl:
+                td
+                    input(type='text' id='mongodbConnectionUrl' name='mongodbConnectionUrl' value='mongodb://127.0.0.1:27017')
+            tr
+                td
+                    label(for='SERVER_PORT') SERVER_PORT:
+                td
+                    input(type='text' id='SERVER_PORT' name='SERVER_PORT' value=SERVER_PORT)
+            tr
+                td
+                    label(for='CLIENT_PORT') CLIENT_PORT:
+                td
+                    input(type='text' id='CLIENT_PORT' name='CLIENT_PORT' value=CLIENT_PORT)
+            tr
+                td
+                    label(for='site_name') site_name:
+                td
+                    input(type='text' id='site_name' name='site_name' value=SITE_NAME)
+            tr
+                td
+                    label(for='BASE_URL') BASE_URL:
+                td
+                    input(type='text' id='BASE_URL' name='BASE_URL' value=BASE_URL)
+            tr
+                td
+                    label(for='SHOP_URL') SHOP_URL:
+                td
+                    input(type='text' id='SHOP_URL' name='SHOP_URL' value=SHOP_URL)
+            tr
+                td
+                    label(for='FRONT_ROUTE') FRONT_ROUTE:
+                td
+                    input(type='text' id='FRONT_ROUTE' name='FRONT_ROUTE' value=FRONT_ROUTE)
+            tr
+                td
+                    label(for='ADMIN_ROUTE') ADMIN_ROUTE:
+                td
+                    input(type='text' id='ADMIN_ROUTE' name='ADMIN_ROUTE' value=ADMIN_ROUTE)
+            tr
+                td
+                    label(for='ADMIN_URL') ADMIN_URL:
+                td
+                    input(type='text' id='ADMIN_URL' name='ADMIN_URL' value=ADMIN_URL)
+            tr
+                td
+                    label(for='ADMIN_USERNAME') ADMIN_USERNAME:
+                td
+                    input(type='text' id='ADMIN_USERNAME' name='ADMIN_USERNAME' value='admin')
+            tr
+                td
+                    label(for='ADMIN_PASSWORD') ADMIN_PASSWORD:
+                td
+                    input(type='text' id='ADMIN_PASSWORD' name='ADMIN_PASSWORD' value='as12de3648')
+            tr
+                td(colspan='2' style='text-align:right;padding-top:10px')
+                    input(type='submit' value='Submit')

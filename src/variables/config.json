@@ -1,0 +1,13 @@
+{
+  "setting": {
+    "logo": "",
+    "title":"",
+    "siteName": "",
+    "separator": "|",
+    "FRONT_ROUTE": "",
+    "SHOP_URL": "",
+    "BASE_URL":"",
+    "primaryColor": "",
+    "secondaryColor":  ""
+  }
+}

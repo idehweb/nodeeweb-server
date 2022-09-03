@@ -1,0 +1,81 @@
+{
+  "active": true,
+  "colors": {
+    "primaryColor": "#000",
+    "secondaryColor": "#000"
+  },
+  "Header": {
+    "logo": "http://localhost:3000/site_setting/img/logo.png",
+    "children": [
+      {
+        "name": "Row",
+        "children": [
+        ]
+      }
+    ]
+  },
+  "Footer": {
+    "logo": "http://localhost:3000/site_setting/img/logo.png"
+  },
+  "Home": {
+    "layout": [
+      {
+        "name": "Slider",
+        "children": [
+          {
+            "name": "Slide",
+            "kind": "text",
+            "text":"hello"
+          },
+          {
+            "name": "Slide",
+            "kind": "image",
+            "src":"hello",
+            "alt":"hello"
+          },
+          {
+            "name": "Slide",
+            "kind": "link",
+            "children":[]
+          }
+        ]
+      }
+
+    ]
+  },
+  "ProductSingle": {
+    "layout":[
+      {
+        "name": "ProductSlider"
+      },
+      {
+        "name": "Row",
+        "children": [
+          {
+            "name": "Col",
+            "classes": "col-md-4",
+            "children": [
+              {
+                "name": "Content",
+                "content": "title"
+              }
+            ]
+          },
+          {
+            "name": "Col",
+            "classes": "col-md-8",
+            "children": [
+              {
+                "name": "TEXTBOX",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "ProductArchive": {},
+  "PostArchive": {},
+  "PostSingle": {}
+}
