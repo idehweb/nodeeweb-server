@@ -9,8 +9,11 @@ var self = (Model) => {
             if (req.params.offset) {
                 offset = parseInt(req.params.offset);
             }
-
-            Model.find({},
+            let fields = '';
+            if (req.headers && req.headers.fields) {
+                fields=req.headers.fields
+            }
+            Model.find({},fields,
                 function (err, model) {
                     if (err || !model)
                         return res.json({

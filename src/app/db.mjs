@@ -29,171 +29,174 @@ let options = {
     useNewUrlParser: true,
     dbName: process.env.dbName
 };
-export default async (props = {},app) => {
+export default (props = {},app) => {
+    return new Promise(function (resolve, reject) {
 
-    await props.entity.map(async e => {
-        console.log('run db...',e.modelName,e.model);
+        props.entity.map(async e => {
+            console.log('run db...', e.modelName, e.model);
 
-        await mongoose.model(e.modelName, e.model(mongoose))
-        // await
-        // e.model(mongoose);
-        // arr[e.name]=
-    })
-    // global.models=arr;
-    // console.log('arr',arr);
-    // models(arr);
-    await mongoose
-        .connect(connection, options)
-        .then(async () => {
-            await console.log("==> db connection successful to", process.env.dbName, new Date());
+            await mongoose.model(e.modelName, e.model(mongoose))
+            // await
+            // e.model(mongoose);
+            // arr[e.name]=
+        })
+        // global.models=arr;
+        // console.log('arr',arr);
+        // models(arr);
+        mongoose
+            .connect(connection, options)
+            .then(async () => {
+                resolve()
+                await console.log("==> db connection successful to", process.env.dbName, new Date());
 
-            function list(id) {
-                // const path = require('path');
+                function list(id) {
+                    // const path = require('path');
 
-                const defaultOptions = {
-                    prefix: '',
-                    spacer: 7,
-                };
+                    const defaultOptions = {
+                        prefix: '',
+                        spacer: 7,
+                    };
 
-                const COLORS = {
-                    yellow: 33,
-                    green: 32,
-                    blue: 34,
-                    red: 31,
-                    grey: 90,
-                    magenta: 35,
-                    clear: 39,
-                };
+                    const COLORS = {
+                        yellow: 33,
+                        green: 32,
+                        blue: 34,
+                        red: 31,
+                        grey: 90,
+                        magenta: 35,
+                        clear: 39,
+                    };
 
-                const spacer = (x) => (x > 0 ? [...new Array(x)].map(() => ' ').join('') : '');
+                    const spacer = (x) => (x > 0 ? [...new Array(x)].map(() => ' ').join('') : '');
 
-                const colorText = (color, string) => `\u001b[${color}m${string}\u001b[${COLORS.clear}m`;
+                    const colorText = (color, string) => `\u001b[${color}m${string}\u001b[${COLORS.clear}m`;
 
-                function colorMethod(method) {
-                    switch (method) {
-                        case 'POST':
-                            return colorText(COLORS.yellow, method);
-                        case 'GET':
-                            return colorText(COLORS.green, method);
-                        case 'PUT':
-                            return colorText(COLORS.blue, method);
-                        case 'DELETE':
-                            return colorText(COLORS.red, method);
-                        case 'PATCH':
-                            return colorText(COLORS.grey, method);
-                        default:
-                            return method;
-                    }
-                }
-
-                function getPathFromRegex(regexp) {
-                    return regexp.toString().replace('/^', '').replace('?(?=\\/|$)/i', '').replace(/\\\//g, '/');
-                }
-
-                function combineStacks(acc, stack) {
-                    if (stack.handle.stack) {
-                        const routerPath = getPathFromRegex(stack.regexp);
-                        return [...acc, ...stack.handle.stack.map((stack) => ({ routerPath, ...stack }))];
-                    }
-                    return [...acc, stack];
-                }
-
-                function getStacks(app) {
-                    // Express 3
-                    if (app.routes) {
-                        // convert to express 4
-                        return Object.keys(app.routes)
-                            .reduce((acc, method) => [...acc, ...app.routes[method]], [])
-                            .map((route) => ({ route: { stack: [route] } }));
+                    function colorMethod(method) {
+                        switch (method) {
+                            case 'POST':
+                                return colorText(COLORS.yellow, method);
+                            case 'GET':
+                                return colorText(COLORS.green, method);
+                            case 'PUT':
+                                return colorText(COLORS.blue, method);
+                            case 'DELETE':
+                                return colorText(COLORS.red, method);
+                            case 'PATCH':
+                                return colorText(COLORS.grey, method);
+                            default:
+                                return method;
+                        }
                     }
 
-                    // Express 4
-                    if (app._router && app._router.stack) {
-                        return app._router.stack.reduce(combineStacks, []);
+                    function getPathFromRegex(regexp) {
+                        return regexp.toString().replace('/^', '').replace('?(?=\\/|$)/i', '').replace(/\\\//g, '/');
                     }
 
-                    // Express 4 Router
-                    if (app.stack) {
-                        return app.stack.reduce(combineStacks, []);
+                    function combineStacks(acc, stack) {
+                        if (stack.handle.stack) {
+                            const routerPath = getPathFromRegex(stack.regexp);
+                            return [...acc, ...stack.handle.stack.map((stack) => ({routerPath, ...stack}))];
+                        }
+                        return [...acc, stack];
                     }
 
-                    // Express 5
-                    if (app.router && app.router.stack) {
-                        return app.router.stack.reduce(combineStacks, []);
+                    function getStacks(app) {
+                        // Express 3
+                        if (app.routes) {
+                            // convert to express 4
+                            return Object.keys(app.routes)
+                                .reduce((acc, method) => [...acc, ...app.routes[method]], [])
+                                .map((route) => ({route: {stack: [route]}}));
+                        }
+
+                        // Express 4
+                        if (app._router && app._router.stack) {
+                            return app._router.stack.reduce(combineStacks, []);
+                        }
+
+                        // Express 4 Router
+                        if (app.stack) {
+                            return app.stack.reduce(combineStacks, []);
+                        }
+
+                        // Express 5
+                        if (app.router && app.router.stack) {
+                            return app.router.stack.reduce(combineStacks, []);
+                        }
+
+                        return [];
                     }
 
-                    return [];
-                }
+                    function expressListRoutes(app, opts) {
+                        const stacks = getStacks(app);
+                        const options = {...defaultOptions, ...opts};
 
-                function expressListRoutes(app, opts) {
-                    const stacks = getStacks(app);
-                    const options = {...defaultOptions, ...opts };
-
-                    if (stacks) {
-                        for (const stack of stacks) {
-                            if (stack.route) {
-                                const routeLogged = {};
-                                for (const route of stack.route.stack) {
-                                    const method = route.method ? route.method.toUpperCase() : null;
-                                    if (!routeLogged[method] && method) {
-                                        const stackMethod = colorMethod(method);
-                                        const stackSpace = spacer(options.spacer - method.length);
-                                        const stackPath = path.resolve(
-                                            [options.prefix, stack.routerPath, stack.route.path, route.path].filter((s) => !!s).join(''),
-                                        );
-                                        console.info(stackMethod, stackSpace, stackPath);
-                                        routeLogged[method] = true;
+                        if (stacks) {
+                            for (const stack of stacks) {
+                                if (stack.route) {
+                                    const routeLogged = {};
+                                    for (const route of stack.route.stack) {
+                                        const method = route.method ? route.method.toUpperCase() : null;
+                                        if (!routeLogged[method] && method) {
+                                            const stackMethod = colorMethod(method);
+                                            const stackSpace = spacer(options.spacer - method.length);
+                                            const stackPath = path.resolve(
+                                                [options.prefix, stack.routerPath, stack.route.path, route.path].filter((s) => !!s).join(''),
+                                            );
+                                            console.info(stackMethod, stackSpace, stackPath);
+                                            routeLogged[method] = true;
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
 
-                };
+                    };
 
-                expressListRoutes(app)
-            }
+                    expressListRoutes(app)
+                }
 
-            list(1);
-            if (process.env.RESET == 'true') {
-                //if database does not have any records
-                //create user...
-                //& create default settings...
+                list(1);
+                if (process.env.RESET == 'true') {
+                    //if database does not have any records
+                    //create user...
+                    //& create default settings...
 
-                // userController.exists().then((e) => {
-                //     console.log('user exist...')
-                // }).catch(e => {
-                //     console.log('create user...')
-                //
-                //     //create user
-                //     let req = {
-                //         body: {
-                //             email: process.env.ADMIN_EMAIL,
-                //             username: process.env.ADMIN_USERNAME,
-                //             password: process.env.ADMIN_PASSWORD
-                //         }
-                //     };
-                //     userController.register(req);
-                // })
-                // settingsController.exists().then((e) => {
-                //     console.log('setting exist...')
-                //
-                // }).catch(e => {
-                //     //create setting
-                //     console.log('create setting...')
-                //     settingsController.create({
-                //         body: {
-                //             siteActive: true
-                //         }
-                //     })
-                // })
-            }
-            else {
-                console.log('no need to import database...')
-            }
-        })
-        .catch(err => {
-            console.error(err, "db name:", process.env.dbName)
-            return process.exit(0)
-        });
+                    // userController.exists().then((e) => {
+                    //     console.log('user exist...')
+                    // }).catch(e => {
+                    //     console.log('create user...')
+                    //
+                    //     //create user
+                    //     let req = {
+                    //         body: {
+                    //             email: process.env.ADMIN_EMAIL,
+                    //             username: process.env.ADMIN_USERNAME,
+                    //             password: process.env.ADMIN_PASSWORD
+                    //         }
+                    //     };
+                    //     userController.register(req);
+                    // })
+                    // settingsController.exists().then((e) => {
+                    //     console.log('setting exist...')
+                    //
+                    // }).catch(e => {
+                    //     //create setting
+                    //     console.log('create setting...')
+                    //     settingsController.create({
+                    //         body: {
+                    //             siteActive: true
+                    //         }
+                    //     })
+                    // })
+                }
+                else {
+                    console.log('no need to import database...')
+                }
+            })
+            .catch(err => {
+                console.error(err, "db name:", process.env.dbName)
+                return process.exit(0)
+            });
+    });
 }

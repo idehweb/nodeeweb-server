@@ -10,7 +10,7 @@ import controller from "#controllers/index";
 // import settings from "#routes/settings";
 import mongoose from "mongoose";
 // import user from "#routes/default/user/index";
-
+import global from '#root/global';
 const __dirname = path.resolve();
 
 
@@ -27,7 +27,7 @@ export function returnDefaultModels() {
 }
 var Models=[];
 export function createRoute(modelName, routes,label) {
-    const router = express.Router();
+    let router = express.Router();
 
     console.log('    in createRoute...',label, modelName)
 
@@ -59,6 +59,7 @@ export function createRoute(modelName, routes,label) {
     // router.put('/:id', userController.edit);
     // router.delete('/:id', userController.destroy);
     let cont = controller(Models[modelName]);
+    router=create_standard_route('', routes, router);
     router.get('/', cont.all);
     router.get('/count', cont.all);
     // router.get('/edit/:id', (req, res, next) => {
@@ -72,10 +73,9 @@ export function createRoute(modelName, routes,label) {
     router.delete('/:id', cont.destroy);
     // console.log('createRoute for:',modelName,label);
 
-    return create_standard_route('', routes, router)
+    return router
 
 
-    return router;
 }
 
 export function createPublicRoute(suf='', routes) {
@@ -96,6 +96,9 @@ function make_routes_safe(req, res, next, func) {
         // console.log('adminFolder',path.adminFolder+'/index.html')
         return res.sendFile(path.adminFolder+'/index.html')
     };
+
+    req.mongoose = mongoose;
+    req.global = global;
 
     req.models = ()=>{
          var models = mongoose.modelNames()

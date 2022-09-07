@@ -3,9 +3,9 @@ import model from './model.mjs'
 import routes from './routes.mjs'
 
 export default {
-    "name": "post",
+    "name": "entity",
     "model": model,
-    "modelName": "Post",
+    "modelName": "Entity",
     "routes": routes,
     "admin": {
         "list": {

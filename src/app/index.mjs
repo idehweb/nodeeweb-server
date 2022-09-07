@@ -10,7 +10,8 @@ import routeHandle from "#root/app/routeHandle";
 import headerHandle from "#root/app/headerHandle";
 import User from "#routes/default/user/index";
 import Settings from "#routes/default/settings/index";
-import Post from "#routes/default/post/index";
+import Page from "#routes/default/page/index";
+// import Post from "#routes/default/post/index";
 import Menu from "#routes/default/menu/index";
 // import router from "../routes/public/p";
 // import uploadHandle from "#root/app/uploadHandle";
@@ -18,7 +19,9 @@ import Menu from "#routes/default/menu/index";
 
 export default function BaseApp(theProps = {}) {
     // if(!props){
-    let props = {};
+    let props = {
+
+    };
     // }
     props = theProps;
     console.log("==> BaseApp()", new Date());
@@ -35,7 +38,7 @@ export default function BaseApp(theProps = {}) {
 
     props['entity'].push(User);
     props['entity'].push(Settings);
-    props['entity'].push(Post);
+    props['entity'].push(Page);
     props['entity'].push(Menu);
 
     // console.log('rules',rules);
@@ -142,57 +145,59 @@ export default function BaseApp(theProps = {}) {
         next();
     });
 
-    db(props, app);
+    db(props, app).then(e=>{
+        headerHandle(app);
+        configHandle(express, app, props);
+
+        app.use(function (err, req, res, next) {
+            // console.log('here....');
+            if (req.busboy) {
+                req.pipe(req.busboy);
+
+                req.busboy.on("file", function (
+                    fieldname,
+                    file,
+                    filename,
+                    encoding,
+                    mimetype
+                ) {
+                    // ...
+                    // console.log('on file app', mimetype,filename);
+
+                    let fstream;
+                    let name = (global.getFormattedTime() + filename).replace(/\s/g, '');
+
+                    if (mimetype.includes('image')) {
+                        // name+=".jpg"
+                    }
+                    if (mimetype.includes('video')) {
+                        // name+="mp4";
+                    }
+                    let filePath = path.join(__dirname, "/public_media/customer/", name);
+                    fstream = fs.createWriteStream(filePath);
+                    file.pipe(fstream);
+                    fstream.on("close", function () {
+                        // console.log('Files saved');
+                        let url = "customer/" + name;
+                        let obj = [{name: name, url: url, type: mimetype}];
+                        req.photo_all = obj;
+                        next();
+                    });
+                });
+            } else {
+                next();
+            }
+        });
+// ssrHandle(app);
+
+        routeHandle(app, props);
+// app.set("view engine", "pug");
+        console.log('return app in BaseApp()')
+    });
     // app.get("/", (req, res, next) => {
     //     console.log('#r home /')
     //     next();
     // });
-    headerHandle(app);
-    configHandle(express, app, props);
-
-    app.use(function (err, req, res, next) {
-        // console.log('here....');
-        if (req.busboy) {
-            req.pipe(req.busboy);
-
-            req.busboy.on("file", function (
-                fieldname,
-                file,
-                filename,
-                encoding,
-                mimetype
-            ) {
-                // ...
-                // console.log('on file app', mimetype,filename);
-
-                let fstream;
-                let name = (global.getFormattedTime() + filename).replace(/\s/g, '');
-
-                if (mimetype.includes('image')) {
-                    // name+=".jpg"
-                }
-                if (mimetype.includes('video')) {
-                    // name+="mp4";
-                }
-                let filePath = path.join(__dirname, "/public_media/customer/", name);
-                fstream = fs.createWriteStream(filePath);
-                file.pipe(fstream);
-                fstream.on("close", function () {
-                    // console.log('Files saved');
-                    let url = "customer/" + name;
-                    let obj = [{name: name, url: url, type: mimetype}];
-                    req.photo_all = obj;
-                    next();
-                });
-            });
-        } else {
-            next();
-        }
-    });
-// ssrHandle(app);
-
-    routeHandle(app, props);
-// app.set("view engine", "pug");
-    console.log('return app in BaseApp()')
     return app;
+
 }
