@@ -35,6 +35,10 @@ let global = {
     ip: process.env.BASE_URL,
     domain: process.env.BASE_URL,
     config: (setting) => (config),
+    getTypeOfVariable:(variable)=>{
+        console.log('variable',variable);
+        return typeof variable;
+    },
     models:[],
     CONFIG: {
         BASE_URL: process.env.BASE_URL,

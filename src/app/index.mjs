@@ -5,6 +5,7 @@ import express from "express";
 import db from "#root/app/db";
 import path from "path";
 // import ssrHandle from "#root/app/ssrHandle";
+import global from "#root/global";
 import configHandle from "#root/app/configHandle";
 import routeHandle from "#root/app/routeHandle";
 import headerHandle from "#root/app/headerHandle";
@@ -19,9 +20,7 @@ import Menu from "#routes/default/menu/index";
 
 export default function BaseApp(theProps = {}) {
     // if(!props){
-    let props = {
-
-    };
+    let props = {};
     // }
     props = theProps;
     console.log("==> BaseApp()", new Date());
@@ -40,7 +39,7 @@ export default function BaseApp(theProps = {}) {
     props['entity'].push(Settings);
     props['entity'].push(Page);
     props['entity'].push(Menu);
-
+//make routes standard
     // console.log('rules',rules);
     if (!props['front']) {
         props['front'] = {
@@ -70,12 +69,50 @@ export default function BaseApp(theProps = {}) {
                     console.log('get theme settings... ');
                     let rules = {};
                     req.props.entity.forEach((en) => {
-
-                        if (en.admin) {
-                            rules[en.modelName.toLowerCase()] = en.admin;
+                        let model = req.mongoose.model(en.modelName),
+                            identifire = en.modelName.toLowerCase();
+                        let schema = [];
+                        Object.keys(model.schema.obj).forEach(y => {
+                            // console.log('model.schema.obj[y]',model.schema.obj[y]);
+                            schema.push({"name": y, "type": global.getTypeOfVariable(model.schema.obj[y])});
+                        })
+                        if (en.admin && typeof en.admin === 'object') {
+                            rules[identifire] = en.admin;
+                        } else {
+                            rules[identifire] = {}
                         }
+                        if (!rules[identifire].create) {
+                            rules[identifire].create = {};
+                        }
+                        if (!rules[identifire].create.fields) {
+                            rules[identifire].create.fields = schema;
+                        }
+                        if (!rules[identifire].edit) {
+                            rules[identifire].edit = {};
+                        }
+                        if (!rules[identifire].edit.fields) {
+                            rules[identifire].edit.fields = rules[identifire].create.fields;
+                        }
+                        if (!rules[identifire].list) {
+                            rules[identifire].list = {};
+                        }
+                        if (!rules[identifire].list.header) {
+                            rules[identifire].list.header = [];
+                        }
+                        // }else{
+
+                        // console.log('schema',schema)
+                        // if (!rules[identifire]['create']['fields'])
+                        //     rules[identifire]['create']['fields'] = schema;
+                        // if (!rules[identifire]['edit']['fields'])
+                        //     rules[identifire]['edit']['fields'] = [];
+                        // if (!rules[identifire]['list']['header'])
+                        //     rules[identifire]['list']['header'] = [];
+
+                        // }
+                        // console.log('en',en)
                     })
-                    console.log('rules', rules);
+                    // console.log('rules', rules);
 
                     res.json({
                         header: [{name: 'MainSidebar'}, {name: 'StickyCard'}, {name: 'CardSidebar'}, {name: 'MainNavbar'}, {name: 'MainMobileNavbar'}],
@@ -145,7 +182,7 @@ export default function BaseApp(theProps = {}) {
         next();
     });
 
-    db(props, app).then(e=>{
+    db(props, app).then(e => {
         headerHandle(app);
         configHandle(express, app, props);
 
