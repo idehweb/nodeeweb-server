@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 
 export default (mongoose)=>{
     // if(mongoose)
-    const UserSchema = new mongoose.Schema({
+    const AdminSchema = new mongoose.Schema({
         email: {
             type: String,
             unique: true,
@@ -40,14 +40,14 @@ export default (mongoose)=>{
 
 
 //authenticate input against database
-    UserSchema.statics.authenticate = function (username, password, callback) {
-        const User = mongoose.model("User", UserSchema);
-        User.findOne({ username: username })
+    AdminSchema.statics.authenticate = function (username, password, callback) {
+        const Admin = mongoose.model("Admin", AdminSchema);
+        Admin.findOne({ username: username })
             .exec(function (err, user) {
                 if (err) {
                     return callback(err)
                 } else if (!user) {
-                    let err = new Error('User not found.');
+                    let err = new Error('Admin not found.');
                     err.status = 401;
                     return callback(err);
                 }
@@ -62,7 +62,7 @@ export default (mongoose)=>{
     };
 
 //hashing a password before saving it to the database
-    UserSchema.pre('save', function (next) {
+    AdminSchema.pre('save', function (next) {
         let user = this;
         console.log('presave');
         bcrypt.hash(user.password, 10, function (err, hash) {
@@ -76,12 +76,12 @@ export default (mongoose)=>{
     });
 
 
-// module.exports = mongoose.model('User', UserSchema);
+// module.exports = mongoose.model('Admin', AdminSchema);
 
-    // return mongoose.model('User', UserSchema);
-    return UserSchema;
-    // export default mongoose.model('User', UserSchema);
+    // return mongoose.model('Admin', AdminSchema);
+    return AdminSchema;
+    // export default mongoose.model('Admin', AdminSchema);
 
-    // return User
+    // return Admin
 
 };

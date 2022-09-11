@@ -47,7 +47,6 @@ let routeHandle = (app, props = {}) => {
         app.use("/", PR);
 
 
-
     }
     if (props && props.admin && props.admin.routes) {
         // console.log('createAdmin')
@@ -86,6 +85,23 @@ let routeHandle = (app, props = {}) => {
 
     // app.use("/customer/settings", CustomerRT.settings);
     let temp = [];
+    let allRoutes = [], roles = [];
+    props.entity.forEach((en) => {
+        en.routes.forEach((rou) => {
+            if (rou.access) {
+                let access = rou.access.split(',');
+                access.forEach(r => {
+                    if (roles.indexOf(r.trim()) == -1) {
+                        roles.push(r.trim());
+                    }
+                })
+            }
+            // allRoutes.push(rou);
+        });
+
+        // console.log('allRoutes', allRoutes,roles);
+        // process.exit(0)
+    });
     props.entity.forEach((en) => {
         if (temp.indexOf(en.name) == -1) {
             temp.push(en.name);
@@ -94,11 +110,11 @@ let routeHandle = (app, props = {}) => {
             if (en && en.routes) {
                 // console.log('createRoute', en.modelName)
 
-                let R = createRoute(en.modelName, en.routes,'/customer/');
+                let R = createRoute(en.modelName, en.routes, '/customer/');
                 // console.log('app.use', "/" + en.name, en.modelName)
 
                 app.use("/customer/" + en.name, R);
-                if(props.admin) {
+                if (props.admin) {
                     let R2 = createRoute(en.modelName, en.routes, '/admin/');
                     app.use("/admin/" + en.name, R2);
                 }

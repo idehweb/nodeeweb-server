@@ -9,10 +9,10 @@ import global from "#root/global";
 import configHandle from "#root/app/configHandle";
 import routeHandle from "#root/app/routeHandle";
 import headerHandle from "#root/app/headerHandle";
-import User from "#routes/default/user/index";
+import Admin from "#routes/default/admin/index";
 import Settings from "#routes/default/settings/index";
 import Page from "#routes/default/page/index";
-// import Post from "#routes/default/post/index";
+import Customer from "#routes/default/customer/index";
 import Menu from "#routes/default/menu/index";
 // import router from "../routes/public/p";
 // import uploadHandle from "#root/app/uploadHandle";
@@ -35,10 +35,11 @@ export default function BaseApp(theProps = {}) {
         props['entity'] = [];
     }
 
-    props['entity'].push(User);
+    props['entity'].push(Admin);
     props['entity'].push(Settings);
     props['entity'].push(Page);
     props['entity'].push(Menu);
+    props['entity'].push(Customer);
 //make routes standard
     // console.log('rules',rules);
     if (!props['front']) {
@@ -68,50 +69,7 @@ export default function BaseApp(theProps = {}) {
                 "controller": (req, res, next) => {
                     console.log('get theme settings... ');
                     let rules = {};
-                    req.props.entity.forEach((en) => {
-                        let model = req.mongoose.model(en.modelName),
-                            identifire = en.modelName.toLowerCase();
-                        let schema = [];
-                        Object.keys(model.schema.obj).forEach(y => {
-                            // console.log('model.schema.obj[y]',model.schema.obj[y]);
-                            schema.push({"name": y, "type": global.getTypeOfVariable(model.schema.obj[y])});
-                        })
-                        if (en.admin && typeof en.admin === 'object') {
-                            rules[identifire] = en.admin;
-                        } else {
-                            rules[identifire] = {}
-                        }
-                        if (!rules[identifire].create) {
-                            rules[identifire].create = {};
-                        }
-                        if (!rules[identifire].create.fields) {
-                            rules[identifire].create.fields = schema;
-                        }
-                        if (!rules[identifire].edit) {
-                            rules[identifire].edit = {};
-                        }
-                        if (!rules[identifire].edit.fields) {
-                            rules[identifire].edit.fields = rules[identifire].create.fields;
-                        }
-                        if (!rules[identifire].list) {
-                            rules[identifire].list = {};
-                        }
-                        if (!rules[identifire].list.header) {
-                            rules[identifire].list.header = [];
-                        }
-                        // }else{
-
-                        // console.log('schema',schema)
-                        // if (!rules[identifire]['create']['fields'])
-                        //     rules[identifire]['create']['fields'] = schema;
-                        // if (!rules[identifire]['edit']['fields'])
-                        //     rules[identifire]['edit']['fields'] = [];
-                        // if (!rules[identifire]['list']['header'])
-                        //     rules[identifire]['list']['header'] = [];
-
-                        // }
-                        // console.log('en',en)
-                    })
+                    rules=req.rules(rules);
                     // console.log('rules', rules);
 
                     res.json({

@@ -2,9 +2,9 @@ import model from './model.mjs'
 import routes from './routes.mjs'
 
 export default {
-    "name": "user",
+    "name": "admin",
     "model": model,
-    "modelName": "User",
+    "modelName": "Admin",
     "routes": routes,
     "admin": {
         "list": {

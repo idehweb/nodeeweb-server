@@ -129,7 +129,7 @@ var self = ( {
     },
     login: function (req, res, next) {
         if (req.body.identifier && req.body.password) {
-            let User=mongoose.model('User');
+            let User=mongoose.model('Admin');
             User.authenticate(req.body.identifier, req.body.password, function (error, user) {
                 if (error || !user) {
                     let err = new Error('Wrong email or password.');
