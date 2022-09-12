@@ -113,6 +113,9 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+== 0.0.10
+    update theme folder
+
 == 0.0.9
     remove post model from defaults
     add page model to defaults
