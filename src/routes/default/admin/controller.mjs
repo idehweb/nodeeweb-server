@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 import TheUser from './model.mjs';
-let User={};
-// if(!mongoose.model('User')){
-//     User=TheUser()
+let Admin={};
+// if(!mongoose.model('Admin')){
+//     Admin=TheUser()
 // }
 // console.log('mongoose.modelNames()', mongoose.modelNames())
 import global from '#root/global';
@@ -13,7 +13,7 @@ var self = ( {
             offset = parseInt(req.params.offset);
         }
 
-        User.find(function (err, users) {
+        Admin.find(function (err, users) {
 
             if (err || !users) {
                 res.json({
@@ -22,7 +22,7 @@ var self = ( {
                 });
                 return 0;
             }
-            User.countDocuments({}, function (err, count) {
+            Admin.countDocuments({}, function (err, count) {
                 console.log('countDocuments', count);
                 if (err || !count) {
                     res.json({
@@ -45,7 +45,7 @@ var self = ( {
     },
     viewOne: function (req, res, next) {
 
-        User.findById(req.params.id,
+        Admin.findById(req.params.id,
             function (err, user) {
                 if (err || !user) {
                     res.json({
@@ -61,7 +61,7 @@ var self = ( {
     },
     create: function (req, res, next) {
         return new Promise(function (resolve, reject) {
-            User.create(req.body, function (err, user) {
+            Admin.create(req.body, function (err, user) {
                 if (err) {
                     reject(err);
                 } else {
@@ -72,7 +72,7 @@ var self = ( {
 
     },
     destroy: function (req, res, next) {
-        User.findByIdAndDelete(req.params.id,
+        Admin.findByIdAndDelete(req.params.id,
             function (err, user) {
                 if (err || !user) {
                     res.json({
@@ -93,7 +93,7 @@ var self = ( {
 
     },
     edit: function (req, res, next) {
-        User.findByIdAndUpdate(req.params.id, req.body, function (err, user) {
+        Admin.findByIdAndUpdate(req.params.id, req.body, function (err, user) {
             if (err || !user) {
                 res.json({
                     success: false,
@@ -110,7 +110,7 @@ var self = ( {
         });
     },
     count: function (req, res, next) {
-        User.countDocuments({}, function (err, count) {
+        Admin.countDocuments({}, function (err, count) {
             console.log('countDocuments', count);
             if (err) {
                 res.json({
@@ -129,8 +129,8 @@ var self = ( {
     },
     login: function (req, res, next) {
         if (req.body.identifier && req.body.password) {
-            let User=mongoose.model('Admin');
-            User.authenticate(req.body.identifier, req.body.password, function (error, user) {
+            let Admin=mongoose.model('Admin');
+            Admin.authenticate(req.body.identifier, req.body.password, function (error, user) {
                 if (error || !user) {
                     let err = new Error('Wrong email or password.');
                     err.status = 401;
@@ -151,13 +151,14 @@ var self = ( {
         if (req.body.email &&
             req.body.username &&
             req.body.password) {
+            let Admin=mongoose.model('Admin');
 
             let userData = req.body;
             userData.type = 'user';
             userData.token = global.generateUnid();
 
 
-            User.create(userData, function (error, user) {
+            Admin.create(userData, function (error, user) {
                 if (error) {
 
                     return res.json({err: error});
