@@ -36,7 +36,7 @@ let global = {
     domain: process.env.BASE_URL,
     config: (setting) => (config),
     getTypeOfVariable:(variable)=>{
-        console.log('variable',variable);
+        // console.log('variable',variable);
         return typeof variable;
     },
     models:[],

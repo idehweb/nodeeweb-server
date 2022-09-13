@@ -11,17 +11,18 @@ var self = (Model) => {
             }
             let fields = '';
             if (req.headers && req.headers.fields) {
-                fields=req.headers.fields
+                fields = req.headers.fields
             }
-            Model.find({},fields,
+            Model.find({}, fields,
                 function (err, model) {
-                    if (err || !model)
-                        return res.json({
-                            success: false,
-                            message: 'error!'
-                        });
-                    return res.json(model);
+                // console.log('req',req.method)
+                    if(req.headers.response!=="json"){
+                        return res.show()
 
+                    }
+                    if (err || !model)
+                        return res.json([]);
+                    return res.json(model);
                 }).skip(offset).sort({_id: -1}).limit(parseInt(req.params.limit));
         },
 

@@ -11,6 +11,7 @@ import controller from "#controllers/index";
 import mongoose from "mongoose";
 // import user from "#routes/default/user/index";
 import global from '#root/global';
+
 const __dirname = path.resolve();
 
 
@@ -25,28 +26,30 @@ const __dirname = path.resolve();
 export function returnDefaultModels() {
 //     return user.model(mongoose)
 }
-var Models=[];
-export function createRoute(modelName, routes,label) {
+
+var Models = [];
+
+export function createRoute(modelName, routes, label) {
     let router = express.Router();
-    console.log('in createRoute...',label, modelName)
+    console.log('in createRoute...', label, modelName)
     let model = mongoose.model(modelName);
-    Models[modelName]=model;
+    Models[modelName] = model;
     let cont = controller(Models[modelName]);
-    router=create_standard_route('', routes, router);
-    router.get('/', cont.all);
-    router.get('/count', cont.all);
-    router.get('/:offset/:limit', cont.all);
-    router.get('/:id', cont.viewOne);
-    router.post('/', cont.create);
-    router.put('/:id', cont.edit);
-    router.delete('/:id', cont.destroy);
+    router = create_standard_route('', routes, router);
+    router.get('/', (req, res, next) => make_routes_safe(req, res, next, {controller:cont.all}));
+    router.get('/count', (req, res, next) => make_routes_safe(req, res, next, {controller:cont.all}));
+    router.get('/:offset/:limit', (req, res, next) => make_routes_safe(req, res, next, {controller:cont.all}));
+    router.get('/:id', (req, res, next) => make_routes_safe(req, res, next, {controller:cont.viewOne}));
+    router.post('/', (req, res, next) => make_routes_safe(req, res, next, {controller:cont.create}));
+    router.put('/:id', (req, res, next) => make_routes_safe(req, res, next, {controller:cont.edit}));
+    router.delete('/:id', (req, res, next) => make_routes_safe(req, res, next, {controller:cont.destroy}));
 
     return router
 
 
 }
 
-export function createPublicRoute(suf='', routes) {
+export function createPublicRoute(suf = '', routes) {
     // console.log('createPublicRoute ...');
     const router = express.Router();
 
@@ -55,24 +58,25 @@ export function createPublicRoute(suf='', routes) {
 }
 
 function make_routes_safe(req, res, next, rou) {
+    console.log('make_routes_safe');
     req.mongoose = mongoose;
 
-    if(rou.access){
-        let accessList=rou.access.split(',');
-        accessList.forEach((al)=>{
+    if (rou.access) {
+        let accessList = rou.access.split(',');
+        accessList.forEach((al) => {
 
-            al=al.trim().toLowerCase();
-            al=al.charAt(0).toUpperCase() + al.slice(1)
-                let theModel=mongoose.model(al);
+            al = al.trim().toLowerCase();
+            al = al.charAt(0).toUpperCase() + al.slice(1)
+            let theModel = mongoose.model(al);
             theModel.findOne(
                 {
                     "tokens.token": req.headers.token
                 },
                 function (err, obj) {
                     if (err || !obj) {
-                        return(err);
+                        return (err);
                     }
-                    req.headers._id=obj._id;
+                    req.headers._id = obj._id;
                     // else {
                     // console.log('version:',version);
                     // if (customer) {
@@ -85,29 +89,29 @@ function make_routes_safe(req, res, next, rou) {
                 }
             );
         })
-        console.log('rou.access',rou.access);
+        // console.log('rou.access',rou.access);
     }
     res.show = () => {
         // console.log('adminFolder',path.themeFolder+'/index.html')
-
-        return res.sendFile(path.themeFolder+'/index.html')
+        console.log('show');
+        return res.sendFile(path.themeFolder + '/index.html')
     };
     res.admin = () => {
         // console.log('adminFolder',path.adminFolder+'/index.html')
-        return res.sendFile(path.adminFolder+'/index.html')
+        return res.sendFile(path.adminFolder + '/index.html')
     };
 
     req.global = global;
 
-    req.models = ()=>{
-         var models = mongoose.modelNames()
+    req.models = () => {
+        var models = mongoose.modelNames()
         return models;
     };
-    req.adminRules = ()=>{
-         // var models = mongoose.modelNames()
+    req.adminRules = () => {
+        // var models = mongoose.modelNames()
         return models;
     };
-    req.rules = (rules)=>{
+    req.rules = (rules) => {
         req.props.entity.forEach((en) => {
             let model = req.mongoose.model(en.modelName),
                 identifire = en.modelName.toLowerCase();
@@ -147,7 +151,7 @@ function make_routes_safe(req, res, next, rou) {
     return rou.controller(req, res, next)
 }
 
-function create_standard_route(suf = '/', routes=[], router) {
+function create_standard_route(suf = '/', routes = [], router) {
     // console.log('create_standard_route suf:',suf)
     if (routes)
         routes.forEach((rou) => {

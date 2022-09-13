@@ -65,7 +65,7 @@ const headerHandle = (app) => {
     // Request headers you wish to allow
     res.setHeader(
       "Access-Control-Allow-Headers",
-      "Content-Type, Authorization, Content-Length, X-Requested-With, shared_key, token , _id , lan , fields"
+      "Content-Type,response, Authorization, Content-Length, X-Requested-With, shared_key, token , _id , lan , fields"
     );
 
     res.setHeader(

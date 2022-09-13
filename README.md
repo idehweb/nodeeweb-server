@@ -88,19 +88,11 @@ API References could be found here: [API-Reference]
 ## presets , examples , demo
 
 
-## Support
+## Sponsors
 
-If you like the project and you wish to see it grow, please consider supporting us with a donation of your choice or become a backer/sponsor via [Open Collective](https://opencollective.com/)
+If you like the project and you wish to see it grow, please consider supporting us with a donation of your choice or become a backer/sponsor.
 
-[![Bitcoin](https://user-images.githubusercontent.com/11614725/52977952-87235f80-33cf-11e9-9607-7a9a354e1155.png)](https://commerce.coinbase.com/checkout/fc90b940-558d-408b-a166-28a823c98173)
-
-we used these modules:
-
-shards
-
-grapesjs
-
-mongoose
+<a href="https://arvandguarantee.shop" target="_blank"><img src="https://idehweb.com/sponsers/arvand-logo.jpg"></a>
 
 
 ## License
@@ -112,6 +104,9 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 [CMS]: <https://en.wikipedia.org/wiki/Content_management_system>
 
 ## Changelogs
+
+== 0.0.11
+    add sponser
 
 == 0.0.10
     update theme folder

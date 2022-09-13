@@ -65,7 +65,7 @@ export default function BaseApp(theProps = {}) {
             }, {
                 "path": "/theme",
                 "method": "get",
-                "access": "customer,admin",
+                "access": "",
                 "controller": (req, res, next) => {
                     console.log('get theme settings... ');
                     let rules = {};
@@ -85,6 +85,21 @@ export default function BaseApp(theProps = {}) {
                             },
                             {
                                 path: '/admin',
+                                exact: true,
+                                layout: 'Nohf',
+                                element: 'Admin',
+                            }, {
+                                path: '/admin/:model',
+                                exact: true,
+                                layout: 'Nohf',
+                                element: 'Admin',
+                            },{
+                                path: '/admin/:model/:action',
+                                exact: true,
+                                layout: 'Nohf',
+                                element: 'Admin',
+                            },{
+                                path: '/admin/:model/:action/:_id',
                                 exact: true,
                                 layout: 'Nohf',
                                 element: 'Admin',
