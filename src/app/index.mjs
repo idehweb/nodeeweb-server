@@ -1,4 +1,4 @@
-console.log("#f index.mjs", new Date());
+// console.log("#f index.mjs", new Date());
 
 import express from "express";
 
@@ -23,14 +23,14 @@ export default function BaseApp(theProps = {}) {
     let props = {};
     // }
     props = theProps;
-    console.log("==> BaseApp()", new Date());
-    console.log('base:', props['base'])
+    // console.log("==> BaseApp()", new Date());
+    // console.log('base:', props['base'])
 
     if (!props['base']) {
         props['base'] = '';
     }
 
-    console.log('base:', props['base'])
+    // console.log('base:', props['base'])
     if (!props['entity']) {
         props['entity'] = [];
     }
@@ -202,7 +202,7 @@ export default function BaseApp(theProps = {}) {
 
         routeHandle(app, props);
 // app.set("view engine", "pug");
-        console.log('return app in BaseApp()')
+//         console.log('return app in BaseApp()')
     });
     // app.get("/", (req, res, next) => {
     //     console.log('#r home /')

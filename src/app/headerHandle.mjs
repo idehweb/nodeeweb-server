@@ -1,4 +1,4 @@
-console.log("#f headerHandle");
+// console.log("#f headerHandle");
 
 import path from "path";
 import commonDir from 'commondir';

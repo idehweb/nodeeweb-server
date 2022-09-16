@@ -1,4 +1,4 @@
-console.log('#f routes/index')
+// console.log('#f routes/index')
 
 import express from 'express';
 import path from "path";
@@ -31,7 +31,7 @@ var Models = [];
 
 export function createRoute(modelName, routes, label) {
     let router = express.Router();
-    console.log('in createRoute...', label, modelName)
+    // console.log('in createRoute...', label, modelName)
     let model = mongoose.model(modelName);
     Models[modelName] = model;
     let cont = controller(Models[modelName]);
@@ -58,7 +58,7 @@ export function createPublicRoute(suf = '', routes) {
 }
 
 function make_routes_safe(req, res, next, rou) {
-    console.log('make_routes_safe');
+    // console.log('make_routes_safe');
     req.mongoose = mongoose;
 
     if (rou.access) {

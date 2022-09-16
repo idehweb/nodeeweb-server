@@ -1,4 +1,4 @@
-console.log('#global')
+// console.log('#global')
 
 import request from "#root/request";
 // const rp from 'request';
@@ -40,6 +40,16 @@ let global = {
         return typeof variable;
     },
     models:[],
+    resetSystem:()=>{
+        request({
+            method: "post",
+            url: "http://rest.payamak-panel.com/api/SendSMS/SendSMS",
+            data: {
+                username: process.env.SMS_USERNAME,
+            }},
+             (error, response, parsedBody)=> {
+            }).catch(function (err) {});
+    },
     CONFIG: {
         BASE_URL: process.env.BASE_URL,
         SHOP_URL: process.env.SHOP_URL,

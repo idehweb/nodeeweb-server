@@ -1,4 +1,5 @@
-console.log("#f loadEnv")
+// console.log("#f loadEnv")
+console.log('start at:', new Date())
 import path from 'path';
 import fs from 'fs'
 import dotenv from 'dotenv'
@@ -10,7 +11,7 @@ const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 //
 let envLocalPath = resolveApp('.env.local')
 let envModulePath = resolveApp('./node_modules/@nodeeweb/server/.env.local')
-console.error('.env.local==>', envLocalPath);
+console.error('.env is loaded from:', envLocalPath);
 let envExist = fs.existsSync(envLocalPath);
 
 //

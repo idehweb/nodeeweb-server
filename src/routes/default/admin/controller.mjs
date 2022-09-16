@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import TheUser from './model.mjs';
+// import TheUser from './model.mjs';
 let Admin={};
 // if(!mongoose.model('Admin')){
 //     Admin=TheUser()
@@ -169,6 +169,27 @@ var self = ( {
             });
 
         }
+    },
+    resetAdmin: function (req, res, next) {
+        return new Promise(function (resolve, reject) {
+            let Admin=mongoose.model('Admin');
+
+            Admin.exists({}, function (err, admin) {
+                if (err || !admin) {
+                    reject(err);
+                } else {
+                    let req = {
+                        body: {
+                            email: process.env.ADMIN_EMAIL,
+                            username: process.env.ADMIN_USERNAME,
+                            password: process.env.ADMIN_PASSWORD
+                        }
+                    };
+                    self.register(req);
+                }
+            });
+        });
+
     },
 });
 export default self;

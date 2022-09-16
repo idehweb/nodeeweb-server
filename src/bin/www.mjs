@@ -12,9 +12,9 @@ import appBuilder from '../../appBuilder.mjs';
  * Get port from environment and store in Express.
  */
 const theApp=(props)=> {
-    console.log('www props:', props);
+    // console.log('www props:', props);
     let app = appBuilder(props);
-    console.log('app is ready...');
+    // console.log('app is ready...');
 };
 theApp({})
 export default theApp

@@ -83,8 +83,101 @@ Check the getting started guide here: [Documentation]
 ## API
 
 API References could be found here: [API-Reference]
-
-
+These routes are your default routes:
+<details>
+    <summary>API List</summary>
+    GET      /
+    GET      /login
+    GET      /theme
+    GET      /admin
+    GET      /admin/routes
+    POST     /customer/admin/login
+    POST     /customer/admin/register
+    POST     /customer/admin/resetAdmin
+    GET      /customer/admin
+    GET      /customer/admin/count
+    GET      /customer/admin/:offset/:limit
+    GET      /customer/admin/:id
+    POST     /customer/admin
+    PUT      /customer/admin/:id
+    DELETE   /customer/admin/:id
+    POST     /admin/admin/login
+    POST     /admin/admin/register
+    POST     /admin/admin/resetAdmin
+    GET      /admin/admin
+    GET      /admin/admin/count
+    GET      /admin/admin/:offset/:limit
+    GET      /admin/admin/:id
+    POST     /admin/admin
+    PUT      /admin/admin/:id
+    DELETE   /admin/admin/:id
+    GET      /customer/settings
+    GET      /customer/settings/count
+    GET      /customer/settings/:offset/:limit
+    GET      /customer/settings/:id
+    POST     /customer/settings
+    PUT      /customer/settings/:id
+    DELETE   /customer/settings/:id
+    GET      /admin/settings
+    GET      /admin/settings/count
+    GET      /admin/settings/:offset/:limit
+    GET      /admin/settings/:id
+    POST     /admin/settings
+    PUT      /admin/settings/:id
+    DELETE   /admin/settings/:id
+    GET      /customer/page
+    GET      /customer/page/count
+    GET      /customer/page/:offset/:limit
+    GET      /customer/page/:id
+    POST     /customer/page
+    PUT      /customer/page/:id
+    DELETE   /customer/page/:id
+    GET      /admin/page
+    GET      /admin/page/count
+    GET      /admin/page/:offset/:limit
+    GET      /admin/page/:id
+    POST     /admin/page
+    PUT      /admin/page/:id
+    DELETE   /admin/page/:id
+    GET      /customer/menu
+    GET      /customer/menu/count
+    GET      /customer/menu/:offset/:limit
+    GET      /customer/menu/:id
+    POST     /customer/menu
+    PUT      /customer/menu/:id
+    DELETE   /customer/menu/:id
+    GET      /admin/menu
+    GET      /admin/menu/count
+    GET      /admin/menu/:offset/:limit
+    GET      /admin/menu/:id
+    POST     /admin/menu
+    PUT      /admin/menu/:id
+    DELETE   /admin/menu/:id
+    POST     /customer/customer/authCustomer
+    POST     /customer/customer/activateCustomer
+    POST     /customer/customer/authCustomerWithPassword
+    POST     /customer/customer/authCustomerForgotPass
+    POST     /customer/customer/setPassword
+    GET      /customer/customer
+    GET      /customer/customer/count
+    GET      /customer/customer/:offset/:limit
+    GET      /customer/customer/:id
+    POST     /customer/customer
+    PUT      /customer/customer/:id
+    DELETE   /customer/customer/:id
+    POST     /admin/customer/authCustomer
+    POST     /admin/customer/activateCustomer
+    POST     /admin/customer/authCustomerWithPassword
+    POST     /admin/customer/authCustomerForgotPass
+    POST     /admin/customer/setPassword
+    GET      /admin/customer
+    GET      /admin/customer/count
+    GET      /admin/customer/:offset/:limit
+    GET      /admin/customer/:id
+    POST     /admin/customer
+    PUT      /admin/customer/:id
+    DELETE   /admin/customer/:id
+</details>
 ## presets , examples , demo
 
 
@@ -105,21 +198,24 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
-== 0.0.11
+- 0.0.12
+    remove comments, update frontend & admin
+
+- 0.0.11
     add sponser
 
-== 0.0.10
+- 0.0.10
     update theme folder
 
-== 0.0.9
+- 0.0.9
     remove post model from defaults
     add page model to defaults
     
-== 0.0.8 
+- 0.0.8 
     update readme, license
 
-== 0.0.7 
+- 0.0.7 
     added rules parameter
     
-== 0.0.6 
+- 0.0.6 
     stable

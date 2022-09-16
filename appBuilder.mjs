@@ -1,4 +1,4 @@
-console.log('#f AppBuilder');
+// console.log('#f AppBuilder');
 
 import BaseApp from "./src/app/index.mjs";
 import http from 'http';
@@ -67,11 +67,11 @@ function onError(error) {
 
 export default function AppBuilder(config) {
 
-    console.log('==> AppBuilder()');
-    console.log('process.env.SERVER_PORT', process.env.SERVER_PORT)
+    // console.log('==> AppBuilder()');
+    // console.log('process.env.SERVER_PORT', process.env.SERVER_PORT)
 
     var port = normalizePort(process.env.SERVER_PORT);
-    console.log('config', config.base)
+    // console.log('config', config.base)
     let app = BaseApp(config);
 
     const server = http.createServer(app);
@@ -79,7 +79,7 @@ export default function AppBuilder(config) {
 
 
     function onListening() {
-        console.log('onListening');
+        // console.log('onListening');
 
         var addr = server.address();
         var bind = typeof addr === 'string'

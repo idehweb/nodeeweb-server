@@ -1,4 +1,4 @@
-console.log("#f configHandle.mjs", new Date());
+// console.log("#f configHandle.mjs", new Date());
 
 import cookieParser from "cookie-parser";
 import logger from "morgan";
@@ -30,7 +30,7 @@ let configHandle = (express, app, props = {}) => {
     if(props.front) {
         let themeFolder = path.join(__dirname, props.base, "./theme");
         path.themeFolder = themeFolder;
-        console.log("themeFolder: ", themeFolder)
+        // console.log("themeFolder: ", themeFolder)
         app.use(express.static(themeFolder, {index: ['index.html']}));
     }
     // let R = createPublicRoute('/admin')
@@ -39,11 +39,11 @@ let configHandle = (express, app, props = {}) => {
         let adminFolder  = path.join(__dirname, props.base, "./admin");
         path.adminFolder=adminFolder;
 
-        console.log("adminFolder: ", adminFolder)
+        // console.log("adminFolder: ", adminFolder)
         app.use(express.static(adminFolder, {index: ['index.html']}));
     }
     // app.set("view engine", "pug");
     // app.use(express.static(assetsFolder));
-    console.log("==> configHandle");
+    // console.log("==> configHandle");
 };
 export default configHandle;

@@ -12,6 +12,12 @@ export default [{
     "access": "admin",
     "controller": controller.register,
 
+}, {
+    "path": "/resetAdmin",
+    "method": "post",
+    "access": "",
+    "controller": controller.resetAdmin,
+
 }
 
 

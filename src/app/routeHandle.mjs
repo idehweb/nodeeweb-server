@@ -1,4 +1,4 @@
-console.log("#f routeHandle");
+// console.log("#f routeHandle");
 // import path from "path";
 // const __dirname = path.resolve();
 // const publicFolder = path.join(__dirname, "./public");
@@ -13,7 +13,7 @@ import {createPublicRoute, createRoute, returnDefaultModels} from "#routes/index
 
 // createDefaultRoute();
 let routeHandle = (app, props = {}) => {
-    console.log("==> routeHandle(app,props)");
+    // console.log("==> routeHandle(app,props)");
 
     // if (config().set///////ting.BASE_URL) {
 
@@ -41,7 +41,7 @@ let routeHandle = (app, props = {}) => {
     //
     // });
     if (props && props.front && props.front.routes) {
-        console.log('createTheme')
+        // console.log('createTheme')
 
         let PR = createPublicRoute('', props.front.routes);
         app.use("/", PR);

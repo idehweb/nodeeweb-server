@@ -8,7 +8,15 @@ export default {
     "routes": routes,
     "admin": {
         "list": {
-            "header": [{"name": "email"}, {"name": "username"}, {"name": "nickname"}, {"name": "active"}, {"name": "createdAt"}, {"name": "updatedAt"}],
+            "header": [
+                {"name": "email", "type": "string"},
+                {"name": "username", "type": "string"},
+                {"name": "nickname", "type": "string"},
+                {"name": "active", "type": "boolean"},
+                {"name": "createdAt", "type": "date"},
+                {"name": "updatedAt", "type": "date"},
+                {"name": "actions", "type": "actions", "edit": true, "delete": true}
+            ],
 
         },
 
@@ -25,7 +33,14 @@ export default {
             ]
         },
         "edit": {
-            "fields": [{"name": "title"},]
+            "fields": [{name: "email", type: "string"},
+                {name: "username", type: "string"},
+                {name: "nickname", type: "string"},
+                {name: "password", type: "string"},
+                {name: "type", type: "string"},
+                {name: "token", type: "string"},
+                {name: "createdAt", type: "date"},
+                {name: "active", type: "boolean"}]
         },
     },
 

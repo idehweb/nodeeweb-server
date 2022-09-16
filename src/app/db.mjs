@@ -1,4 +1,5 @@
-console.log("#f db.mjs", new Date());
+
+// console.log("#f db.mjs", new Date());
 // import global from '#root/global';
 
 // import Wizard from '../../wizard.js';
@@ -19,11 +20,11 @@ mongoose.Promise = global.Promise;
 // console.log('process.env2');
 // console.log('process.env.RESET', process.env.RESET)
 // console.log('process.env.SERVER_PORT', process.env.SERVER_PORT)
-console.log('process.env.mongodbConnectionUrl', process.env.mongodbConnectionUrl)
+// console.log('process.env.mongodbConnectionUrl', process.env.mongodbConnectionUrl)
 // if(!process.env.mongodbConnectionUrl)
 //     process.exit(0);
 let connection = process.env.mongodbConnectionUrl;
-console.log('process.env.BASE_URL',process.env.BASE_URL);
+// console.log('process.env.BASE_URL',process.env.BASE_URL);
 
 let options = {
     useNewUrlParser: true,
@@ -33,7 +34,7 @@ export default (props = {},app) => {
     return new Promise(function (resolve, reject) {
 
         props.entity.map(async e => {
-            console.log('run db...', e.modelName, e.model);
+            // console.log('run db...', e.modelName, e.model);
 
             await mongoose.model(e.modelName, e.model(mongoose))
             // await
@@ -47,7 +48,7 @@ export default (props = {},app) => {
             .connect(connection, options)
             .then(async () => {
                 resolve()
-                await console.log("==> db connection successful to", process.env.dbName, new Date());
+                await console.log("==> db connection successful to", "'"+process.env.dbName+"'", new Date());
 
                 function list(id) {
                     // const path = require('path');
@@ -161,7 +162,42 @@ export default (props = {},app) => {
                     //if database does not have any records
                     //create user...
                     //& create default settings...
+                    let Admin=mongoose.model('Admin');
 
+                    Admin.exists({}, function (err, admin) {
+                        if (err || !admin) {
+                            reject(err);
+                        } else {
+                            let req = {
+                                body: {
+                                    email: process.env.ADMIN_EMAIL,
+                                    username: process.env.ADMIN_USERNAME,
+                                    password: process.env.ADMIN_PASSWORD
+                                }
+                            };
+                            if (req.body.email &&
+                                req.body.username &&
+                                req.body.password) {
+                                let Admin=mongoose.model('Admin');
+
+                                let userData = req.body;
+                                userData.type = 'user';
+                                userData.token = global.generateUnid();
+
+
+                                Admin.create(userData, function (error, user) {
+                                    if (error) {
+
+                                        return res.json({err: error});
+                                    } else {
+                                        return res.json({'success': true, 'message': 'ساخته شد'});
+
+                                    }
+                                });
+
+                            }
+                        }
+                    });
                     // userController.exists().then((e) => {
                     //     console.log('user exist...')
                     // }).catch(e => {
@@ -190,9 +226,9 @@ export default (props = {},app) => {
                     //     })
                     // })
                 }
-                else {
-                    console.log('no need to import database...')
-                }
+                // else {
+                //     console.log('no need to import database...')
+                // }
             })
             .catch(err => {
                 console.error(err, "db name:", process.env.dbName)
