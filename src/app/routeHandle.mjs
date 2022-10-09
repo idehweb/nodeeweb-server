@@ -48,14 +48,7 @@ let routeHandle = (app, props = {}) => {
 
 
     }
-    if (props && props.admin && props.admin.routes) {
-        // console.log('createAdmin')
 
-
-        let PR2 = createPublicRoute('', props.admin.routes);
-        app.use("/", PR2);
-
-    }
     // let defaultRoute=returnDefaultModels();
     // if (defaultRoute) {
     //     // console.log('adnu',returnDefaultModels())
@@ -127,6 +120,14 @@ let routeHandle = (app, props = {}) => {
 
         }
     })
+    if (props && props.admin && props.admin.routes) {
+        // console.log('createAdmin')
+
+
+        let PR2 = createPublicRoute('', props.admin.routes);
+        app.use("/", PR2);
+
+    }
     // console.log('app', app)
 // catch 404 and forward to error handler
 //     app.use(function(req, res, next) {

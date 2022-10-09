@@ -9,7 +9,18 @@ export default {
     "routes": routes,
     "admin": {
         "list": {
-            "header":[{"name":"title","type":"object","key":"fa"},{"name":"createdAt"},{"name":"updatedAt"}]
+            "header":[
+                {"name":"phoneNumber","type":"number"},
+                {"name":"email","type":"email"},
+                {"name":"activationCode","type":"number"},
+                {"name":"nickname","type":"string"},
+                {"name":"firstName","type":"string"},
+                {"name":"lastName","type":"string"},
+                {"name":"credit","type":"number"},
+                {"name":"createdAt","type":"date"},
+                {"name":"updatedAt","type":"date"},
+                {"name":"actions","type":"actions"}
+                ]
         },
         "create": {
             "fields":[{"name":"title"},]

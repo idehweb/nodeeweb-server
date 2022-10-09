@@ -198,6 +198,24 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.18
+    update front/admin
+
+- 0.0.17
+    add maxWidth to pages
+
+- 0.0.16
+    add post model
+    
+- 0.0.15
+    change theme route
+
+- 0.0.14
+    update build folder - update front - admin
+
+- 0.0.13
+    add templates
+
 - 0.0.12
     remove comments, update frontend & admin
 

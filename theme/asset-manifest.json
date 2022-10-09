@@ -3,7 +3,6 @@
     "main.css": "./static/css/bundle.css",
     "main.js": "./static/js/bundle.js",
     "static/media/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2": "./static/media/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.f54bbe10bb65e21752bf.woff2",
-    "static/media/main-fonts.svg?v=20": "./static/media/main-fonts.404be73e1ad40b1da282.svg",
     "static/media/IRANSansWebLight.ttf": "./static/media/IRANSansWebLight.3e99a4d54d76ef687a4f.ttf",
     "static/media/IRANSansWeb.eot": "./static/media/IRANSansWeb.96c836c332e8f8d83979.eot",
     "static/media/IRANSansWeb.ttf": "./static/media/IRANSansWeb.cfda181b49ac22fb9f4a.ttf",
@@ -24,9 +23,6 @@
     "static/media/IRANSansWebUltraLight.woff2": "./static/media/IRANSansWebUltraLight.f781adf3ac1352b3bffa.woff2",
     "static/media/IRANSansWebMedium.woff2": "./static/media/IRANSansWebMedium.c400362906c0fefcc862.woff2",
     "static/media/IRANSansWebBold.woff2": "./static/media/IRANSansWebBold.62df0689da0baf986fba.woff2",
-    "static/media/main-fonts.eot?v=20": "./static/media/main-fonts.b8dc46886b7e216a02be.eot",
-    "static/media/main-fonts.ttf?v=20": "./static/media/main-fonts.4d0a76596dbbbfbfe5ee.ttf",
-    "static/media/main-fonts.woff?v=20": "./static/media/main-fonts.dbf9ed7d53cfa8f73da7.woff",
     "index.html": "./index.html"
   },
   "entrypoints": [

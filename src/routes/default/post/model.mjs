@@ -1,10 +1,13 @@
 // console.log('#model setting')
 
 export default (mongoose)=>{
-    const PageSchema = new mongoose.Schema({
+    const PostSchema = new mongoose.Schema({
         createdAt: {type: Date, default: Date.now},
         updatedAt: {type: Date, default: Date.now},
         active: {type: Boolean, default: true},
+        firstCategory: {type: mongoose.Schema.Types.ObjectId, ref: 'Category'},
+        secondCategory: {type: mongoose.Schema.Types.ObjectId, ref: 'Category'},
+        thirdCategory: {type: mongoose.Schema.Types.ObjectId, ref: 'Category'},
         data: {},
         description: {},
         excerpt: {},
@@ -12,13 +15,12 @@ export default (mongoose)=>{
         slug: String,
         title: {},
         elements: {},
-        kind: {type: String, default: 'page'},
-        maxWidth: {type: String, default: '100%'},
+        kind: {type: String, default: 'post'},
         status: {type: String, default: 'processing'},
         photos: [],
         thumbnail: String,
 
     });
-    return PageSchema
+    return PostSchema
 
 };

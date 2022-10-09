@@ -14,6 +14,9 @@ import Settings from "#routes/default/settings/index";
 import Page from "#routes/default/page/index";
 import Customer from "#routes/default/customer/index";
 import Menu from "#routes/default/menu/index";
+import Template from "#routes/default/template/index";
+import Media from "#routes/default/media/index";
+import Post from "#routes/default/post/index";
 // import router from "../routes/public/p";
 // import uploadHandle from "#root/app/uploadHandle";
 
@@ -40,6 +43,9 @@ export default function BaseApp(theProps = {}) {
     props['entity'].push(Page);
     props['entity'].push(Menu);
     props['entity'].push(Customer);
+    props['entity'].push(Post);
+    props['entity'].push(Media);
+    props['entity'].push(Template);
 //make routes standard
     // console.log('rules',rules);
     if (!props['front']) {
@@ -47,7 +53,7 @@ export default function BaseApp(theProps = {}) {
             routes: [{
                 "path": "/",
                 "method": "get",
-                "access": "customer,admin",
+                "access": "admin_user,admin_shopManager",
                 "controller": (req, res, next) => {
                     console.log('show front, go visit ', process.env.SHOP_URL);
                     res.show()
@@ -56,62 +62,85 @@ export default function BaseApp(theProps = {}) {
             }, {
                 "path": "/login",
                 "method": "get",
-                "access": "customer,admin",
+                "access": "admin_user,admin_shopManager",
                 "controller": (req, res, next) => {
                     console.log('show front, go visit ', process.env.SHOP_URL);
                     res.show()
                 },
 
-            }, {
-                "path": "/theme",
-                "method": "get",
-                "access": "",
-                "controller": (req, res, next) => {
-                    console.log('get theme settings... ');
-                    let rules = {};
-                    rules=req.rules(rules);
-                    // console.log('rules', rules);
+            },
+                {
+                    "path": "/theme",
+                    "method": "get",
+                    "access": "",
+                    "controller": (req, res, next) => {
+                        console.log('get theme settings... ', req.headers.token);
+                        let Template = req.mongoose.model('Template');
 
-                    res.json({
-                        header: [{name: 'MainSidebar'}, {name: 'StickyCard'}, {name: 'CardSidebar'}, {name: 'MainNavbar'}, {name: 'MainMobileNavbar'}],
-                        body: [{name: 'MainContent'}],
-                        footer: [{name: 'MainFooter'}],
-                        routes: [
-                            {
-                                path: '/',
-                                exact: true,
-                                layout: 'Nohf',
-                                element: 'Home',
-                            },
-                            {
-                                path: '/admin',
-                                exact: true,
-                                layout: 'Nohf',
-                                element: 'Admin',
-                            }, {
-                                path: '/admin/:model',
-                                exact: true,
-                                layout: 'Nohf',
-                                element: 'Admin',
-                            },{
-                                path: '/admin/:model/:action',
-                                exact: true,
-                                layout: 'Nohf',
-                                element: 'Admin',
-                            },{
-                                path: '/admin/:model/:action/:_id',
-                                exact: true,
-                                layout: 'Nohf',
-                                element: 'Admin',
-                            },
-                        ],
-                        models: req.models(),
-                        rules: JSON.parse(JSON.stringify(rules))
+                        let rules = {};
+                        rules = req.rules(rules);
+                        // console.log('rules', rules);
+                        Template.findOne({type: 'header'}, function (err, header) {
+                            // console.log('header error',err);
+                            // console.log('header',header);
+                            Template.findOne({type: 'footer'}, function (err, footer) {
+                                // console.log('footer error',err);
+                                // console.log('footer',footer);
+                                if (req.headers.token) {
 
-                    })
-                },
+                                }
+                                // let headerMaxWidth='100%';
+                                // if()
+                                return res.json({
+                                    header: {
+                                        maxWidth:header.maxWidth || '100%',
+                                        elements:header ? header.elements : []
+                                    },
+                                    body: [{name: 'MainContent'}],
+                                    footer: {
+                                        maxWidth:footer.maxWidth || '100%',
+                                        elements:footer ? footer.elements : []
+                                    },
+                                    routes: [
+                                        {
+                                            path: '/',
+                                            exact: true,
+                                            layout: 'Nohf',
+                                            element: 'Home',
+                                        },
+                                        {
+                                            path: '/admin',
+                                            exact: true,
+                                            layout: 'Nohf',
+                                            element: 'Admin',
+                                        }, {
+                                            path: '/admin/:model',
+                                            exact: true,
+                                            layout: 'Nohf',
+                                            element: 'Admin',
+                                        }, {
+                                            path: '/admin/:model/:action',
+                                            exact: true,
+                                            layout: 'Nohf',
+                                            element: 'Admin',
+                                        }, {
+                                            path: '/admin/:model/:action/:_id',
+                                            exact: true,
+                                            layout: 'Nohf',
+                                            element: 'Admin',
+                                        },
+                                    ],
+                                    models: req.models(),
+                                    rules: JSON.parse(JSON.stringify(rules)),
+                                    components: req.builderComponents(),
 
-            }]
+                                })
+
+                            });
+                        });
+                    },
+
+                }]
         };
     }
     if (!props['admin']) {
@@ -119,21 +148,60 @@ export default function BaseApp(theProps = {}) {
             routes: [{
                 "path": "/admin",
                 "method": "get",
-                "access": "customer,admin",
+                "access": "admin_user,admin_shopManager",
                 "controller": (req, res, next) => {
                     // console.log('here');
                     return res.admin()
                 },
 
             }, {
+                "path": "/admin/login",
+                "method": "get",
+                "access": "",
+                "controller": (req, res, next) => {
+                    console.log('/admin/login');
+                    return res.admin()
+                },
+
+            }, {
                 "path": "/admin/routes",
                 "method": "get",
-                "access": "customer,admin",
+                "access": "admin_user,admin_shopManager",
                 "controller": (req, res, next) => {
                     // console.log('here');
                     return res.json({
                         success: 'sss'
                     })
+                },
+
+            }, {
+                "path": "/admin/:model",
+                "method": "get",
+                "access": "",
+                "controller": (req, res, next) => {
+                    // console.log('here');
+                    if (req.headers.response != 'json')
+                        return res.admin()
+                },
+
+            }, {
+                "path": "/admin/:model/:action",
+                "method": "get",
+                "access": "",
+                "controller": (req, res, next) => {
+                    // console.log('here');
+                    if (req.headers.response != 'json')
+                        return res.admin()
+                },
+
+            }, {
+                "path": "/admin/:model/:action/:id",
+                "method": "get",
+                "access": "",
+                "controller": (req, res, next) => {
+                    // console.log('here');
+                    if (req.headers.response != 'json')
+                        return res.admin()
                 },
 
             }]

@@ -13,6 +13,7 @@ var self = (Model) => {
             if (req.headers && req.headers.fields) {
                 fields = req.headers.fields
             }
+            console.log('fields',fields)
             Model.find({}, fields,
                 function (err, model) {
                 // console.log('req',req.method)
@@ -89,7 +90,7 @@ var self = (Model) => {
         }
         ,
         edit: function (req, res, next) {
-            Model.findByIdAndUpdate(req.params.id, req.body, function (err, menu) {
+            Model.findByIdAndUpdate(req.params.id, req.body,{new:true}, function (err, menu) {
                 if (err || !menu) {
                     res.json({
                         success: false,

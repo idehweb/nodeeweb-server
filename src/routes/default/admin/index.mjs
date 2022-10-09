@@ -26,23 +26,21 @@ export default {
                 {name: "username", type: "string"},
                 {name: "nickname", type: "string"},
                 {name: "password", type: "string"},
-                {name: "type", type: "string"},
-                {name: "token", type: "string"},
-                {name: "createdAt", type: "date"},
-                {name: "active", type: "boolean"}
+                {name: "type", type: "string"}
             ]
         },
         "edit": {
-            "fields": [{name: "email", type: "string"},
+            "fields": [
+                {name: "email", type: "string"},
                 {name: "username", type: "string"},
                 {name: "nickname", type: "string"},
                 {name: "password", type: "string"},
-                {name: "type", type: "string"},
-                {name: "token", type: "string"},
-                {name: "createdAt", type: "date"},
-                {name: "active", type: "boolean"}]
+                {name: "type", type: "string"}
+            ]
         },
     },
+
+    "access": ["admin"],
 
     "views": [{
         "func": (req, res, next) => {

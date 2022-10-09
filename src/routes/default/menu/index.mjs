@@ -7,6 +7,16 @@ export default {
     "modelName": "Menu",
     "routes": routes,
     "admin": {
+        "list": {
+            "header": [
+                {"name": "name", "type": "multiLang"},
+                {"name": "slug", "type": "string"},
+                {"name": "order", "type": "number"},
+                {"name": "parent", "type": "string"},
+                {"name": "actions", "type": "actions", "edit": true}
+
+            ],
+        },
         "create": {
             "fields": [
                 {name: "name", type: "object"},
@@ -17,7 +27,7 @@ export default {
                 {name: "link", type: "string"},
                 {name: "icon", type: "string"},
                 {name: "data", type: "object"},
-                {name: "parent", type: "ref", ref: "Menu"}
+                // {name: "parent", type: "reference", reference: "Menu"}
             ]
         }
     },

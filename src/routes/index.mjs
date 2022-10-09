@@ -2,6 +2,7 @@
 
 import express from 'express';
 import path from "path";
+import axios from "axios";
 // const publicFolder = path.join(__dirname, "./public");
 // import _ from 'loadash';
 // import menu from "#routes/menu";
@@ -36,13 +37,13 @@ export function createRoute(modelName, routes, label) {
     Models[modelName] = model;
     let cont = controller(Models[modelName]);
     router = create_standard_route('', routes, router);
-    router.get('/', (req, res, next) => make_routes_safe(req, res, next, {controller:cont.all}));
-    router.get('/count', (req, res, next) => make_routes_safe(req, res, next, {controller:cont.all}));
-    router.get('/:offset/:limit', (req, res, next) => make_routes_safe(req, res, next, {controller:cont.all}));
-    router.get('/:id', (req, res, next) => make_routes_safe(req, res, next, {controller:cont.viewOne}));
-    router.post('/', (req, res, next) => make_routes_safe(req, res, next, {controller:cont.create}));
-    router.put('/:id', (req, res, next) => make_routes_safe(req, res, next, {controller:cont.edit}));
-    router.delete('/:id', (req, res, next) => make_routes_safe(req, res, next, {controller:cont.destroy}));
+    router.get('/', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.all, ...returnThisRouteRules('/', 'get', routes)}));
+    router.get('/count', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.all, ...returnThisRouteRules('/count', 'get', routes)}));
+    router.get('/:offset/:limit', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.all, ...returnThisRouteRules('/:offset/:limit', 'get', routes)}));
+    router.get('/:id', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.viewOne, ...returnThisRouteRules('/:id', 'get', routes)}));
+    router.post('/', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.create, ...returnThisRouteRules('/', 'post', routes)}));
+    router.put('/:id', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.edit, ...returnThisRouteRules('/:id', 'put', routes)}));
+    router.delete('/:id', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.destroy, ...returnThisRouteRules('/:id', 'delete', routes)}));
 
     return router
 
@@ -57,43 +58,30 @@ export function createPublicRoute(suf = '', routes) {
     // return [router];
 }
 
+function returnThisRouteRules(path, method, routes) {
+    let obj = {
+        path:path,
+        method:method,
+    };
+    routes.forEach((ro) => {
+        if (ro.method == method && ro.path == path) {
+            obj['access'] = ro.access;
+            if (ro.controller) {
+                obj['controller'] = ro.controller;
+            }
+        }
+    });
+    return obj;
+}
+
 function make_routes_safe(req, res, next, rou) {
-    // console.log('make_routes_safe');
+    console.log('make_routes_safe:', rou);
     req.mongoose = mongoose;
 
-    if (rou.access) {
-        let accessList = rou.access.split(',');
-        accessList.forEach((al) => {
 
-            al = al.trim().toLowerCase();
-            al = al.charAt(0).toUpperCase() + al.slice(1)
-            let theModel = mongoose.model(al);
-            theModel.findOne(
-                {
-                    "tokens.token": req.headers.token
-                },
-                function (err, obj) {
-                    if (err || !obj) {
-                        return (err);
-                    }
-                    req.headers._id = obj._id;
-                    // else {
-                    // console.log('version:',version);
-                    // if (customer) {
-
-                    // return({
-                    //     success: true,
-                    //     message: "has access!",
-                    //     entity: obj
-                    // });
-                }
-            );
-        })
-        // console.log('rou.access',rou.access);
-    }
     res.show = () => {
         // console.log('adminFolder',path.themeFolder+'/index.html')
-        console.log('show');
+        console.log('show',path.themeFolder);
         return res.sendFile(path.themeFolder + '/index.html')
     };
     res.admin = () => {
@@ -111,6 +99,19 @@ function make_routes_safe(req, res, next, rou) {
         // var models = mongoose.modelNames()
         return models;
     };
+    req.builderComponents = (rules) => {
+        let components = [];
+        req.props.entity.forEach((en) => {
+            if (en.components) {
+                en.components.forEach((com) => {
+                    components.push(com);
+                });
+            }
+        });
+        return components;
+
+    }
+    req.httpRequest = axios;
     req.rules = (rules) => {
         req.props.entity.forEach((en) => {
             let model = req.mongoose.model(en.modelName),
@@ -148,7 +149,66 @@ function make_routes_safe(req, res, next, rou) {
 
         return rules;
     };
-    return rou.controller(req, res, next)
+    if (rou.access) {
+        let accessList = rou.access.split(',');
+        let isPassed = false, the_id = null;
+        console.log('we need check access...', accessList, req.headers.token);
+        if (!req.headers.token) {
+            console.log('we have no token...');
+            if(req.headers.response!=="json"){
+                return res.redirect('/admin/login')
+            }else {
+                return res.status(403).json({
+                    success: false,
+                    message: 'You have to authorize'
+                });
+            }
+        }
+        let counter = 0;
+        accessList.forEach((al, j) => {
+            let the_role = al.split('_');
+
+            the_role[0] = the_role[0].trim().toLowerCase();
+            the_role[0] = the_role[0].charAt(0).toUpperCase() + the_role[0].slice(1)
+            let theModel = mongoose.model(the_role[0]);
+            let findObject = {"tokens.token": req.headers.token};
+            // if (the_role[1]) {
+            //     findObject['type'] = the_role[1];
+            // }
+            console.log('check ' + j + '...', the_role[0], findObject)
+            if (!isPassed)
+                theModel.findOne(
+                    findObject,
+                    function (err, obj) {
+                        counter++;
+                        if (obj.type == the_role[1]) {
+                            isPassed = true;
+                            the_id = obj._id;
+
+                        } else {
+                            console.log('#' + j + ' is not...')
+                        }
+                        if (counter === accessList.length) {
+                            if (isPassed && the_id) {
+                                console.log('#' + j + ' is passed...', ' counter:', counter)
+                                req.headers._id = the_id;
+                                return rou.controller(req, res, next)
+                            } else {
+                                return res.json({
+                                    success: false,
+                                    message: "You do not have access!"
+                                })
+                            }
+                        }
+                    }
+                );
+        })
+        // console.log('rou.access',rou.access);
+    } else {
+        console.log('return response...')
+        return rou.controller(req, res, next)
+
+    }
 }
 
 function create_standard_route(suf = '/', routes = [], router) {
@@ -160,17 +220,17 @@ function create_standard_route(suf = '/', routes = [], router) {
 
                 if (rou.method === 'get') {
 
-                    router.get(suf + rou.path, (req, res, next) => make_routes_safe(req, res, next, rou));
+                    router.get(suf + rou.path, (req, res, next) => make_routes_safe(req, res, next, {...returnThisRouteRules(suf + rou.path, 'get', routes)}));
                 }
                 if (rou.method === 'post') {
 
-                    router.post(suf + rou.path, (req, res, next) => make_routes_safe(req, res, next, rou));
+                    router.post(suf + rou.path, (req, res, next) => make_routes_safe(req, res, next, {...returnThisRouteRules(suf + rou.path, 'post', routes)}));
                 }
                 if (rou.method === 'put') {
-                    router.put(suf + rou.path, (req, res, next) => make_routes_safe(req, res, next, rou));
+                    router.put(suf + rou.path, (req, res, next) => make_routes_safe(req, res, next, {...returnThisRouteRules(suf + rou.path, 'put', routes)}));
                 }
                 if (rou.method === 'delete') {
-                    router.delete(suf + rou.path, (req, res, next) => make_routes_safe(req, res, next, rou));
+                    router.delete(suf + rou.path, (req, res, next) => make_routes_safe(req, res, next, {...returnThisRouteRules(suf + rou.path, 'delete', routes)}));
                 }
             }
         })

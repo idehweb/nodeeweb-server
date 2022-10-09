@@ -9,7 +9,8 @@ export default {
     "admin": {
         "list": {
             "header": [
-                {"name": "siteActive", "type": "boolean"},
+                {"name": "title", "type": "boolean"},
+                {"name": "active", "type": "boolean"},
                 {"name": "createdAt", "type": "date"},
                 {"name": "updatedAt", "type": "date"},
                 {"name": "actions", "type": "actions", "edit": true}
