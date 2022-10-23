@@ -40,8 +40,10 @@ export function createRoute(modelName, routes, label) {
     router.get('/', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.all, ...returnThisRouteRules('/', 'get', routes)}));
     router.get('/count', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.all, ...returnThisRouteRules('/count', 'get', routes)}));
     router.get('/:offset/:limit', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.all, ...returnThisRouteRules('/:offset/:limit', 'get', routes)}));
+    router.get('/:offset/:limit/:search', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.all, ...returnThisRouteRules('/:offset/:limit/:search', 'get', routes)}));
     router.get('/:id', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.viewOne, ...returnThisRouteRules('/:id', 'get', routes)}));
     router.post('/', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.create, ...returnThisRouteRules('/', 'post', routes)}));
+    router.post('/import', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.importEntity, ...returnThisRouteRules('/import', 'post', routes)}));
     router.put('/:id', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.edit, ...returnThisRouteRules('/:id', 'put', routes)}));
     router.delete('/:id', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.destroy, ...returnThisRouteRules('/:id', 'delete', routes)}));
 
@@ -151,6 +153,10 @@ function make_routes_safe(req, res, next, rou) {
     };
     if (rou.access) {
         let accessList = rou.access.split(',');
+        if(accessList.indexOf('customer_all')>-1){
+            return rou.controller(req, res, next)
+
+        }
         let isPassed = false, the_id = null;
         console.log('we need check access...', accessList, req.headers.token);
         if (!req.headers.token) {
@@ -181,6 +187,16 @@ function make_routes_safe(req, res, next, rou) {
                     findObject,
                     function (err, obj) {
                         counter++;
+                        console.log('obj',obj)
+                        if(err || !obj){
+                            return res.json({
+                                theModel:theModel,
+                                findObject:findObject,
+                                obj:obj,
+                                err:err,
+                                success:false
+                            })
+                        }
                         if (obj.type == the_role[1]) {
                             isPassed = true;
                             the_id = obj._id;

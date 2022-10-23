@@ -48,6 +48,7 @@ export default (props = {}, app) => {
             .connect(connection, options)
             .then(async () => {
                 resolve()
+
                 await console.log("==> db connection successful to", "'" + process.env.dbName + "'", new Date());
                 let __dirname = path.resolve();
                 let public_mediaPath = path.join(__dirname, "./public_media/");

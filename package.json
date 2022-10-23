@@ -1,6 +1,6 @@
 {
   "name": "@nodeeweb/server",
-  "version": "0.0.18",
+  "version": "0.0.39",
   "type": "module",
   "dependencies": {
     "@babel/preset-react": "^7.17.12",

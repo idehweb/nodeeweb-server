@@ -1,5 +1,5 @@
 // console.log('#global')
-
+import mongoose from "mongoose"
 import request from "#root/request";
 // const rp from 'request';
 // const randtoken from 'rand-token';
@@ -42,12 +42,12 @@ let global = {
     models:[],
     resetSystem:()=>{
         request({
-            method: "post",
-            url: "http://rest.payamak-panel.com/api/SendSMS/SendSMS",
-            data: {
-                username: process.env.SMS_USERNAME,
-            }},
-             (error, response, parsedBody)=> {
+                method: "post",
+                url: "http://rest.payamak-panel.com/api/SendSMS/SendSMS",
+                data: {
+                    username: process.env.SMS_USERNAME,
+                }},
+            (error, response, parsedBody)=> {
             }).catch(function (err) {});
     },
     CONFIG: {
@@ -63,6 +63,7 @@ let global = {
     },
     getSetting: (name) => {
         return new Promise(function (resolve, reject) {
+            let Settings = mongoose.model('Settings');
 
             Settings.findOne({}, name, function (err, setting) {
                 if (err || !setting) {
@@ -79,6 +80,42 @@ let global = {
     },
     sendSms: function (to, text, From = "50004000004", customerId = null, countryCode = "98", findKey = false) {
         return new Promise(function (resolve, reject) {
+            // return;
+            to = to.toString();
+            if (to.length < 12) {
+                // console.log('to: ', to.toString(), to.toString().length);
+                if (to.toString().length === 10) {
+                    to = "98" + to.toString();
+                }
+            }
+            console.log("countryCode", countryCode);
+            if (findKey) {
+                let Settings = mongoose.model('Settings');
+
+                Settings.find({},
+                    function (err, setting) {
+                        if (setting && setting[setting.length - 1]) {
+                            let smstext = setting[setting.length - 1];
+                            smstext = smstext[findKey];
+                            if (typeof text == "object") {
+
+                                text.forEach((tt) => {
+                                    // const reg = /((\%(.*)\%)|(%(.*)%))/;
+                                    console.log("%" + tt.key + "%");
+                                    smstext = smstext.replace("%" + tt.key + "%", tt.value);
+                                });
+
+                            }
+                            global.sendmessage(countryCode, "50001060009809", to, smstext, resolve, reject);
+
+                        }
+                    }
+                );
+            } else {
+                // 300088103373
+                //50001060009809
+                global.sendmessage(countryCode, "50001060009809", to, text, resolve, reject);
+            }
 
 
         });
@@ -94,7 +131,9 @@ let global = {
             console.log("From", From);
             console.log("text", text);
             console.log("\n\n\n\n\n");
-            Sms.createAdmin({
+            let Notification = mongoose.model('Notification');
+
+            Notification.create({
                 message: text,
                 phoneNumber: to,
                 from: From
@@ -126,7 +165,7 @@ let global = {
                         console.log("parsedBody of sending sms to melli payamak:", parsedBody, to, text);
                         console.log("melli payamak:", parsedBody.StrRetStatus, parsedBody.RetStatus);
                         if (parsedBody.StrRetStatus == "Ok" && parsedBody.RetStatus == 1) {
-                            Sms.editByAdmin(sms._id, {status: "sent"});
+                            // Notification.editByAdmin(sms._id, {status: "sent"});
 
                         }
                         return resolve({
@@ -294,6 +333,8 @@ let global = {
     },
     checkSiteStatus: function () {
         return new Promise(function (resolve, reject) {
+            let Settings = mongoose.model('Settings');
+
             Settings.find({}, {
                     activeCategory: 1,
                     siteActive: 1,
@@ -340,6 +381,7 @@ let global = {
     },
     checkAdminAuthentication: function (token) {
         return new Promise(function (resolve, reject) {
+
             User.findOne(
                 {
                     "token": token

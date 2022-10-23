@@ -27,7 +27,7 @@ export default (mongoose)=>{
         type: {
             type: String,
             required: false,
-            default: 'superuser'
+            default: 'user'
         },
         token: {
             type: String,

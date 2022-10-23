@@ -198,6 +198,73 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.39
+    add 3rd level menu to front
+
+- 0.0.38
+    add transction callback
+
+- 0.0.37
+    remove some bugs
+    update front
+
+- 0.0.36
+    add notification model
+    add sms option
+
+- 0.0.35
+    import function
+
+- 0.0.34
+    update front , create comments part in front, add buttons border radius
+
+- 0.0.33
+    update front
+    
+- 0.0.32
+    breakable front change
+    change page builder - component children structure
+
+- 0.0.31
+    add import function
+
+- 0.0.30
+    add route /a/:_entities/:_offset/:_limit
+
+- 0.0.29
+    update front, debug login page
+
+- 0.0.28
+    add checkout page
+
+- 0.0.27
+    change home layout to DefaultLayout
+    change front
+    
+- 0.0.26 
+    add new routes config
+
+- 0.0.25 
+    add contacts and data property to customer
+
+- 0.0.24 
+    update front / page builder
+      
+- 0.0.23       
+    update front /chat page
+
+- 0.0.22       
+    update front
+
+- 0.0.21    
+    update theme json , remove header & footer
+
+- 0.0.20
+    replace "./" with "/"
+
+- 0.0.19
+    update theme
+
 - 0.0.18
     update front/admin
 

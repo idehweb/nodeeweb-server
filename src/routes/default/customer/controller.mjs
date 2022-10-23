@@ -3,8 +3,8 @@ import global from '#root/global';
 import bcrypt from 'bcrypt';
 
 var self = ({
-    authCustomer: function(req, res, next) {
-        let Customer=req.mongoose.model('Customer');
+    authCustomer: function (req, res, next) {
+        let Customer = req.mongoose.model('Customer');
         console.log("\n\n\n\n\n =====> try login/register user:");
         // let self=this;
         let p_number = req.body.phoneNumber.toString();
@@ -46,7 +46,7 @@ var self = ({
 
 
         console.log("phone number:", NUMBER);
-        Customer.findOne({ phoneNumber: NUMBER }, function(err, response) {
+        Customer.findOne({phoneNumber: NUMBER}, function (err, response) {
             if (err) {
                 res.json({
                     success: false,
@@ -72,10 +72,10 @@ var self = ({
                 Customer.create({
                     "phoneNumber": NUMBER,
                     "invitation_code": req.body.invitation_code
-                }, function(err, response) {
+                }, function (err, response) {
                     if (err) {
                         if (parseInt(err.code) == 11000) {
-                            Customer.findOne({ phoneNumber: NUMBER }, function(err3, response) {
+                            Customer.findOne({phoneNumber: NUMBER}, function (err3, response) {
                                 if (err3) {
                                     res.json({
                                         success: false,
@@ -124,9 +124,9 @@ var self = ({
 
 
     },
-    updateActivationCode: function(response, res, req, userWasInDbBefore = false) {
+    updateActivationCode: function (response, res, req, userWasInDbBefore = false) {
         console.log("\n\n\n\n\n =====> updateActivationCode");
-        let Customer=req.mongoose.model('Customer');
+        let Customer = req.mongoose.model('Customer');
 
         // console.log('==> updateActivationCode');
         // console.log(response);
@@ -136,7 +136,7 @@ var self = ({
         Customer.findByIdAndUpdate(response._id, {
             activationCode: code,
             updatedAt: date
-        }, { new: true }, function(err, post) {
+        }, {new: true}, function (err, post) {
             if (err) {
                 res.json({
                     success: false,
@@ -167,7 +167,7 @@ var self = ({
                 if (req.body.method == "whatsapp") {
                     Customer.findByIdAndUpdate(response._id, {
                         whatsapp: true
-                    }, { new: true }, function(err, cus) {
+                    }, {new: true}, function (err, cus) {
                         return;
                     });
                 } else {
@@ -176,14 +176,15 @@ var self = ({
                         key = "sms_register";
 
                     }
+                    console.log("...global.sendSms")
                     global.sendSms(req.body.phoneNumber, [{
                         key: "activationCode",
                         value: post.activationCode
-                    }], "300088103373", response._id, req.body.countryCode, key).then(function(uid) {
+                    }], "300088103373", response._id, req.body.countryCode, key).then(function (uid) {
                         console.log("activation code sent via sms to customer:", req.body.phoneNumber);
                         return;
 
-                    }).catch(function(e) {
+                    }).catch(function (e) {
                         console.log("sth is wrong", e);
                         return;
                     });
@@ -192,8 +193,8 @@ var self = ({
         });
 
     },
-    activateCustomer: function(req, res, next) {
-        let Customer=req.mongoose.model('Customer');
+    activateCustomer: function (req, res, next) {
+        let Customer = req.mongoose.model('Customer');
 
         console.log("activateCustomer...");
         let p_number = req.body.phoneNumber;
@@ -210,11 +211,11 @@ var self = ({
             }
             // console.log('==> addCustomer() 1.15');
             if (isNaN(p_number)) {
-                res.json({ success: false, message: "something wrong in creating customer : customer!" });
+                res.json({success: false, message: "something wrong in creating customer : customer!"});
                 return;
             }
         } else {
-            res.json({ success: false, message: "something wrong in creating customer : phoneNumber is not entered!" });
+            res.json({success: false, message: "something wrong in creating customer : phoneNumber is not entered!"});
             return;
 
         }
@@ -229,7 +230,7 @@ var self = ({
             p_number = parseInt(p_number);
             // console.log('==> addCustomer() 1.15');
             if (isNaN(p_number)) {
-                res.json({ success: false, message: "something wrong in creating customer : customer!" });
+                res.json({success: false, message: "something wrong in creating customer : customer!"});
                 return;
             }
         } else {
@@ -243,7 +244,7 @@ var self = ({
         // console.log('activationCode is:', p_number.toString());
         // parseInt(p_number).toString()
 
-        Customer.findOne({ phoneNumber: req.body.phoneNumber }, "_id activationCode internationalCode address firstName lastName invitation_code", function(err, user) {
+        Customer.findOne({phoneNumber: req.body.phoneNumber}, "_id activationCode internationalCode address firstName lastName invitation_code", function (err, user) {
             if (err) return next(err);
             // console.log('user is:', user);
             if (user) {
@@ -258,11 +259,11 @@ var self = ({
                     } else {
                         invitation_code = user.invitation_code;
                     }
-                    console.log('Token generated:',Token)
+                    console.log('Token generated:', Token)
                     Customer.findByIdAndUpdate(user._id, {
                         activationCode: null,
                         invitation_code: invitation_code,
-                        $push: { tokens: { token: Token, os: req.body.os } }
+                        $push: {tokens: {token: Token, os: req.body.os}}
                     }, {
                         returnNewDocument: true,
                         projection: {
@@ -272,7 +273,7 @@ var self = ({
                             // firstName:true,
                             // lastName:true
                         }
-                    }, function(err, post) {
+                    }, function (err, post) {
                         if (err) return next(err);
                         // console.log('user activated successfully...');
                         // if (post.tokens)
@@ -309,10 +310,10 @@ var self = ({
             }
         });
     },
-    authCustomerWithPassword: function(req, res, next) {
+    authCustomerWithPassword: function (req, res, next) {
         // console.log('\n\n\n\n\n =====> try login/register user:');
         // let self=this;
-        let Customer=req.mongoose.model('Customer');
+        let Customer = req.mongoose.model('Customer');
 
         let p_number = req.body.phoneNumber.toString();
         if (p_number) {
@@ -351,23 +352,23 @@ var self = ({
         let NUMBER = parseInt(p_number).toString();
 
         // console.log('this is phone number:', NUMBER);
-        Customer.authenticate(NUMBER, req.body.password, function(error, cus) {
+        Customer.authenticate(NUMBER, req.body.password, function (error, cus) {
             if (error || !cus) {
                 let err = new Error("Wrong phoneNumber or password.");
                 err.status = 401;
                 res.status(401);
-                return res.json({ "success": false, "message": "شماره موبایل یا رمز عبور اشتباه!" });
+                return res.json({"success": false, "message": "شماره موبایل یا رمز عبور اشتباه!"});
             } else {
                 // req.session.userId = user._id;
 
-                return res.json({ "success": true, "message": "در حال ریدایرکت...", "customer": cus });
+                return res.json({"success": true, "message": "در حال ریدایرکت...", "customer": cus});
             }
         });
 
 
     },
-    authCustomerForgotPass: function(req, res, next) {
-        let Customer=req.mongoose.model('Customer');
+    authCustomerForgotPass: function (req, res, next) {
+        let Customer = req.mongoose.model('Customer');
 
         console.log("\n\n\n\n\n =====> Customer Forgot Password:");
         // let self=this;
@@ -409,7 +410,7 @@ var self = ({
 
 
         console.log("this phone number:", NUMBER);
-        Customer.findOne({ phoneNumber: NUMBER }, function(err, response) {
+        Customer.findOne({phoneNumber: NUMBER}, function (err, response) {
             if (err) {
                 res.json({
                     success: false,
@@ -425,7 +426,7 @@ var self = ({
                     _id: response._id
                 };
                 // console.log('user was in db before...');
-                Customer.findOneAndUpdate({ phoneNumber: NUMBER }, { password: "" }, function(err, response) {
+                Customer.findOneAndUpdate({phoneNumber: NUMBER}, {password: ""}, function (err, response) {
                     self.updateActivationCode(obj, res, req, true);
 
                 });
@@ -436,10 +437,10 @@ var self = ({
                 Customer.create({
                     "phoneNumber": NUMBER,
                     "invitation_code": req.body.invitation_code
-                }, function(err, response) {
+                }, function (err, response) {
                     if (err) {
                         if (parseInt(err.code) == 11000) {
-                            Customer.findOne({ phoneNumber: NUMBER }, function(err3, response) {
+                            Customer.findOne({phoneNumber: NUMBER}, function (err3, response) {
                                 if (err3) {
                                     res.json({
                                         success: false,
@@ -488,12 +489,12 @@ var self = ({
 
 
     },
-    setPassword: function(req, res, next) {
-        let Customer=req.mongoose.model('Customer');
+    setPassword: function (req, res, next) {
+        let Customer = req.mongoose.model('Customer');
 
         // console.log('\n\n\n\n\n =====> try to set password:');
         console.log('before hash');
-        bcrypt.hash(req.body.password, 10, function(err, hash) {
+        bcrypt.hash(req.body.password, 10, function (err, hash) {
 
             if (err) {
 
@@ -519,7 +520,7 @@ var self = ({
             if (req.body.internationalCode) {
                 obj["internationalCode"] = req.body.internationalCode;
             }
-            console.log('obj',obj)
+            console.log('obj', obj)
             Customer.findOneAndUpdate(
                 {
                     _id: req.headers._id
@@ -539,7 +540,7 @@ var self = ({
 
                     }
                 },
-                function(err, customer) {
+                function (err, customer) {
                     // console.log('==> pushSalonPhotos() got response');
 
                     if (err || !customer) {
@@ -554,11 +555,11 @@ var self = ({
 
                     }
 
-                        return res.json({
-                            success: true,
-                            customer: customer
+                    return res.json({
+                        success: true,
+                        customer: customer
 
-                        });
+                    });
 
                 });
 
@@ -566,12 +567,12 @@ var self = ({
 
 
     },
-    setPasswordWithPhoneNumber: function(req, res, next) {
-        let Customer=req.mongoose.model('Customer');
+    setPasswordWithPhoneNumber: function (req, res, next) {
+        let Customer = req.mongoose.model('Customer');
 
         // console.log('\n\n\n\n\n =====> try to set password with phone number:');
         // console.log('before hash');
-        bcrypt.hash(req.body.password, 10, function(err, hash) {
+        bcrypt.hash(req.body.password, 10, function (err, hash) {
             if (err) {
                 return next(err);
             }
@@ -652,7 +653,7 @@ var self = ({
 
                     }
                 },
-                function(err, customer) {
+                function (err, customer) {
                     // console.log('==> pushSalonPhotos() got response');
 
                     if (err || !customer) {
@@ -678,6 +679,77 @@ var self = ({
 
         });
 
+
+    },
+    updateAddress: function (req, res, next) {
+        let Customer = req.mongoose.model('Customer');
+
+        console.log('\n\n\n\n\n =====> editing updateAddress:');
+        let search = {
+            "$or": [
+                {"email": {"$regex": req.body.email, "$options": "i"}},
+                {"phoneNumber": {"$regex": req.body.phoneNumber, "$options": "i"}}
+            ]
+        };
+        Customer.findOne({_id: req.headers._id}, "_id , phoneNumber , email , address", function (err, respo) {
+            if (err) {
+                res.json({
+                    success: false,
+                    err: err,
+                    message: "خطا در ثبت اطلاعات!"
+                });
+                return;
+            }
+            // console.log('respo:', respo);
+            let c = false;
+            if (!respo) {
+                c = true;
+
+            } else {
+                if (respo._id.toString() === req.headers._id.toString()) {
+                    c = true;
+                } else {
+                    res.json({
+                        success: false,
+                        message: "ایمیل یا نام کاربری از قبل وجود دارد!"
+                    });
+                    return;
+                }
+            }
+            if (c) {
+                Customer.findByIdAndUpdate(
+                    req.headers._id,
+                    {
+                        "address": req.body.address,
+                        updatedAt: new Date()
+
+                    }, {
+                        new: true,
+                        projection: {
+                            "_id": 1,
+                            "address": 1
+                        }
+                    }, function (err, post) {
+                        if (err || !post) {
+                            res.json({
+                                err: err,
+                                address: req.body.address,
+                                success: false,
+                                message: "findByIdAndUpdate update error!"
+                            });
+                            return;
+                        }
+                        // console.log('customer updated successfully!');
+                        res.json({
+                            success: true,
+                            customer: post
+                        });
+                        return;
+
+                    });
+            }
+
+        });
 
     },
 

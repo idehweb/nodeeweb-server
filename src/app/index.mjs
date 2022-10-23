@@ -17,6 +17,7 @@ import Menu from "#routes/default/menu/index";
 import Template from "#routes/default/template/index";
 import Media from "#routes/default/media/index";
 import Post from "#routes/default/post/index";
+import Notification from "#routes/default/notification/index";
 // import router from "../routes/public/p";
 // import uploadHandle from "#root/app/uploadHandle";
 
@@ -45,6 +46,7 @@ export default function BaseApp(theProps = {}) {
     props['entity'].push(Customer);
     props['entity'].push(Post);
     props['entity'].push(Media);
+    props['entity'].push(Notification);
     props['entity'].push(Template);
 //make routes standard
     // console.log('rules',rules);
@@ -53,7 +55,7 @@ export default function BaseApp(theProps = {}) {
             routes: [{
                 "path": "/",
                 "method": "get",
-                "access": "admin_user,admin_shopManager",
+                "access": "customer_all",
                 "controller": (req, res, next) => {
                     console.log('show front, go visit ', process.env.SHOP_URL);
                     res.show()
@@ -62,7 +64,52 @@ export default function BaseApp(theProps = {}) {
             }, {
                 "path": "/login",
                 "method": "get",
-                "access": "admin_user,admin_shopManager",
+                "access": "customer_all",
+                "controller": (req, res, next) => {
+                    console.log('show front, go visit ', process.env.SHOP_URL);
+                    res.show()
+                },
+
+            },{
+                "path": "/login/:_action",
+                "method": "get",
+                "access": "customer_all",
+                "controller": (req, res, next) => {
+                    console.log('show front, go visit ', process.env.SHOP_URL);
+                    res.show()
+                },
+
+            }, {
+                "path": "/product/:_id/:_slug",
+                "method": "get",
+                "access": "customer_all",
+                "controller": (req, res, next) => {
+                    console.log('show front, go visit ', process.env.SHOP_URL);
+                    res.show()
+                },
+
+            }, {
+                "path": "/post/:_id/:_slug",
+                "method": "get",
+                "access": "",
+                "controller": (req, res, next) => {
+                    console.log('show front, go visit ', process.env.SHOP_URL);
+                    res.show()
+                },
+
+            }, {
+                "path": "/chat",
+                "method": "get",
+                "access": "admin_user,admin_shopManager,customer_all",
+                "controller": (req, res, next) => {
+                    console.log('show front, go visit ', process.env.SHOP_URL);
+                    res.show()
+                },
+
+            },{
+                "path": "/transaction",
+                "method": "get",
+                "access": "customer_all",
                 "controller": (req, res, next) => {
                     console.log('show front, go visit ', process.env.SHOP_URL);
                     res.show()
@@ -93,20 +140,32 @@ export default function BaseApp(theProps = {}) {
                                 // if()
                                 return res.json({
                                     header: {
-                                        maxWidth:header.maxWidth || '100%',
-                                        elements:header ? header.elements : []
+                                        maxWidth: (header && header.maxWidth) ? header.maxWidth : '100%',
+                                        elements: header ? header.elements : []
                                     },
                                     body: [{name: 'MainContent'}],
                                     footer: {
-                                        maxWidth:footer.maxWidth || '100%',
-                                        elements:footer ? footer.elements : []
+                                        maxWidth: (footer && footer.maxWidth) ? footer.maxWidth : '100%',
+                                        elements: footer ? footer.elements : []
                                     },
                                     routes: [
                                         {
                                             path: '/',
                                             exact: true,
-                                            layout: 'Nohf',
+                                            layout: 'DefaultLayout',
                                             element: 'Home',
+                                        },
+
+                                        {
+                                            path: '/chat',
+                                            exact: true,
+                                            layout: 'Nohf',
+                                            element: 'Chat',
+                                        }, {
+                                            path: '/transaction',
+                                            exact: true,
+                                            layout: 'Nohf',
+                                            element: 'Transaction',
                                         },
                                         {
                                             path: '/admin',
@@ -129,6 +188,16 @@ export default function BaseApp(theProps = {}) {
                                             layout: 'Nohf',
                                             element: 'Admin',
                                         },
+                                        {
+                                            "path": "/a/:_entity/:_id/:_slug",
+                                            "method": "get",
+                                            "access": "customer_all",
+                                            "controller": (req, res, next) => {
+                                                console.log('show front, go visit ', process.env.SHOP_URL);
+                                                res.show()
+                                            },
+
+                                        },
                                     ],
                                     models: req.models(),
                                     rules: JSON.parse(JSON.stringify(rules)),
@@ -140,7 +209,26 @@ export default function BaseApp(theProps = {}) {
                         });
                     },
 
-                }]
+                },
+                {
+                    "path": "/:_slug",
+                    "method": "get",
+                    "access": "customer_all",
+                    "controller": (req, res, next) => {
+                        console.log('show front, go visit ', process.env.SHOP_URL);
+                        res.show()
+                    },
+
+                },{
+                    "path": "/a/:_entity/:_id/:_slug",
+                    "method": "get",
+                    "access": "customer_all",
+                    "controller": (req, res, next) => {
+                        console.log('show front, go visit ', process.env.SHOP_URL);
+                        res.show()
+                    },
+
+                },]
         };
     }
     if (!props['admin']) {
@@ -226,7 +314,10 @@ export default function BaseApp(theProps = {}) {
     db(props, app).then(e => {
         headerHandle(app);
         configHandle(express, app, props);
-
+        if (theProps.server)
+            theProps.server.forEach(serv => {
+                serv(app);
+            });
         app.use(function (err, req, res, next) {
             // console.log('here....');
             if (req.busboy) {

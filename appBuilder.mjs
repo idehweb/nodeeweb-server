@@ -67,16 +67,19 @@ function onError(error) {
 
 export default function AppBuilder(config) {
 
-    // console.log('==> AppBuilder()');
+    console.log('==> AppBuilder()');
     // console.log('process.env.SERVER_PORT', process.env.SERVER_PORT)
-
+    // process.exit();
     var port = normalizePort(process.env.SERVER_PORT);
     // console.log('config', config.base)
     let app = BaseApp(config);
 
     const server = http.createServer(app);
+    // if (config && config.server)
+    //     config.server.forEach(serv => {
+    //         serv(app);
+    //     });
     app.set('port', port);
-
 
     function onListening() {
         // console.log('onListening');

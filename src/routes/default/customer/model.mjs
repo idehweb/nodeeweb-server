@@ -23,6 +23,13 @@ export default (mongoose)=>{
         internationalCode: String,
         sex: String,
         bankData: {},
+        data: {},
+        type: {
+            type: String,
+            required: false,
+            default: 'user'
+        },
+        contacts: [{ _id: { type: mongoose.Schema.Types.ObjectId, ref: "Customer" } }],
         wishlist: [{ _id: { type: mongoose.Schema.Types.ObjectId, ref: "Product" } }],
         password: String,
         age: { type: Number },

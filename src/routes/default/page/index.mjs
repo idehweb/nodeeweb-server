@@ -9,11 +9,12 @@ export default {
     "admin": {
         "list": {
             "header": [
-                {"name": "title", "type": "string"},
-                {"name": "slug"},
+                {"name": "title", "type": "multiLang"},
+                {"name": "slug", "type": "string"},
+                {"name": "status", "type": "string"},
                 {"name": "createdAt", "type": "date"},
                 {"name": "updatedAt", "type": "date"},
-                {"name": "actions", "type": "actions", "edit": true, "delete": true,"pageBuilder":true}
+                {"name": "actions", "type": "actions", "edit": true, "delete": true, "pageBuilder": true}
             ],
             "url": "/admin/page/create-page",
             "pageBuilder": true
@@ -22,30 +23,42 @@ export default {
 
         "create": {
             "fields": [
-                {name: "title", type: "object"},
-                {name: "slug", type: "string"},
-                {name: "excerpt", type: "object"},
+                {name: "title", type: "object", size: {lg: 12, sm: 12}},
+                {name: "slug", type: "string", size: {lg: 12, sm: 12}},
+                {name: "excerpt", type: "object", size: {lg: 12, sm: 12}},
+                {name: "description", type: "object", size: {lg: 12, sm: 12}},
                 {name: "views", type: "object"},
-                {name: "elements", type: "object"},
                 {name: "kind", type: "string"},
                 {name: "maxWidth", type: "string"},
-                {name: "status", type: "string"},
+                {
+                    name: "status", type: "select", "options": [
+                        {"label": "published", "value": "published", "name": "published"},
+                        {"label": "processing", "value": "processing", "name": "processing"},
+                        {"label": "draft", "value": "draft", "name": "draft"},
+                    ]
+                },
             ]
         },
         "edit": {
             "fields": [
-                {name: "createdAt", type: "date"},
-                {name: "active", type: "boolean"},
-                {name: "data", type: "object"},
-                {name: "description", type: "object"},
-                {name: "excerpt", type: "object"},
-                {name: "views", type: "object"},
+                {name: "_id", type: "string", "disabled": true, size: {lg: 12, sm: 12}},
+                {name: "title", type: "object", size: {lg: 12, sm: 12}},
                 {name: "slug", type: "string"},
-                {name: "title", type: "object"},
-                {name: "elements", type: "object"},
+                {name: "description", type: "object", size: {lg: 12, sm: 12}},
+                {name: "excerpt", type: "object", size: {lg: 12, sm: 12}},
+                {name: "active", type: "boolean"},
+                {name: "views", type: "array"},
                 {name: "kind", type: "string"},
-                {name: "status", type: "string"},
-                {name: "maxWidth", type: "string"}
+                {
+                    name: "status", type: "select", "options": [
+                        {"label": "published", "value": "published", "name": "published"},
+                        {"label": "processing", "value": "processing", "name": "processing"},
+                        {"label": "draft", "value": "draft", "name": "draft"},
+                    ]
+                },
+                {name: "maxWidth", type: "string"},
+                {name: "createdAt", type: "date"},
+                {name: "updatedAt", type: "date"},
             ]
         },
 
