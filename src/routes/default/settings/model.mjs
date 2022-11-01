@@ -1,13 +1,13 @@
 // console.log('#model setting')
-import bcrypt from 'bcrypt';
 
-export default (mongoose)=>{
+export default (mongoose) => {
     const SettingsSchema = new mongoose.Schema({
         title: {},
         siteName: {},
         description: {},
         data: [],
-        siteActive: { type: Boolean, default: true },
+        settings: {},
+        siteActive: {type: Boolean, default: true},
         siteActiveMessage: String,
         logo: String,
         ADMIN_ROUTE: String,
@@ -21,9 +21,9 @@ export default (mongoose)=>{
         textColor: String,
         bgColor: String,
         footerBgColor: String,
-        createdAt: { type: Date, default: Date.now },
-        updatedAt: { type: Date, default: Date.now },
-        activeCategory: [{ type: mongoose.Schema.Types.ObjectId, ref: "Category" }],
+        createdAt: {type: Date, default: Date.now},
+        updatedAt: {type: Date, default: Date.now},
+        activeCategory: [{type: mongoose.Schema.Types.ObjectId, ref: "Category"}],
         dollarPrice: Number,
         derhamPrice: Number,
         sms_welcome: {},
@@ -37,7 +37,7 @@ export default (mongoose)=>{
 
 
     });
-return SettingsSchema;
+    return SettingsSchema;
 
 // module.exports = mongoose.model('User', UserSchema);
 

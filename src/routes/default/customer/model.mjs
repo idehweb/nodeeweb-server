@@ -31,6 +31,7 @@ export default (mongoose)=>{
         },
         contacts: [{ _id: { type: mongoose.Schema.Types.ObjectId, ref: "Customer" } }],
         wishlist: [{ _id: { type: mongoose.Schema.Types.ObjectId, ref: "Product" } }],
+        customerGroup: [{ type: mongoose.Schema.Types.ObjectId, ref: "CustomerGroup" }],
         password: String,
         age: { type: Number },
         whatsapp: { type: Boolean, default: false },

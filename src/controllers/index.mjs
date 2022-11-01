@@ -39,6 +39,35 @@ var self = (Model) => {
                     "$options": "i"
                 };
             }
+            if (req.query) {
+                console.log(req.query);
+            }
+            // return res.json(Model.schema.paths);
+            // console.log("Model.schema => ",Model.schema.paths);
+            // console.log(Object.keys(req.query));
+            let tt=Object.keys(req.query);
+            // console.log('type of tt ==> ', typeof tt);
+            // console.log("tt => ", tt);
+            _.forEach(tt, (item)=>{
+                // console.log("item => ",item);
+                if(Model.schema.paths[item]){
+                    // console.log("item exists ====>> ",item);
+                    // console.log("instance of item ===> ",Model.schema.paths[item].instance);
+                    let split = req.query[item].split(',');
+                    if (mongoose.isValidObjectId(split[0])) {
+                        search[item]={
+                            $in: split
+                        }
+                    }
+
+                }
+                else{
+                    console.log("filter doesnot exist => ", item);
+                }
+            });
+            console.log('search', search);
+
+            // console.log(req.mongoose.Schema(Model))
             console.log('search', search)
             Model.find(search, fields,
                 function (err, model) {

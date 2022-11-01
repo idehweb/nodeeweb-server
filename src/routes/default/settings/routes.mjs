@@ -5,4 +5,10 @@ export default [{
     "access": "customer_all",
     "controller": controller.last,
 
+},{
+    "path": "/restart",
+    "method": "post",
+    "access": "admin_user",
+    "controller": controller.restart,
+
 }]

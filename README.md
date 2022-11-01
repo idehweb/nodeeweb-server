@@ -198,6 +198,41 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.49
+    add restart function to settings
+    add req.query. `filters` to 'all' in controller
+
+- 0.0.48
+    update front
+
+- 0.0.47
+    solve routes problem
+
+- 0.0.46
+    solve routes problem
+
+- 0.0.45
+    add customerGroup to customer list
+    add custom routes
+
+- 0.0.44
+    add customer group
+
+- 0.0.43
+    slider bug
+
+- 0.0.42
+    update slider children bugs
+    add array field
+
+- 0.0.41
+    add multi language functionality
+    update theme admin part
+    update post rules
+
+- 0.0.40
+    update admin, create product, add multilang field
+
 - 0.0.39
     add 3rd level menu to front
 

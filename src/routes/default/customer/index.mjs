@@ -23,10 +23,41 @@ export default {
                 ]
         },
         "create": {
-            "fields":[{"name":"title"},]
+            "fields":[
+                {"name": "firstName","type":"string","size":{"lg":12,"sm":12}},
+                {"name": "lastName","type":"string","size":{"lg":12,"sm":12}},
+                {"name": "nickname","type":"string","size":{"lg":6,"sm":12}},
+                {"name": "type","type":"string","size":{"lg":6,"sm":12}},
+                {"name": "internationalCode","type":"string","size":{"lg":6,"sm":12}},
+                {"name": "phoneNumber","type":"string","size":{"lg":6,"sm":12}},
+                {"name": "email","type":"string","size":{"lg":6,"sm":12}},
+                {"name": "password","type":"string","size":{"lg":6,"sm":12}},
+                {"name": "age","type":"number","size":{"lg":6,"sm":12}},
+                {"name": "active","type":"boolean","size":{"lg":6,"sm":12}},
+                {"name": "score","type":"number","size":{"lg":6,"sm":12}},
+                {"name":"credit","type":"number"},
+                {"name": "customerGroup","type":"checkbox","entity":"customerGroup","limit":2000,"size":{"lg":6,"sm":12}},
+
+            ]
         },
         "edit": {
-            "fields":[{"name":"title"},]
+            "fields":[
+                {"name": "_id","type":"string","disabled":true},
+                {"name": "firstName","type":"string","size":{"lg":12,"sm":12}},
+                {"name": "lastName","type":"string","size":{"lg":12,"sm":12}},
+                {"name": "nickname","type":"string","size":{"lg":6,"sm":12}},
+                {"name": "type","type":"string","size":{"lg":6,"sm":12}},
+                {"name": "internationalCode","type":"string","size":{"lg":6,"sm":12}},
+                {"name": "phoneNumber","type":"string","size":{"lg":6,"sm":12}},
+                {"name": "email","type":"string","size":{"lg":6,"sm":12}},
+                {"name": "password","type":"string","size":{"lg":6,"sm":12}},
+                {"name": "age","type":"number","size":{"lg":6,"sm":12}},
+                {"name": "active","type":"boolean","size":{"lg":6,"sm":12}},
+                {"name": "score","type":"number","size":{"lg":6,"sm":12}},
+                {"name":"credit","type":"number"},
+                {"name": "customerGroup","type":"checkbox","entity":"customerGroup","limit":2000,"size":{"lg":6,"sm":12}},
+
+            ]
         },
     },
     "views": [{

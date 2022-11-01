@@ -11,6 +11,7 @@ export default {
             "header": [
                 {"name": "title", "type": "multiLang"},
                 {"name": "slug", "type": "string"},
+                {"name": "path", "type": "string"},
                 {"name": "status", "type": "string"},
                 {"name": "createdAt", "type": "date"},
                 {"name": "updatedAt", "type": "date"},
@@ -29,6 +30,7 @@ export default {
                 {name: "description", type: "object", size: {lg: 12, sm: 12}},
                 {name: "views", type: "object"},
                 {name: "kind", type: "string"},
+                {name: "path", type: "string"},
                 {name: "maxWidth", type: "string"},
                 {
                     name: "status", type: "select", "options": [
@@ -49,6 +51,7 @@ export default {
                 {name: "active", type: "boolean"},
                 {name: "views", type: "array"},
                 {name: "kind", type: "string"},
+                {name: "path", type: "string"},
                 {
                     name: "status", type: "select", "options": [
                         {"label": "published", "value": "published", "name": "published"},

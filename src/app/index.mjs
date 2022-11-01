@@ -4,6 +4,7 @@ import express from "express";
 
 import db from "#root/app/db";
 import path from "path";
+import mongoose from "mongoose";
 // import ssrHandle from "#root/app/ssrHandle";
 import global from "#root/global";
 import configHandle from "#root/app/configHandle";
@@ -12,6 +13,7 @@ import headerHandle from "#root/app/headerHandle";
 import Admin from "#routes/default/admin/index";
 import Settings from "#routes/default/settings/index";
 import Page from "#routes/default/page/index";
+import CustomerGroup from "#routes/default/customerGroup/index";
 import Customer from "#routes/default/customer/index";
 import Menu from "#routes/default/menu/index";
 import Template from "#routes/default/template/index";
@@ -43,6 +45,7 @@ export default function BaseApp(theProps = {}) {
     props['entity'].push(Settings);
     props['entity'].push(Page);
     props['entity'].push(Menu);
+    props['entity'].push(CustomerGroup);
     props['entity'].push(Customer);
     props['entity'].push(Post);
     props['entity'].push(Media);
@@ -70,7 +73,7 @@ export default function BaseApp(theProps = {}) {
                     res.show()
                 },
 
-            },{
+            }, {
                 "path": "/login/:_action",
                 "method": "get",
                 "access": "customer_all",
@@ -106,7 +109,7 @@ export default function BaseApp(theProps = {}) {
                     res.show()
                 },
 
-            },{
+            }, {
                 "path": "/transaction",
                 "method": "get",
                 "access": "customer_all",
@@ -123,6 +126,7 @@ export default function BaseApp(theProps = {}) {
                     "controller": (req, res, next) => {
                         console.log('get theme settings... ', req.headers.token);
                         let Template = req.mongoose.model('Template');
+                        let Page = req.mongoose.model('Page');
 
                         let rules = {};
                         rules = req.rules(rules);
@@ -131,79 +135,94 @@ export default function BaseApp(theProps = {}) {
                             // console.log('header error',err);
                             // console.log('header',header);
                             Template.findOne({type: 'footer'}, function (err, footer) {
-                                // console.log('footer error',err);
-                                // console.log('footer',footer);
-                                if (req.headers.token) {
+                                let routes = [];
+                                Page.find({}, function (err, pages) {
+                                    if (pages)
+                                        pages.forEach((page) => {
+                                            if (page.path)
+                                                routes.push({
+                                                    path: page.path,
+                                                    exact: true,
+                                                    layout: 'DefaultLayout',
+                                                    element: 'DynamicPage',
+                                                    elements: page.elements || [],
+                                                });
+                                        })
+                                    // console.log('footer error',err);
+                                    // console.log('footer',footer);
+                                    if (req.headers.token) {
 
-                                }
-                                // let headerMaxWidth='100%';
-                                // if()
-                                return res.json({
-                                    header: {
-                                        maxWidth: (header && header.maxWidth) ? header.maxWidth : '100%',
-                                        elements: header ? header.elements : []
-                                    },
-                                    body: [{name: 'MainContent'}],
-                                    footer: {
-                                        maxWidth: (footer && footer.maxWidth) ? footer.maxWidth : '100%',
-                                        elements: footer ? footer.elements : []
-                                    },
-                                    routes: [
-                                        {
-                                            path: '/',
-                                            exact: true,
-                                            layout: 'DefaultLayout',
-                                            element: 'Home',
+                                    }
+                                    // let headerMaxWidth='100%';
+                                    // if()
+                                    return res.json({
+                                        header: {
+                                            maxWidth: (header && header.maxWidth) ? header.maxWidth : '100%',
+                                            elements: header ? header.elements : []
                                         },
-
-                                        {
-                                            path: '/chat',
-                                            exact: true,
-                                            layout: 'Nohf',
-                                            element: 'Chat',
-                                        }, {
-                                            path: '/transaction',
-                                            exact: true,
-                                            layout: 'Nohf',
-                                            element: 'Transaction',
+                                        body: [{name: 'MainContent'}],
+                                        footer: {
+                                            maxWidth: (footer && footer.maxWidth) ? footer.maxWidth : '100%',
+                                            elements: footer ? footer.elements : []
                                         },
-                                        {
-                                            path: '/admin',
-                                            exact: true,
-                                            layout: 'Nohf',
-                                            element: 'Admin',
-                                        }, {
-                                            path: '/admin/:model',
-                                            exact: true,
-                                            layout: 'Nohf',
-                                            element: 'Admin',
-                                        }, {
-                                            path: '/admin/:model/:action',
-                                            exact: true,
-                                            layout: 'Nohf',
-                                            element: 'Admin',
-                                        }, {
-                                            path: '/admin/:model/:action/:_id',
-                                            exact: true,
-                                            layout: 'Nohf',
-                                            element: 'Admin',
-                                        },
-                                        {
-                                            "path": "/a/:_entity/:_id/:_slug",
-                                            "method": "get",
-                                            "access": "customer_all",
-                                            "controller": (req, res, next) => {
-                                                console.log('show front, go visit ', process.env.SHOP_URL);
-                                                res.show()
+                                        routes: [
+                                            {
+                                                path: '/',
+                                                exact: true,
+                                                layout: 'DefaultLayout',
+                                                element: 'Home',
                                             },
 
-                                        },
-                                    ],
-                                    models: req.models(),
-                                    rules: JSON.parse(JSON.stringify(rules)),
-                                    components: req.builderComponents(),
+                                            {
+                                                path: '/chat',
+                                                exact: true,
+                                                layout: 'Nohf',
+                                                element: 'Chat',
+                                            }, {
+                                                path: '/transaction',
+                                                exact: true,
+                                                layout: 'Nohf',
+                                                element: 'Transaction',
+                                            },
+                                            {
+                                                path: '/admin',
+                                                exact: true,
+                                                layout: 'Nohf',
+                                                element: 'Admin',
+                                            }, {
+                                                path: '/admin/:model',
+                                                exact: true,
+                                                layout: 'Nohf',
+                                                element: 'Admin',
+                                            }, {
+                                                path: '/admin/:model/:action',
+                                                exact: true,
+                                                layout: 'Nohf',
+                                                element: 'Admin',
+                                            }, {
+                                                path: '/admin/:model/:action/:_id',
+                                                exact: true,
+                                                layout: 'Nohf',
+                                                element: 'Admin',
+                                            },
+                                            {
+                                                "path": "/a/:_entity/:_id/:_slug",
+                                                "method": "get",
+                                                "access": "customer_all",
+                                                "controller": (req, res, next) => {
+                                                    console.log('show front, go visit ', process.env.SHOP_URL);
+                                                    res.show()
+                                                },
 
-                                })
+                                            },
+                                            ...routes
+                                        ],
+                                        models: req.models(),
+                                        rules: JSON.parse(JSON.stringify(rules)),
+                                        components: req.builderComponents(),
+
+                                    })
+                                });
 
                             });
                         });
@@ -219,7 +238,7 @@ export default function BaseApp(theProps = {}) {
                         res.show()
                     },
 
-                },{
+                }, {
                     "path": "/a/:_entity/:_id/:_slug",
                     "method": "get",
                     "access": "customer_all",
@@ -358,8 +377,37 @@ export default function BaseApp(theProps = {}) {
             }
         });
 // ssrHandle(app);
+        let Page = mongoose.model('Page');
+        let routes = props['front'].routes.reverse() || [];
 
-        routeHandle(app, props);
+        Page.find({}, function (err, pages) {
+            if (pages)
+                pages.forEach((page) => {
+                    if (page.path) {
+                        console.log('page.path',page.path)
+                        routes.push({
+                            path: page.path,
+                            method: 'get',
+                            access: 'customer_all',
+                            controller: (req, res, next) => {
+                                console.log('show front, go visit ', process.env.SHOP_URL);
+                                res.show()
+                            },
+
+                            layout: 'DefaultLayout',
+                            element: 'DynamicPage',
+                            elements: page.elements || [],
+                        });
+                    }
+                })
+
+            props['front'].routes=routes.reverse()
+
+            // console.log('routes', props['front'].routes.reverse())
+            // props['front'].routes=[...props['front'].routes,...routes]
+            routeHandle(app, props);
+
+        });
 // app.set("view engine", "pug");
 //         console.log('return app in BaseApp()')
     });

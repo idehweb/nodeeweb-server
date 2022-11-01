@@ -1,6 +1,6 @@
 {
   "name": "@nodeeweb/server",
-  "version": "0.0.39",
+  "version": "0.0.49",
   "type": "module",
   "dependencies": {
     "@babel/preset-react": "^7.17.12",
@@ -34,6 +34,7 @@
     "pug": "^3.0.2",
     "rand-token": "^1.0.1",
     "request-ip": "^3.3.0",
+    "shelljs": "^0.8.5",
     "typescript": "^4.6.4",
     "useragent": "^2.3.0",
     "webpack-node-externals": "^3.0.0"

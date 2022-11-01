@@ -1,4 +1,5 @@
-
+import shell from 'shelljs';
+import path from "path";
 var self = ( {
     last: function(req, res, next) {
         let Settings = req.mongoose.model('Settings');
@@ -29,6 +30,17 @@ var self = ( {
 
         }).skip(offset).sort({ _id: -1 }).limit(1);
         // res.json([]);
+    },
+    restart: function(req, res, next){
+        const _dirname = path.resolve();
+        let site = process.env.SITE_NAME;
+        site = site.toLowerCase();
+        console.log("Site ==> ", site);
+        // console.log("dirname ===> " ,_dirname);
+        const scripts = path.join(_dirname, "node_modules/@nodeeweb/server/scripts");
+        console.log("scripts ==> ", scripts+`/restart.sh`);
+        shell.exec('sh '+scripts+`/restart.sh ${site}`);
+
     },
 
 });
