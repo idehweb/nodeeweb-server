@@ -22,7 +22,53 @@ export default {
                 {name: "title", type: "string"},
                 {name: "siteName", type: "string"},
                 {name: "description", type: "string"},
-                {name: "data", type: "object"},
+                {
+                    name: "data", type: "array",
+                    "size": {"lg": 12, "sm": 12},
+                    "child": [
+                        {
+                            "name": "title",
+                            "type": "string",
+                            "defaultValue": null,
+                            "size": {"lg": 12, "sm": 12},
+
+
+                        },
+                        {
+                            "name": "theid",
+                            "type": "string",
+                            "size": {"lg": 12, "sm": 12}
+                        },
+                        {
+                            "name": "city",
+                            "type": "string",
+                            "size": {"lg": 12, "sm": 12}
+                        },
+                        {
+                            "name": "condition",
+                            "type": "string",
+                            "size": {"lg": 12, "sm": 12}
+                        },
+                        {
+                            "name": "description",
+                            "type": "string",
+                            "size": {"lg": 12, "sm": 12}
+                        }, {
+                            "name": "is",
+                            "type": "string",
+                            "size": {"lg": 12, "sm": 12}
+                        }, {
+                            "name": "priceLessThanCondition",
+                            "type": "string",
+                            "size": {"lg": 12, "sm": 12}
+                        }, {
+                            "name": "priceMoreThanCondition",
+                            "type": "string",
+                            "size": {"lg": 12, "sm": 12}
+                        },
+                    ]
+                },
+
                 {name: "siteActive", type: "boolean"},
                 {name: "siteActiveMessage", type: "string"},
                 {name: "logo", type: "string"},
@@ -41,14 +87,33 @@ export default {
                 {name: "activeCategory", type: "string"},
                 {name: "dollarPrice", type: "string"},
                 {name: "derhamPrice", type: "string"},
-                {name: "sms_welcome", type: "string"},
-                {name: "sms_register", type: "string"},
-                {name: "sms_submitOrderNotPaying", type: "string"},
-                {name: "sms_submitOrderSuccessPaying", type: "string"},
-                {name: "sms_onSendProduct", type: "string"},
-                {name: "sms_onGetProductByCustomer", type: "string"},
-                {name: "sms_submitReview", type: "string"},
-                {name: "sms_onCancel", type: "string"}
+                {
+                    name: "sms_welcome", type: "string",
+                    "size": {"lg": 12, "sm": 12},
+                },
+                {
+                    name: "sms_register", type: "string",
+                    "size": {"lg": 12, "sm": 12},
+                },
+                {
+                    name: "sms_submitOrderNotPaying", type: "string",
+                    "size": {"lg": 12, "sm": 12},
+                },
+                {
+                    name: "sms_submitOrderSuccessPaying", type: "string", "size": {"lg": 12, "sm": 12},
+                },
+                {
+                    name: "sms_onSendProduct", type: "string", "size": {"lg": 12, "sm": 12},
+                },
+                {
+                    name: "sms_onGetProductByCustomer", type: "string", "size": {"lg": 12, "sm": 12},
+                },
+                {
+                    name: "sms_submitReview", type: "string", "size": {"lg": 12, "sm": 12},
+                },
+                {
+                    name: "sms_onCancel", type: "string", "size": {"lg": 12, "sm": 12},
+                }
             ]
         },
         "edit": {
@@ -56,7 +121,53 @@ export default {
                 {name: "title", type: "string"},
                 {name: "siteName", type: "string"},
                 {name: "description", type: "string"},
-                {name: "data", type: "object"},
+                {
+                    name: "data", type: "array",
+                    "size": {"lg": 12, "sm": 12},
+                    "child": [
+                        {
+                            "name": "title",
+                            "type": "string",
+                            "defaultValue": null,
+                            "size": {"lg": 12, "sm": 12},
+
+
+                        },
+                        {
+                            "name": "theid",
+                            "type": "string",
+                            "size": {"lg": 12, "sm": 12}
+                        },
+                        {
+                            "name": "city",
+                            "type": "string",
+                            "size": {"lg": 12, "sm": 12}
+                        },
+                        {
+                            "name": "condition",
+                            "type": "string",
+                            "size": {"lg": 12, "sm": 12}
+                        },
+                        {
+                            "name": "description",
+                            "type": "string",
+                            "size": {"lg": 12, "sm": 12}
+                        }, {
+                            "name": "is",
+                            "type": "string",
+                            "size": {"lg": 12, "sm": 12}
+                        }, {
+                            "name": "priceLessThanCondition",
+                            "type": "string",
+                            "size": {"lg": 12, "sm": 12}
+                        }, {
+                            "name": "priceMoreThanCondition",
+                            "type": "string",
+                            "size": {"lg": 12, "sm": 12}
+                        },
+                    ]
+                },
+
                 {name: "siteActive", type: "boolean"},
                 {name: "siteActiveMessage", type: "string"},
                 {name: "logo", type: "string"},
@@ -75,14 +186,33 @@ export default {
                 {name: "activeCategory", type: "string"},
                 {name: "dollarPrice", type: "string"},
                 {name: "derhamPrice", type: "string"},
-                {name: "sms_welcome", type: "string"},
-                {name: "sms_register", type: "string"},
-                {name: "sms_submitOrderNotPaying", type: "string"},
-                {name: "sms_submitOrderSuccessPaying", type: "string"},
-                {name: "sms_onSendProduct", type: "string"},
-                {name: "sms_onGetProductByCustomer", type: "string"},
-                {name: "sms_submitReview", type: "string"},
-                {name: "sms_onCancel", type: "string"}
+                {
+                    name: "sms_welcome", type: "string",
+                    "size": {"lg": 12, "sm": 12},
+                },
+                {
+                    name: "sms_register", type: "string",
+                    "size": {"lg": 12, "sm": 12},
+                },
+                {
+                    name: "sms_submitOrderNotPaying", type: "string",
+                    "size": {"lg": 12, "sm": 12},
+                },
+                {
+                    name: "sms_submitOrderSuccessPaying", type: "string", "size": {"lg": 12, "sm": 12},
+                },
+                {
+                    name: "sms_onSendProduct", type: "string", "size": {"lg": 12, "sm": 12},
+                },
+                {
+                    name: "sms_onGetProductByCustomer", type: "string", "size": {"lg": 12, "sm": 12},
+                },
+                {
+                    name: "sms_submitReview", type: "string", "size": {"lg": 12, "sm": 12},
+                },
+                {
+                    name: "sms_onCancel", type: "string", "size": {"lg": 12, "sm": 12},
+                }
             ]
         },
     },

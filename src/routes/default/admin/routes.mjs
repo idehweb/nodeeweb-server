@@ -6,7 +6,7 @@ export default [{
     "controller": controller.login,
 
 }, {
-    "path": "/register",
+    "path": "/",
     "method": "post",
     "access": "admin_user",
     "controller": controller.register,

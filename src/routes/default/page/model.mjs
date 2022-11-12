@@ -13,6 +13,7 @@ export default (mongoose)=>{
         title: {},
         elements: {},
         kind: {type: String, default: 'page'},
+        classes: {type: String, default: ''},
         path: String,
         maxWidth: {type: String, default: '100%'},
         status: {type: String, default: 'processing'},

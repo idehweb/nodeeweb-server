@@ -8,7 +8,7 @@ You can do many things.
 ## Table of contents
 
 * [Features](#features)
-* [Download](#download)
+* [Install](#Install)
 * [Usage](#usage)
 * [Development](#development)
 * [Documentation](#documentation)
@@ -34,7 +34,7 @@ You can do many things.
 
 
 
-## How to start? (download)
+## How to start? (Install)
 
 ### 0. create package.json file or run:
 ```bash
@@ -197,6 +197,30 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 [CMS]: <https://en.wikipedia.org/wiki/Content_management_system>
 
 ## Changelogs
+
+- 0.0.56
+    update front,admin
+
+- 0.0.55
+    add pagination to table
+    add total count
+
+- 0.0.54
+    gateways
+
+- 0.0.53
+    front edits
+
+- 0.0.52
+    add filter
+
+- 0.0.51
+    convert "./" to "/"
+
+- 0.0.50
+    register new admin problem
+    update front
+    now we can delete elements
 
 - 0.0.49
     add restart function to settings

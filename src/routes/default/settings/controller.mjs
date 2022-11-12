@@ -38,7 +38,10 @@ var self = ( {
         console.log("Site ==> ", site);
         // console.log("dirname ===> " ,_dirname);
         const scripts = path.join(_dirname, "node_modules/@nodeeweb/server/scripts");
-        console.log("scripts ==> ", scripts+`/restart.sh`);
+        console.log("scripts ==> ", 'sh '+scripts+`/restart.sh ${site}`);
+        res.json({
+            success:true
+        })
         shell.exec('sh '+scripts+`/restart.sh ${site}`);
 
     },

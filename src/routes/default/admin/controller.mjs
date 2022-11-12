@@ -33,7 +33,7 @@ var self = ({
             let userData = req.body;
             userData.type = 'user';
             userData.token = global.generateUnid();
-
+            console.log('userData.token',userData.token)
 
             Admin.create(userData, function (error, user) {
                 if (error) {

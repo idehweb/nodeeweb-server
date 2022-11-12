@@ -19,7 +19,7 @@ export default {
                 {"name":"credit","type":"number"},
                 {"name":"createdAt","type":"date"},
                 {"name":"updatedAt","type":"date"},
-                {"name":"actions","type":"actions"}
+                {"name": "actions", "type": "actions", "edit": true, "delete": true, "pageBuilder": false}
                 ]
         },
         "create": {

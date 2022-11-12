@@ -24,13 +24,14 @@ export default {
 
         "create": {
             "fields": [
-                {name: "title", type: "object", size: {lg: 12, sm: 12}},
+                {name: "title", type: "object",kind:"multiLang", size: {lg: 12, sm: 12}},
                 {name: "slug", type: "string", size: {lg: 12, sm: 12}},
                 {name: "excerpt", type: "object", size: {lg: 12, sm: 12}},
                 {name: "description", type: "object", size: {lg: 12, sm: 12}},
                 {name: "views", type: "object"},
                 {name: "kind", type: "string"},
                 {name: "path", type: "string"},
+                {name: "classes", type: "string"},
                 {name: "maxWidth", type: "string"},
                 {
                     name: "status", type: "select", "options": [
@@ -44,13 +45,14 @@ export default {
         "edit": {
             "fields": [
                 {name: "_id", type: "string", "disabled": true, size: {lg: 12, sm: 12}},
-                {name: "title", type: "object", size: {lg: 12, sm: 12}},
+                {name: "title", type: "object",kind:"multiLang", size: {lg: 12, sm: 12}},
                 {name: "slug", type: "string"},
                 {name: "description", type: "object", size: {lg: 12, sm: 12}},
                 {name: "excerpt", type: "object", size: {lg: 12, sm: 12}},
                 {name: "active", type: "boolean"},
                 {name: "views", type: "array"},
                 {name: "kind", type: "string"},
+                {name: "classes", type: "string"},
                 {name: "path", type: "string"},
                 {
                     name: "status", type: "select", "options": [

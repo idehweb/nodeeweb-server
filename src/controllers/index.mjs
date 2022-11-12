@@ -66,7 +66,15 @@ var self = (Model) => {
                 }
             });
             console.log('search', search);
-
+            let thef = '';
+            if (req.query.filter) {
+                if (JSON.parse(req.query.filter)) {
+                    thef = JSON.parse(req.query.filter);
+                }
+            }
+            console.log('thef', thef);
+            if (thef && thef!='')
+                search = thef;
             // console.log(req.mongoose.Schema(Model))
             console.log('search', search)
             Model.find(search, fields,
@@ -78,7 +86,19 @@ var self = (Model) => {
                     }
                     if (err || !model)
                         return res.json([]);
-                    return res.json(model);
+                    Model.countDocuments(search, function (err, count) {
+                        // console.log('countDocuments', count);
+                        if (err || !count) {
+                            res.json([]);
+                            return 0;
+                        }
+                        res.setHeader(
+                            "X-Total-Count",
+                            count
+                        );
+                        return res.json(model);
+
+                    })
                 }).skip(offset).sort({_id: -1}).limit(parseInt(req.params.limit));
         },
 
