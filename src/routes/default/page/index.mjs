@@ -32,7 +32,9 @@ export default {
                 {name: "kind", type: "string"},
                 {name: "path", type: "string"},
                 {name: "classes", type: "string"},
+                {name: "backgroundColor", type: "string"},
                 {name: "maxWidth", type: "string"},
+                {name: "padding", type: "string"},
                 {
                     name: "status", type: "select", "options": [
                         {"label": "published", "value": "published", "name": "published"},
@@ -62,6 +64,8 @@ export default {
                     ]
                 },
                 {name: "maxWidth", type: "string"},
+                {name: "backgroundColor", type: "string"},
+                {name: "padding", type: "string"},
                 {name: "createdAt", type: "date"},
                 {name: "updatedAt", type: "date"},
             ]

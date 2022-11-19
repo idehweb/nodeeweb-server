@@ -198,6 +198,30 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.64
+    add menu border and box shadow
+
+- 0.0.63
+    update classes
+
+- 0.0.62
+    add class .f-d-c-r
+
+- 0.0.61
+    remove front bugs
+
+- 0.0.60
+    add responsive menu
+    
+- 0.0.59    
+    add thumbnail to product single
+
+- 0.0.58
+    update front
+
+- 0.0.57
+    update front
+
 - 0.0.56
     update front,admin
 

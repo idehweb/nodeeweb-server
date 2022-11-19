@@ -15,7 +15,14 @@ import global from '#root/global';
 
 const __dirname = path.resolve();
 
-
+import fs from "fs";
+import "ignore-styles";
+import * as ReactDOMServer from "react-dom/server";
+import * as React from "react";
+import {StaticRouter} from "react-router-dom/server.mjs";
+import {matchPath} from "react-router-dom";
+import {Provider} from "react-redux";
+// import {persistor, store} from "#c/functions/store";
 // export function createDefaultRoute(app) {
 //     Object.keys(mongoose.models).forEach((model, is) => {
 //         console.log('model', model);
@@ -252,5 +259,111 @@ function create_standard_route(suf = '/', routes = [], router) {
         })
     return router
 }
+// const ssrParse = (req, res, next) => {
+//     return new Promise(function (resolve, reject) {
+//
+//         let ua = req.get("user-agent");
+//         if (!req.headers.lan)
+//             req.headers.lan = "fa";
+//         console.log("==> () ssrParse");
+//
+//         if (isbot(ua)) {
+//             console.log("it is bot, we need SSR...");
+//
+//             console.log("BOT => ", ua);
+//             fs.readFile(path.resolve("./build/index.html"), "utf8", (err, data) => {
+//                 if (err) {
+//                     console.error(err);
+//                     return res.status(500).send("An error occurred");
+//                 }
+//                 const context = {};
+//                 let cccc = [];
+//                 const dataRequirements =
+//                     routes
+//                         .filter(route => {
+//                             return (matchPath(route, req.url));
+//                         })
+//                         .map(route => {
+//                             if (req.params._firstCategory && req.params._id) {
+//                                 route.server[0].params = req.params._id;
+//                             }
+//                             return route;
+//                         })
+//                         .filter(comp => {
+//                             return comp.server;
+//                         })
+//                         .map(comp => {
+//                             console.log("typeof comp.server", typeof comp.server);
+//                             if (typeof comp.server === "object") {
+//                                 comp.server.forEach(s => {
+//                                     console.log("s.params", s.params);
+//                                     cccc.push(store.dispatch(s.func(s.params)));
+//                                 });
+//                                 return cccc;
+//                             } else {
+//                                 cccc.push(store.dispatch(comp.server(comp.params)));
+//                                 return store.dispatch(comp.server(comp.params));
+//
+//                             }
+//                             // return store.dispatch(comp.server(comp.parameter))
+//                         }); // dispatch data requirement
+//                 console.log("dataRequirements", cccc);
+//                 Promise.all(cccc).then(() => {
+//                     const renderedData = ReactDOMServer.renderToString(<Provider store={store}>
+//                         <StaticRouter context={context} location={req.url}>
+//                 <AppSSR url={req.url}/></StaticRouter></Provider>);
+//                     console.log("res.send ==============>");
+//                     res.locals.renderedData = renderedData;
+//                     res.locals.body = data.replace(
+//                         "<div id=\"root\"></div>",
+//                         `<div id="root">${renderedData}</div>`
+//                     );
+//       // const renderedData = ReactDOMServer.renderToString(<Provider store={store}>
+//       //                   <StaticRouter context={context} location={req.url}>
+//       //           <AppSSR url={req.url}/></StaticRouter></Provider>);
+//       //               console.log("res.send ==============>");
+//       //               res.locals.renderedData = renderedData;
+//       //               res.locals.body = data.replace(
+//       //                   "<div id=\"root\"></div>",
+//       //                   `<div id="root">${renderedData}</div>`
+//       //               );
+//
+//                     resolve();
+//                 });
+//             });
+//         }
+//         else {
+//             console.log("no need to ssr...");
+//             resolve();
+//         }
+//     });
+// };
+// export const handle_ssr_response = (req, res, next) => {
+//
+//     console.log("go through home...");
+//     global.getSettings(['title','description','logo']).then(set => {
+//         console.log("set.title",set.title);
+//         let body = res.locals.body;
+//         if (body) {
+//             body = body.replace('</head>', `<title>${set.title}</title></head>`);
+//             body = body.replace('</head>', `<meta name="description" content="${set.description}" /></head>`);
+//             console.log(' send... ');
+//             return res.status(200).send(body);
+//         } else {
+//             console.log('render...');
+//             return res.status(200).render('index',{
+//                 title:set.title || "",
+//
+//                 description: set.description || "",
+//                 url: global.domain + "/",
+//                 width: "512",
+//                 height: "512",
+//                 image: global.domain + "/"+set.logo || "",
+//                 html: global.body || ""
+//
+//             });
+//         }
+//     })
+// };
 
 export default {};

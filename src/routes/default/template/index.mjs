@@ -23,6 +23,9 @@ export default {
                 {"name": "title", "type": "string"},
                 {"name": "type", "type": "string"},
                 {"name": "maxWidth", "type": "string"},
+                {"name": "classes", "type": "string"},
+                {"name": "padding", "type": "string"},
+                {"name": "backgroundColor", "type": "string"},
             ]
         },
         "edit": {
@@ -30,6 +33,10 @@ export default {
                 {"name": "title", "type": "string"},
                 {"name": "type", "type": "string"},
                 {"name": "maxWidth", "type": "string"},
+                {"name": "classes", "type": "string"},
+                {"name": "padding", "type": "string"},
+                {"name": "backgroundColor", "type": "string"},
+
             ]
         },
     },

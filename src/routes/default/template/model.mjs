@@ -7,6 +7,9 @@ export default (mongoose) => {
         maxWidth: String,
         data: [],
         elements: [],
+        classes: String,
+        padding: String,
+        backgroundColor: String,
         createdAt: { type: Date, default: Date.now },
         updatedAt: { type: Date, default: Date.now },
 

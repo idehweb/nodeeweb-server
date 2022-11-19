@@ -158,11 +158,17 @@ export default function BaseApp(theProps = {}) {
                                     return res.json({
                                         header: {
                                             maxWidth: (header && header.maxWidth) ? header.maxWidth : '100%',
+                                            backgroundColor: (header && header.backgroundColor) ? header.backgroundColor : '',
+                                            classes: (header && header.classes) ? header.classes : '',
+                                            padding: (header && header.padding) ? header.padding : '',
                                             elements: header ? header.elements : []
                                         },
                                         body: [{name: 'MainContent'}],
                                         footer: {
                                             maxWidth: (footer && footer.maxWidth) ? footer.maxWidth : '100%',
+                                            backgroundColor: (footer && footer.backgroundColor) ? footer.backgroundColor : '',
+                                            classes: (footer && footer.classes) ? footer.classes : '',
+                                            padding: (footer && footer.padding) ? footer.padding : '',
                                             elements: footer ? footer.elements : []
                                         },
                                         routes: [
@@ -314,14 +320,8 @@ export default function BaseApp(theProps = {}) {
             }]
         };
     }
-    // console.log(props['entity'], props['entity'])
-    // if (!props['front']) {
-    //     props['front']=false;
-    // }
-    // if (!props['admin']) {
-    //     props['admin']=false;
-    // }
-// console.log('index props',props)
+
+
     let app = express();
     app.use(function (req, res, next) {
         res.header('Access-Control-Allow-Origin', req.header('origin'));
@@ -384,7 +384,7 @@ export default function BaseApp(theProps = {}) {
             if (pages)
                 pages.forEach((page) => {
                     if (page.path) {
-                        console.log('page.path',page.path)
+                        console.log('page.path', page.path)
                         routes.push({
                             path: page.path,
                             method: 'get',
@@ -401,7 +401,7 @@ export default function BaseApp(theProps = {}) {
                     }
                 })
 
-            props['front'].routes=routes.reverse()
+            props['front'].routes = routes.reverse()
 
             // console.log('routes', props['front'].routes.reverse())
             // props['front'].routes=[...props['front'].routes,...routes]
