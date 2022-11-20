@@ -27,21 +27,22 @@ let configHandle = (express, app, props = {}) => {
     app.use(busboy());
     app.use(express.static(public_mediaFolder, {maxage: "1y"}));
 
-    if(props.front) {
+    // if(props.front) {
         let themeFolder = path.join(__dirname, props.base, "./theme");
         path.themeFolder = themeFolder;
-        // console.log("themeFolder: ", themeFolder)
-        app.use(express.static(themeFolder, {index: ['index.html']}));
-    }
-    // let R = createPublicRoute('/admin')
-    if(props.admin) {
-
-        let adminFolder  = path.join(__dirname, props.base, "./admin");
-        path.adminFolder=adminFolder;
-
-        // console.log("adminFolder: ", adminFolder)
-        app.use(express.static(adminFolder, {index: ['index.html']}));
-    }
+    //     // console.log("themeFolder: ", themeFolder)
+        app.use('/site_setting',express.static(themeFolder+'/site_setting'));
+        app.use('/static',express.static(themeFolder+'/static'));
+    // }
+    // // let R = createPublicRoute('/admin')
+    // if(props.admin) {
+    //
+    //     let adminFolder  = path.join(__dirname, props.base, "./admin");
+    //     path.adminFolder=adminFolder;
+    //
+    //     // console.log("adminFolder: ", adminFolder)
+    //     app.use(express.static(adminFolder, {index: ['index.html']}));
+    // }
     // app.set("view engine", "pug");
     // app.use(express.static(assetsFolder));
     // console.log("==> configHandle");

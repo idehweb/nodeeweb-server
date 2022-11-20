@@ -198,6 +198,9 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.65
+    add product ssr
+
 - 0.0.64
     add menu border and box shadow
 

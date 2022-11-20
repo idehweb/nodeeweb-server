@@ -12,16 +12,12 @@ import controller from "#controllers/index";
 import mongoose from "mongoose";
 // import user from "#routes/default/user/index";
 import global from '#root/global';
+import fs from "fs";
+import "ignore-styles";
+import * as React from "react";
 
 const __dirname = path.resolve();
 
-import fs from "fs";
-import "ignore-styles";
-import * as ReactDOMServer from "react-dom/server";
-import * as React from "react";
-import {StaticRouter} from "react-router-dom/server.mjs";
-import {matchPath} from "react-router-dom";
-import {Provider} from "react-redux";
 // import {persistor, store} from "#c/functions/store";
 // export function createDefaultRoute(app) {
 //     Object.keys(mongoose.models).forEach((model, is) => {
@@ -69,8 +65,8 @@ export function createPublicRoute(suf = '', routes) {
 
 function returnThisRouteRules(path, method, routes) {
     let obj = {
-        path:path,
-        method:method,
+        path: path,
+        method: method,
     };
     routes.forEach((ro) => {
         if (ro.method == method && ro.path == path) {
@@ -87,13 +83,55 @@ function make_routes_safe(req, res, next, rou) {
     console.log('make_routes_safe:', rou);
     req.mongoose = mongoose;
 
+    res.ssrParse = (req, res, next) => {
 
+
+        // return res.json(req);
+        return new Promise(function (resolve, reject) {
+            fs.readFile(path.themeFolder + '/index.html', "utf8", (err, body) => {
+
+                if (err) {
+                    console.error(err);
+                    return res.status(500).send("An error occurred");
+                }
+                let obj = {}
+                // resolve();
+                // body = body.replace('</head>', `<title>${obj.title}</title></head>`);
+                // body = body.replace('</head>', `<meta name="description" content="${obj.metadescription}" /></head>`);
+                // body = body.replace('</head>', `<meta name="product_id" content="${obj._id}" /></head>`);
+                // body = body.replace('</head>', `<meta name="product_name" content="${obj.product_name}" /></head>`);
+                // body = body.replace('</head>', `<meta name="product_price" content="${obj.product_price}" /></head>`);
+                // body = body.replace('</head>', `<meta name="product_old_price" content="${obj.product_old_price}" /></head>`);
+                // body = body.replace('</head>', `<meta name="product_image" content="${obj.product_image}" /></head>`);
+                // body = body.replace('</head>', `<meta name="image" content="${obj.image}" /></head>`);
+                // body = body.replace('</head>', `<meta name="availability" content="${obj.availability}" /></head>`);
+                // body = body.replace('</head>', `<meta name="og:image" content="${obj.image}" /></head>`);
+                // body = body.replace('</head>', `<meta name="og:image:secure_url" content="${obj.image}" /></head>`);
+                // body = body.replace('</head>', `<meta name="og:image:width" content="1200" /></head>`);
+                // body = body.replace('</head>', `<meta name="og:image:height" content="675" /></head>`);
+                // body = body.replace('</head>', `<meta name="og:locale" content="fa_IR" /></head>`);
+                // body = body.replace('</head>', `<meta name="og:type" content="website" /></head>`);
+                // body = body.replace('</head>', `<meta name="og:title" content="${obj.title}" /></head>`);
+                // body = body.replace('</head>', `<meta name="og:description" content="${obj.description}" /></head>`);
+                // body = body.replace('</head>', `<meta name="og:url" content="." /></head>`);
+                // body = body.replace('</head>', `<meta name="og:site_name" content="Arvandshop" /></head>`);
+                // body = body.replace('</head>', `<meta name="og:site_name" content="Arvandshop" /></head>`);
+                // if(req.route.path=='/product/:_id/:_slug'){
+                //
+                // }
+                // return res.status(200).send(body);
+                resolve(body);
+            });
+        });
+    };
     res.show = () => {
         // console.log('adminFolder',path.themeFolder+'/index.html')
-        console.log('show',path.themeFolder);
+        console.log('show', path.themeFolder);
+        // res.ssrParse(req,res,next);
         return res.sendFile(path.themeFolder + '/index.html')
     };
     res.admin = () => {
+        console.log('admin')
         // console.log('adminFolder',path.adminFolder+'/index.html')
         return res.sendFile(path.adminFolder + '/index.html')
     };
@@ -160,7 +198,7 @@ function make_routes_safe(req, res, next, rou) {
     };
     if (rou.access) {
         let accessList = rou.access.split(',');
-        if(accessList.indexOf('customer_all')>-1){
+        if (accessList.indexOf('customer_all') > -1) {
             return rou.controller(req, res, next)
 
         }
@@ -168,9 +206,9 @@ function make_routes_safe(req, res, next, rou) {
         console.log('we need check access...', accessList, req.headers.token);
         if (!req.headers.token) {
             console.log('we have no token...');
-            if(req.headers.response!=="json"){
+            if (req.headers.response !== "json") {
                 return res.redirect('/admin/login')
-            }else {
+            } else {
                 return res.status(403).json({
                     success: false,
                     message: 'You have to authorize'
@@ -194,14 +232,14 @@ function make_routes_safe(req, res, next, rou) {
                     findObject,
                     function (err, obj) {
                         counter++;
-                        console.log('obj',obj)
-                        if(err || !obj){
+                        console.log('obj', obj)
+                        if (err || !obj) {
                             return res.json({
-                                theModel:theModel,
-                                findObject:findObject,
-                                obj:obj,
-                                err:err,
-                                success:false
+                                theModel: theModel,
+                                findObject: findObject,
+                                obj: obj,
+                                err: err,
+                                success: false
                             })
                         }
                         if (obj.type == the_role[1]) {
@@ -259,8 +297,7 @@ function create_standard_route(suf = '/', routes = [], router) {
         })
     return router
 }
-// const ssrParse = (req, res, next) => {
-//     return new Promise(function (resolve, reject) {
+
 //
 //         let ua = req.get("user-agent");
 //         if (!req.headers.lan)
