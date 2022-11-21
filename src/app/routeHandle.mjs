@@ -13,7 +13,7 @@ import {createPublicRoute, createRoute, returnDefaultModels} from "#routes/index
 
 // createDefaultRoute();
 let routeHandle = (app, props = {}) => {
-    console.log("==> routeHandle(app,props)",props.front);
+    // console.log("==> routeHandle(app,props)",props.front);
 
     // if (config().set///////ting.BASE_URL) {
 
@@ -157,7 +157,7 @@ let routeHandle = (app, props = {}) => {
     //   });
     // }
 
-    list(1);
+    // list(1);
 
     function list(id) {
         // console.log('run list...')

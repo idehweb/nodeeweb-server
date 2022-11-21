@@ -25,6 +25,7 @@ mongoose.Promise = global.Promise;
 //     process.exit(0);
 let connection = process.env.mongodbConnectionUrl;
 // console.log('process.env.BASE_URL',process.env.BASE_URL);
+const __dirname = path.resolve();
 
 let options = {
     useNewUrlParser: true,
@@ -49,32 +50,8 @@ export default (props = {}, app) => {
             .then(async () => {
                 resolve()
                 await console.log("==> db connection successful to", "'" + process.env.dbName + "'", new Date());
-                let __dirname = path.resolve();
-                let public_mediaPath = path.join(__dirname, "./public_media/");
-                let public_media_customerPath = path.join(__dirname, "./public_media/customer/");
-                if (fs.existsSync(public_mediaPath)) {
-                    // console.log('public_mediaPath exist...')
-                    if (fs.existsSync(public_media_customerPath)) {
-                        // console.log('public_media_customerPath exist...')
-                    }
-                    else {
-                        fs.mkdir(public_media_customerPath, () => {
-                            // console.log('we created public_media_customerPath')
-                        });
-                        // Below code to create the folder, if its not there
-                        // fs.mkdir('<folder_name>', cb function);
-                    }
-                } else {
-                    // console.log('we should create public_mediaPath')
-                    // console.log('we should create public_media_customerPath')
-                    // Below code to create the folder, if its not there
-                    fs.mkdir(public_mediaPath, () => {
-                        // console.log('we created public_mediaPath')
-                        fs.mkdir(public_media_customerPath, () => {
-                            // console.log('we created public_media_customerPath')
-                        });
-                    });
-                }
+               createPublicMediaFolder()
+               createAdminFolder()
                 // let filePath = path.join(__dirname, thePath, file_name);
                 // try {
                 //     // fs.promises.ex
@@ -174,4 +151,94 @@ export default (props = {}, app) => {
                 return process.exit(0)
             });
     });
+}
+const updateAdminConfig = function () {
+    updateFile("./admin/site_setting/", "config.js",
+        "window.BASE_URL='" + process.env.BASE_URL + "';\n" +
+        "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
+        "window.THEME_URL='" + process.env.THEME_URL + "';\n" +
+        "window.ADMIN_ROUTE='" + process.env.BASE_URL + "/admin" + "';\n" +
+        "window.SHOP_URL='" + process.env.SHOP_URL + "';")
+}
+const createAdminFolder = function () {
+    let public_mediaPath = path.join(__dirname, "./admin/");
+    let public_media_customerPath = path.join(__dirname, "./admin/site_setting/");
+    if (fs.existsSync(public_mediaPath)) {
+        // console.log('public_mediaPath exist...')
+        if (fs.existsSync(public_media_customerPath)) {
+            // console.log('public_media_customerPath exist...')
+            updateAdminConfig()
+        }
+        else {
+            fs.mkdir(public_media_customerPath, () => {
+                // console.log('we created public_media_customerPath')
+                updateAdminConfig()
+            });
+            // Below code to create the folder, if its not there
+            // fs.mkdir('<folder_name>', cb function);
+        }
+    } else {
+        // console.log('we should create public_mediaPath')
+        // console.log('we should create public_media_customerPath')
+        // Below code to create the folder, if its not there
+        fs.mkdir(public_mediaPath, () => {
+            // console.log('we created public_mediaPath')
+            fs.mkdir(public_media_customerPath, () => {
+                // console.log('we created public_media_customerPath')
+                updateAdminConfig()
+            });
+        });
+    }
+}
+const createPublicMediaFolder = function () {
+    let public_mediaPath = path.join(__dirname, "./public_media/");
+    let public_media_customerPath = path.join(__dirname, "./public_media/customer/");
+    if (fs.existsSync(public_mediaPath)) {
+        // console.log('public_mediaPath exist...')
+        if (fs.existsSync(public_media_customerPath)) {
+            // console.log('public_media_customerPath exist...')
+        }
+        else {
+            fs.mkdir(public_media_customerPath, () => {
+                // console.log('we created public_media_customerPath')
+            });
+            // Below code to create the folder, if its not there
+            // fs.mkdir('<folder_name>', cb function);
+        }
+    } else {
+        // console.log('we should create public_mediaPath')
+        // console.log('we should create public_media_customerPath')
+        // Below code to create the folder, if its not there
+        fs.mkdir(public_mediaPath, () => {
+            // console.log('we created public_mediaPath')
+            fs.mkdir(public_media_customerPath, () => {
+                // console.log('we created public_media_customerPath')
+            });
+        });
+    }
+}
+const updateFile = function (thePath, file_name, data) {
+    // const __dirname = path.resolve();
+    let filePath = path.join(__dirname, thePath, file_name);
+
+    try {
+        // fs.promises.ex
+        // let tt=fs.readFile(filePath)
+        console.log('reading file:', filePath)
+        // fs.promises.open(filePath).then(e=>{
+        //     console.log('tt',e)
+        //
+        // })
+        fs.promises.writeFile(filePath, data, "utf8");
+        console.log("\ndata is written successfully in the file\n" +
+            "filePath: " + filePath + " " + file_name);
+    }
+    catch (err) {
+        console.log("not able to write data in the file ", err);
+        // return res.json({
+        //   success: false,
+        //   err: err
+        // });
+    }
+
 }

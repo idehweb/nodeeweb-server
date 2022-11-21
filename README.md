@@ -198,6 +198,10 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.67
+    remove 'builder' link bugs
+    update config.js in admin folder on every run server
+
 - 0.0.66
     update admin folder
 

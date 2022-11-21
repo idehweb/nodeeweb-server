@@ -19,6 +19,7 @@ if (!envExist) {
     envModulePath = resolveApp('./node_modules/@nodeeweb/server/.env.local')
 }
 let mainEnvExist = fs.existsSync(envModulePath);
+
 if (mainEnvExist && !envExist) {
     let temp=envLocalPath;
     // console.log('create .env.local... from ', envModulePath, '\n to:', '\n' + envLocalPath);
@@ -50,6 +51,12 @@ if (mainEnvExist && !envExist) {
     // fs.writeFile(envLocalPath)
 
 }
+
+
+// fs.writeFile(temp, data, function (err) {
+//     if (err) return console.log(err);
+//     console.log('.env.local created.');
+// });
 dotenv.config({
     silent: false,
     path: envLocalPath,
