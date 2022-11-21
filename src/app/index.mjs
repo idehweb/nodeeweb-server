@@ -113,8 +113,8 @@ export default function BaseApp(theProps = {}) {
                             if (err || !product) {
                                 // resolve({});
                                 return res.json({
-                                    success:false,
-                                    error:err
+                                    success: false,
+                                    error: err
                                 });
                             }
                             let in_stock = "outofstock";
@@ -385,6 +385,27 @@ export default function BaseApp(theProps = {}) {
 
                 },
                 {
+                    "path": "/admin",
+                    "method": "get",
+                    "access": "admin_user,admin_shopManager",
+                    "controller": (req, res, next) => {
+                        console.log('show admin');
+                        return res.admin()
+                    },
+
+                },
+                {
+                    "path": "/admin/:model",
+                    "method": "get",
+                    "access": "",
+                    "controller": (req, res, next) => {
+                        console.log('/admin/:model line 402');
+                        if (req.headers.response != 'json')
+                            return res.admin()
+                    },
+
+                },
+                {
                     "path": "/:_slug",
                     "method": "get",
                     "access": "customer_all",
@@ -412,7 +433,7 @@ export default function BaseApp(theProps = {}) {
                 "method": "get",
                 "access": "admin_user,admin_shopManager",
                 "controller": (req, res, next) => {
-                    // console.log('here');
+                    console.log('show admin');
                     return res.admin()
                 },
 

@@ -131,7 +131,7 @@ function make_routes_safe(req, res, next, rou) {
         return res.sendFile(path.themeFolder + '/index.html')
     };
     res.admin = () => {
-        console.log('admin')
+        console.log('admin',path.adminFolder)
         // console.log('adminFolder',path.adminFolder+'/index.html')
         return res.sendFile(path.adminFolder + '/index.html')
     };

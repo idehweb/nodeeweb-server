@@ -28,11 +28,14 @@ let configHandle = (express, app, props = {}) => {
     app.use(express.static(public_mediaFolder, {maxage: "1y"}));
 
     // if(props.front) {
+        let adminFolder = path.join(__dirname, props.base, "./admin");
         let themeFolder = path.join(__dirname, props.base, "./theme");
+        path.adminFolder = adminFolder;
         path.themeFolder = themeFolder;
     //     // console.log("themeFolder: ", themeFolder)
         app.use('/site_setting',express.static(themeFolder+'/site_setting'));
         app.use('/static',express.static(themeFolder+'/static'));
+        app.use('/admin',express.static(adminFolder));
     // }
     // // let R = createPublicRoute('/admin')
     // if(props.admin) {
