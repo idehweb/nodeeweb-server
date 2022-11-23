@@ -10,6 +10,8 @@ export default (mongoose) => {
         siteActive: {type: Boolean, default: true},
         siteActiveMessage: String,
         logo: String,
+        header_first: String,
+        header_last: String,
         ADMIN_ROUTE: String,
         ADMIN_URL: String,
         SHOP_URL: String,

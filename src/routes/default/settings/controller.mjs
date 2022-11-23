@@ -1,6 +1,35 @@
 import shell from 'shelljs';
 import path from "path";
 var self = ( {
+    configuration: function(req, res, next) {
+        let Settings = req.mongoose.model('Settings');
+
+        Settings.findOneAndUpdate({}, req.body, { new: true }, function(err, setting) {
+
+
+            if (err && !setting) {
+
+
+                res.json({
+                    err: err,
+                    success: false,
+                    message: "error"
+                });
+
+            }
+            // self.updateImportantFiles(res,setting);
+            // self.updateCssFile(res,setting);
+
+
+            // file.pipe(fstream);
+            // fstream.on("close", function() {
+            //
+            // });
+            res.json({success:true,setting})
+
+        });
+
+    },
     last: function(req, res, next) {
         let Settings = req.mongoose.model('Settings');
 

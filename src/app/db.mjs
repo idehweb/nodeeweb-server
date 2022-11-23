@@ -10,6 +10,7 @@
 import mongoose from "mongoose";
 import path from "path";
 import fs from "fs";
+import shell from 'shelljs';
 
 // console.log('sdfg',path.join(path.resolve('.'), '.env.local'));
 
@@ -50,8 +51,9 @@ export default (props = {}, app) => {
             .then(async () => {
                 resolve()
                 await console.log("==> db connection successful to", "'" + process.env.dbName + "'", new Date());
-               createPublicMediaFolder()
-               createAdminFolder()
+                createPublicMediaFolder()
+                createAdminFolder()
+                createThemeFolder()
                 // let filePath = path.join(__dirname, thePath, file_name);
                 // try {
                 //     // fs.promises.ex
@@ -156,11 +158,60 @@ const updateAdminConfig = function () {
     updateFile("./admin/site_setting/", "config.js",
         "window.BASE_URL='" + process.env.BASE_URL + "';\n" +
         "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
-        "window.THEME_URL='" + process.env.THEME_URL + "';\n" +
+        "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
         "window.ADMIN_ROUTE='" + process.env.BASE_URL + "/admin" + "';\n" +
         "window.SHOP_URL='" + process.env.SHOP_URL + "';")
 }
+const updateThemeConfig = function () {
+    updateFile("./theme/site_setting/", "config.js",
+        "window.BASE_URL='" + process.env.BASE_URL + "';\n" +
+        "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
+        "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
+        "window.SHOP_URL='" + process.env.SHOP_URL + "';")
+}
+const createThemeFolder = function () {
+    const appDirectory = fs.realpathSync(process.cwd());
+
+    const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
+//
+    const adminLocalPath = resolveApp('./theme')
+    const adminModulePath = resolveApp('./node_modules/@nodeeweb/server/theme')
+    const scripts = resolveApp('./node_modules/@nodeeweb/server/scripts')
+    // console.log('adminLocalPath:',adminLocalPath)
+    // console.log('adminModulePath:',adminModulePath)
+    // console.log("scripts ==> ", 'sh '+scripts+`/cp.sh ${adminModulePath} ${adminLocalPath}`);
+
+    const child = shell.exec('sh ' + scripts + `/cp.sh ${adminModulePath} ${adminLocalPath} `, function (code, stdout, stderr) {
+        console.log('code: ', code);
+        console.log('stdout: ', stdout);
+        console.log('stderr: ', stderr);
+        updateThemeConfig()
+
+    });
+
+}
 const createAdminFolder = function () {
+    const appDirectory = fs.realpathSync(process.cwd());
+
+    const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
+//
+    const adminLocalPath = resolveApp('./admin')
+    const adminModulePath = resolveApp('./node_modules/@nodeeweb/server/admin')
+    const scripts = resolveApp('./node_modules/@nodeeweb/server/scripts')
+    // console.log('adminLocalPath:',adminLocalPath)
+    // console.log('adminModulePath:',adminModulePath)
+    // console.log("scripts ==> ", 'sh '+scripts+`/cp.sh ${adminModulePath} ${adminLocalPath}`);
+
+    const child = shell.exec('sh ' + scripts + `/cp.sh ${adminModulePath} ${adminLocalPath} `, function (code, stdout, stderr) {
+        console.log('code: ', code);
+        console.log('stdout: ', stdout);
+        console.log('stderr: ', stderr);
+        updateAdminConfig()
+
+    });
+
+}
+const createAdminFolder2 = function () {
     let public_mediaPath = path.join(__dirname, "./admin/");
     let public_media_customerPath = path.join(__dirname, "./admin/site_setting/");
     if (fs.existsSync(public_mediaPath)) {

@@ -15,6 +15,8 @@ export default (mongoose)=>{
         kind: {type: String, default: 'page'},
         classes: {type: String, default: ''},
         backgroundColor: String,
+        padding: String,
+        margin: String,
         path: String,
         maxWidth: {type: String, default: '100%'},
         status: {type: String, default: 'processing'},

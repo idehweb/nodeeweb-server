@@ -11,4 +11,10 @@ export default [{
     "access": "admin_user",
     "controller": controller.restart,
 
+},{
+    "path": "/configuration",
+    "method": "put",
+    "access": "admin_user",
+    "controller": controller.configuration,
+
 }]

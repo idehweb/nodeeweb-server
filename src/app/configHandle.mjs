@@ -13,12 +13,17 @@ const __dirname = path.resolve();
 
 const assetsFolder = path.join(__dirname, "./src/client/assets/img");
 const public_mediaFolder = path.join(__dirname, "./public_media");
+const adminFolder = path.join(__dirname, "./admin");
+const themeFolder = path.join(__dirname, "./theme");
+
 // const adminFolder = path.join(__dirname, "./admin");
 
 let configHandle = (express, app, props = {}) => {
     app.disable("x-powered-by");
     app.use(logger("dev"));
 
+    // const adminFolder = path.join(__dirname, props.base, "./admin");
+    // const themeFolder = path.join(__dirname, props.base, "./theme");
 
     app.use(express.json({limit: "50mb"}));
     app.use(express.urlencoded({extended: false}));
@@ -28,14 +33,15 @@ let configHandle = (express, app, props = {}) => {
     app.use(express.static(public_mediaFolder, {maxage: "1y"}));
 
     // if(props.front) {
-        let adminFolder = path.join(__dirname, props.base, "./admin");
-        let themeFolder = path.join(__dirname, props.base, "./theme");
-        path.adminFolder = adminFolder;
-        path.themeFolder = themeFolder;
-    //     // console.log("themeFolder: ", themeFolder)
-        app.use('/site_setting',express.static(themeFolder+'/site_setting'));
-        app.use('/static',express.static(themeFolder+'/static'));
-        app.use('/admin',express.static(adminFolder));
+    path.adminFolder = adminFolder;
+    path.themeFolder = themeFolder;
+    console.log("props.base: ", props.base)
+    console.log("adminFolder: ", adminFolder)
+    console.log("themeFolder: ", themeFolder)
+    console.log("public_mediaFolder: ", public_mediaFolder)
+    app.use('/site_setting',express.static(themeFolder+'/site_setting'));
+    app.use('/static',express.static(themeFolder+'/static'));
+    app.use('/admin',express.static(adminFolder));
     // }
     // // let R = createPublicRoute('/admin')
     // if(props.admin) {
