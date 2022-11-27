@@ -198,6 +198,18 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.72
+    add forms and entry to admin
+    add dark mode and change theme button
+    change menu app bar
+    
+
+- 0.0.71
+    add bg to the-body
+      
+- 0.0.70   
+    remove some little bugs
+     
 - 0.0.69        
     add extra button to products, add header settings for ssr 
 

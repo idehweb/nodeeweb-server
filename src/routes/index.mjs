@@ -1,4 +1,5 @@
 // console.log('#f routes/index')
+// import React from 'react';
 
 import express from 'express';
 import path from "path";
@@ -6,6 +7,8 @@ import axios from "axios";
 // const publicFolder = path.join(__dirname, "./public");
 // import _ from 'loadash';
 // import menu from "#routes/menu";
+import { StaticRouter } from "react-router-dom/server";
+
 import controller from "#controllers/index";
 // import post from "#routes/post";
 // import settings from "#routes/settings";
@@ -15,6 +18,11 @@ import global from '#root/global';
 import fs from "fs";
 import "ignore-styles";
 import * as React from "react";
+// import * as ReactDOMServer from "react-router-dom/server";
+import * as ReactDOMServer from "react-dom/server";
+
+import { Provider } from "react-redux";
+// import { StaticRouter } from "react-router-dom/server";
 
 const __dirname = path.resolve();
 
@@ -119,7 +127,8 @@ function make_routes_safe(req, res, next, rou) {
                 // if(req.route.path=='/product/:_id/:_slug'){
                 //
                 // }
-                // return res.status(200).send(body);
+                const renderedData = (<div></div>);
+                return res.status(200).send(body);
                 resolve(body);
             });
         });
@@ -297,7 +306,10 @@ function create_standard_route(suf = '/', routes = [], router) {
         })
     return router
 }
+function handle_ssr(suf = '/', routes = [], router) {
 
+
+}
 //
 //         let ua = req.get("user-agent");
 //         if (!req.headers.lan)

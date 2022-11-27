@@ -1,8 +1,9 @@
 {
   "name": "@nodeeweb/server",
-  "version": "0.0.69",
+  "version": "0.0.73",
   "type": "module",
   "dependencies": {
+    "@babel/core": "^7.0.0",
     "@babel/preset-react": "^7.18.6",
     "@babel/register": "^7.17.7",
     "@emotion/react": "^11.10.5",
@@ -13,10 +14,9 @@
     "@mui/x-data-grid": "^5.17.12",
     "@react-ssr/core": "^0.24.0",
     "@react-ssr/express": "^0.24.0",
+    "@types/react-router-dom": "^5.3.3",
     "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
-    "bootstrap": "^5.2.2",
-    "chart.js": "^3.7.1",
     "commondir": "^1.0.1",
     "connect-busboy": "^1.0.0",
     "cookie-parser": "^1.4.6",
@@ -33,6 +33,7 @@
     "isbot": "^3.4.6",
     "lodash": "^4.17.21",
     "mime": "^3.0.0",
+    "mini-css-extract-plugin": "^2.7.0",
     "moment-jalaali": "^0.9.6",
     "mongoose": "^6.3.2",
     "morgan": "^1.10.0",
@@ -47,6 +48,7 @@
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.3",
+    "react-router-redux": "^4.0.8",
     "request-ip": "^3.3.0",
     "shelljs": "^0.8.5",
     "typescript": "^4.6.4",
@@ -54,21 +56,24 @@
     "webpack-node-externals": "^3.0.0"
   },
   "scripts": {
+    "babel-version": "babel-node --version",
+    "build": "babel ./src/bin/www.js -d dist",
+    "dev": "webpack-dev-server --config ./src/webpack.server.mjs --mode development",
     "wizard": "node wizard",
-    "start": "set BABEL_CACHE_PATH=./node_modules/babel-cache.json && babel-node ./src/bin/www",
-    "dev": "babel-node ./src/bin/www.mjs"
+    "start": "set BABEL_CACHE_PATH=./node_modules/babel-cache.json && babel-node ./src/bin/www.js",
+    "start3": "npx -p @babel/core -p @babel/node babel-node --presets @babel/react ./src/bin/www.js"
   },
   "devDependencies": {
-    "@babel/cli": "^7.17.10",
-    "@babel/core": "^7.17.10",
-    "@babel/node": "^7.17.10",
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.20.2",
+    "@babel/node": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@babel/plugin-transform-runtime": "^7.17.10",
     "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.17.12",
+    "@babel/preset-flow": "^7.18.6",
     "@craco/craco": "^6.4.3",
-    "babel-loader": "^9.1.0",
-    "babel-preset-react": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
     "compression-webpack-plugin": "^10.0.0",
     "define-variable-webpack-plugin": "^1.0.1",
     "eslint": "^8.15.0",
@@ -79,7 +84,7 @@
     "fs": "^0.0.1-security",
     "ftp-deploy": "^2.4.2",
     "nodemon": "^2.0.16",
-    "sass": "^1.52.3"
+    "sass": "^1.56.1"
   },
   "imports": {
     "#json/*": "./src/*.json",

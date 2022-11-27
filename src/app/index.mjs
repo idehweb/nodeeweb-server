@@ -1,6 +1,7 @@
 // console.log("#f index.mjs", new Date());
 
 import express from "express";
+import React from 'react';
 
 import db from "#root/app/db";
 import path from "path";
@@ -63,17 +64,22 @@ export default function BaseApp(theProps = {}) {
                     console.log('show front, go visit ', process.env.SHOP_URL);
                     let Settings = req.mongoose.model('Settings');
                     // console.log('obj', obj)
-                    Settings.findOne({}, "header_last", function (err, hea) {
-                        console.log('hea',hea)
+                    Settings.findOne({}, "title header_last", function (err, hea) {
+                        console.log('hea', hea)
+                        if (!hea) {
+                            hea = {}
+                        }
                         res.ssrParse().then(body => {
-                            body = body.replace('</head>', `<title>${hea.title}</title></head>`);
+                            body = body.replace('</head>', `<title>${(hea.title && hea.title[req.headers.lan]) ? hea.title[req.headers.lan] : 'Nodeeweb'}</title></head>`);
+
+                            // body = body.replace('</head>', `<title>${hea.title}</title></head>`);
                             body = body.replace('</head>', `<meta name="description" content="${hea.metadescription}" /></head>`);
                             // body = body.replace('</head>', `<meta name="product_id" content="${obj._id}" /></head>`);
                             // body = body.replace('</head>', `<meta name="product_name" content="${obj.product_name}" /></head>`);
                             // body = body.replace('</head>', `<meta name="product_price" content="${obj.product_price}" /></head>`);
                             // body = body.replace('</head>', `<meta name="product_old_price" content="${obj.product_old_price}" /></head>`);
 
-                           body = body.replace('</head>', hea?.header_last + `</head>`);
+                            body = body.replace('</head>', (hea && hea.header_last) ? hea.header_last : "" + `</head>`);
 
                             res.status(200).send(body);
                         })
@@ -127,7 +133,7 @@ export default function BaseApp(theProps = {}) {
                     let Settings = req.mongoose.model('Settings');
                     console.log('obj', obj)
                     Settings.findOne({}, "header_last", function (err, hea) {
-                        console.log('hea',hea)
+                        console.log('hea', hea)
                         Product.findOne(obj, "title metadescription keywords excerpt type price in_stock salePrice combinations thumbnail photos slug labels _id",
                             function (err, product) {
                                 if (err || !product) {
@@ -254,7 +260,7 @@ export default function BaseApp(theProps = {}) {
                                     body = body.replace('</head>', `<meta name="og:title" content="${obj.title}" /></head>`);
                                     body = body.replace('</head>', `<meta name="og:description" content="${obj.description}" /></head>`);
                                     body = body.replace('</head>', `<meta name="og:url" content="." /></head>`);
-                                    body = body.replace('</head>', hea?.header_last + `</head>`);
+                                    body = body.replace('</head>', (hea && hea.header_last) ? hea.header_last : "" + `</head>`);
 
                                     res.status(200).send(body);
                                 })
