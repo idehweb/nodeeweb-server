@@ -7,7 +7,7 @@ import axios from "axios";
 // const publicFolder = path.join(__dirname, "./public");
 // import _ from 'loadash';
 // import menu from "#routes/menu";
-import { StaticRouter } from "react-router-dom/server";
+import {StaticRouter} from "react-router-dom/server";
 
 import controller from "#controllers/index";
 // import post from "#routes/post";
@@ -16,12 +16,13 @@ import mongoose from "mongoose";
 // import user from "#routes/default/user/index";
 import global from '#root/global';
 import fs from "fs";
+import store from "#c/store";
 import "ignore-styles";
 import * as React from "react";
 // import * as ReactDOMServer from "react-router-dom/server";
 import * as ReactDOMServer from "react-dom/server";
 
-import { Provider } from "react-redux";
+import {Provider} from "react-redux";
 // import { StaticRouter } from "react-router-dom/server";
 
 const __dirname = path.resolve();
@@ -127,6 +128,7 @@ function make_routes_safe(req, res, next, rou) {
                 // if(req.route.path=='/product/:_id/:_slug'){
                 //
                 // }
+                handle_ssr(req, res, next)
                 const renderedData = (<div></div>);
                 return res.status(200).send(body);
                 resolve(body);
@@ -140,7 +142,7 @@ function make_routes_safe(req, res, next, rou) {
         return res.sendFile(path.themeFolder + '/index.html')
     };
     res.admin = () => {
-        console.log('admin',path.adminFolder)
+        console.log('admin', path.adminFolder)
         // console.log('adminFolder',path.adminFolder+'/index.html')
         return res.sendFile(path.adminFolder + '/index.html')
     };
@@ -306,10 +308,16 @@ function create_standard_route(suf = '/', routes = [], router) {
         })
     return router
 }
-function handle_ssr(suf = '/', routes = [], router) {
 
+function handle_ssr(req, res, next) {
+    {/*<StaticRouter context={context} location={req.url}>*/}
+        {/*<AppSSR url={req.url}/></StaticRouter>*/}
+    const renderedData = ReactDOMServer.renderToString(<Provider store={store}>
 
+    </Provider>);
+    console.log('renderedData', renderedData)
 }
+
 //
 //         let ua = req.get("user-agent");
 //         if (!req.headers.lan)

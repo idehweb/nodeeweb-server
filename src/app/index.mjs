@@ -1,5 +1,5 @@
 // console.log("#f index.mjs", new Date());
-
+import "ignore-styles";
 import express from "express";
 import React from 'react';
 
@@ -248,11 +248,11 @@ export default function BaseApp(theProps = {}) {
                                     body = body.replace('</head>', `<meta name="product_name" content="${obj.product_name}" /></head>`);
                                     body = body.replace('</head>', `<meta name="product_price" content="${obj.product_price}" /></head>`);
                                     body = body.replace('</head>', `<meta name="product_old_price" content="${obj.product_old_price}" /></head>`);
-                                    body = body.replace('</head>', `<meta name="product_image" content="${obj.image}" /></head>`);
-                                    body = body.replace('</head>', `<meta name="image" content="${obj.image}" /></head>`);
+                                    body = body.replace('</head>', `<meta name="product_image" content="/${obj.image}" /></head>`);
+                                    body = body.replace('</head>', `<meta name="image" content="/${obj.image}" /></head>`);
                                     body = body.replace('</head>', `<meta name="availability" content="${obj.availability}" /></head>`);
-                                    body = body.replace('</head>', `<meta name="og:image" content="${obj.image}" /></head>`);
-                                    body = body.replace('</head>', `<meta name="og:image:secure_url" content="${obj.image}" /></head>`);
+                                    body = body.replace('</head>', `<meta name="og:image" content="/${obj.image}" /></head>`);
+                                    body = body.replace('</head>', `<meta name="og:image:secure_url" content="/${obj.image}" /></head>`);
                                     body = body.replace('</head>', `<meta name="og:image:width" content="1200" /></head>`);
                                     body = body.replace('</head>', `<meta name="og:image:height" content="675" /></head>`);
                                     body = body.replace('</head>', `<meta name="og:locale" content="fa_IR" /></head>`);
