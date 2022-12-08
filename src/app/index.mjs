@@ -4,6 +4,7 @@ import express from "express";
 import React from 'react';
 
 import db from "#root/app/db";
+import handlePlugins from "#root/app/handlePlugins";
 import path from "path";
 import mongoose from "mongoose";
 // import ssrHandle from "#root/app/ssrHandle";
@@ -64,7 +65,7 @@ export default function BaseApp(theProps = {}) {
                     console.log('show front, go visit ', process.env.SHOP_URL);
                     let Settings = req.mongoose.model('Settings');
                     // console.log('obj', obj)
-                    Settings.findOne({}, "title header_last", function (err, hea) {
+                    Settings.findOne({}, "title header_last body_first metadescription", function (err, hea) {
                         console.log('hea', hea)
                         if (!hea) {
                             hea = {}
@@ -73,13 +74,15 @@ export default function BaseApp(theProps = {}) {
                             body = body.replace('</head>', `<title>${(hea.title && hea.title[req.headers.lan]) ? hea.title[req.headers.lan] : 'Nodeeweb'}</title></head>`);
 
                             // body = body.replace('</head>', `<title>${hea.title}</title></head>`);
-                            body = body.replace('</head>', `<meta name="description" content="${hea.metadescription}" /></head>`);
+                            if (hea && hea.metadescription)
+                                body = body.replace('</head>', `<meta name="description" content="${hea.metadescription}" /></head>`);
                             // body = body.replace('</head>', `<meta name="product_id" content="${obj._id}" /></head>`);
                             // body = body.replace('</head>', `<meta name="product_name" content="${obj.product_name}" /></head>`);
                             // body = body.replace('</head>', `<meta name="product_price" content="${obj.product_price}" /></head>`);
                             // body = body.replace('</head>', `<meta name="product_old_price" content="${obj.product_old_price}" /></head>`);
 
-                            body = body.replace('</head>', (hea && hea.header_last) ? hea.header_last : "" + `</head>`);
+                            body = body.replace('</head>', ((hea && hea.header_last) ? hea.header_last : "") + '</head>');
+                            body = body.replace('<body>', '<body>' + ((hea && hea.body_first) ? hea.body_first : ""));
 
                             res.status(200).send(body);
                         })
@@ -527,88 +530,91 @@ export default function BaseApp(theProps = {}) {
         req.props = props;
         next();
     });
-
-    db(props, app).then(e => {
-        headerHandle(app);
-        configHandle(express, app, props);
-        if (theProps.server)
-            theProps.server.forEach(serv => {
-                serv(app);
-            });
-        app.use(function (err, req, res, next) {
-            // console.log('here....');
-            if (req.busboy) {
-                req.pipe(req.busboy);
-
-                req.busboy.on("file", function (
-                    fieldname,
-                    file,
-                    filename,
-                    encoding,
-                    mimetype
-                ) {
-                    // ...
-                    // console.log('on file app', mimetype,filename);
-
-                    let fstream;
-                    let name = (global.getFormattedTime() + filename).replace(/\s/g, '');
-
-                    if (mimetype.includes('image')) {
-                        // name+=".jpg"
-                    }
-                    if (mimetype.includes('video')) {
-                        // name+="mp4";
-                    }
-                    let filePath = path.join(__dirname, "/public_media/customer/", name);
-                    fstream = fs.createWriteStream(filePath);
-                    file.pipe(fstream);
-                    fstream.on("close", function () {
-                        // console.log('Files saved');
-                        let url = "customer/" + name;
-                        let obj = [{name: name, url: url, type: mimetype}];
-                        req.photo_all = obj;
-                        next();
-                    });
+    handlePlugins(props, app).then(fsl => {
+        console.log('fsl', fsl)
+        db(props, app).then(e => {
+            headerHandle(app);
+            configHandle(express, app, props);
+            if (theProps.server)
+                theProps.server.forEach(serv => {
+                    serv(app);
                 });
-            } else {
-                next();
-            }
-        });
-// ssrHandle(app);
-        let Page = mongoose.model('Page');
-        let routes = props['front'].routes.reverse() || [];
+            app.use(function (err, req, res, next) {
+                // console.log('here....');
+                if (req.busboy) {
+                    req.pipe(req.busboy);
 
-        Page.find({}, function (err, pages) {
-            if (pages)
-                pages.forEach((page) => {
-                    if (page.path) {
-                        console.log('page.path', page.path)
-                        routes.push({
-                            path: page.path,
-                            method: 'get',
-                            access: 'customer_all',
-                            controller: (req, res, next) => {
-                                console.log('show front, go visit ', process.env.SHOP_URL);
-                                res.show()
-                            },
+                    req.busboy.on("file", function (
+                        fieldname,
+                        file,
+                        filename,
+                        encoding,
+                        mimetype
+                    ) {
+                        // ...
+                        // console.log('on file app', mimetype,filename);
 
-                            layout: 'DefaultLayout',
-                            element: 'DynamicPage',
-                            elements: page.elements || [],
+                        let fstream;
+                        let name = (global.getFormattedTime() + filename).replace(/\s/g, '');
+
+                        if (mimetype.includes('image')) {
+                            // name+=".jpg"
+                        }
+                        if (mimetype.includes('video')) {
+                            // name+="mp4";
+                        }
+                        let filePath = path.join(__dirname, "/public_media/customer/", name);
+                        fstream = fs.createWriteStream(filePath);
+                        file.pipe(fstream);
+                        fstream.on("close", function () {
+                            // console.log('Files saved');
+                            let url = "customer/" + name;
+                            let obj = [{name: name, url: url, type: mimetype}];
+                            req.photo_all = obj;
+                            next();
                         });
-                    }
-                })
+                    });
+                } else {
+                    next();
+                }
+            });
+// ssrHandle(app);
+            let Page = mongoose.model('Page');
+            let routes = props['front'].routes.reverse() || [];
 
-            props['front'].routes = routes.reverse()
+            Page.find({}, function (err, pages) {
+                if (pages)
+                    pages.forEach((page) => {
+                        if (page.path) {
+                            console.log('page.path', page.path)
+                            routes.push({
+                                path: page.path,
+                                method: 'get',
+                                access: 'customer_all',
+                                controller: (req, res, next) => {
+                                    console.log('show front, go visit ', process.env.SHOP_URL);
+                                    res.show()
+                                },
 
-            // console.log('routes', props['front'].routes.reverse())
-            // props['front'].routes=[...props['front'].routes,...routes]
-            routeHandle(app, props);
+                                layout: 'DefaultLayout',
+                                element: 'DynamicPage',
+                                elements: page.elements || [],
+                            });
+                        }
+                    })
 
-        });
+                props['front'].routes = routes.reverse()
+
+                // console.log('routes', props['front'].routes.reverse())
+                // props['front'].routes=[...props['front'].routes,...routes]
+                routeHandle(app, props);
+
+            });
 // app.set("view engine", "pug");
 //         console.log('return app in BaseApp()')
-    });
+        });
+    })
+
     // app.get("/", (req, res, next) => {
     //     console.log('#r home /')
     //     next();

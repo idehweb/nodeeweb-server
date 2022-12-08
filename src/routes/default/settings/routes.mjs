@@ -17,4 +17,10 @@ export default [{
     "access": "admin_user",
     "controller": controller.configuration,
 
+},{
+    "path": "/plugins",
+    "method": "get",
+    "access": "admin_user",
+    "controller": controller.plugins,
+
 }]

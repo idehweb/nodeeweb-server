@@ -198,6 +198,24 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.80
+    remove babel
+
+- 0.0.79
+    add source to customers
+
+- 0.0.78
+    add plugins
+
+- 0.0.77
+    add body and head tags support
+
+- 0.0.75
+    update admin , enhance admin UI/UX
+
+- 0.0.74
+    add sitemap
+
 - 0.0.72
     add forms and entry to admin
     add dark mode and change theme button

@@ -45,23 +45,23 @@ var self = (Model) => {
             // return res.json(Model.schema.paths);
             // console.log("Model.schema => ",Model.schema.paths);
             // console.log(Object.keys(req.query));
-            let tt=Object.keys(req.query);
+            let tt = Object.keys(req.query);
             // console.log('type of tt ==> ', typeof tt);
             // console.log("tt => ", tt);
-            _.forEach(tt, (item)=>{
+            _.forEach(tt, (item) => {
                 // console.log("item => ",item);
-                if(Model.schema.paths[item]){
+                if (Model.schema.paths[item]) {
                     // console.log("item exists ====>> ",item);
                     // console.log("instance of item ===> ",Model.schema.paths[item].instance);
                     let split = req.query[item].split(',');
                     if (mongoose.isValidObjectId(split[0])) {
-                        search[item]={
+                        search[item] = {
                             $in: split
                         }
                     }
 
                 }
-                else{
+                else {
                     console.log("filter doesnot exist => ", item);
                 }
             });
@@ -73,7 +73,7 @@ var self = (Model) => {
                 }
             }
             console.log('thef', thef);
-            if (thef && thef!='')
+            if (thef && thef != '')
                 search = thef;
             // console.log(req.mongoose.Schema(Model))
             console.log('search', search)
@@ -126,7 +126,6 @@ var self = (Model) => {
                 });
         }
         ,
-
         create: function (req, res, next) {
             Model.create(req.body, function (err, menu) {
                 if (err || !menu) {
@@ -143,6 +142,49 @@ var self = (Model) => {
             });
         },
         importEntity: function (req, res, next) {
+            let array = [];
+            if (req.query.url)
+                req.httpRequest({
+                    method: "get",
+                    url: req.query.url,
+                }).then(function (response) {
+
+                    _.forEach(response.data, (item) => {
+                        delete item._id;
+                        Model.create(item, function (err, mod) {
+                            if (err || !mod) {
+                                console.log({
+                                    err: err,
+                                    success: false,
+                                    message: 'error!'
+                                });
+                            }
+                            // return 0;
+                            console.log('imported...');
+                        });
+                    })
+                    return res.json(response['data'])
+                });
+            else{
+                _.forEach(req.body, (item) => {
+                    delete item._id;
+                    Model.create(item, function (err, mod) {
+                        if (err || !mod) {
+                            console.log({
+                                err: err,
+                                success: false,
+                                message: 'error!'
+                            });
+                        }
+                        // return 0;
+                        console.log('imported...');
+                    });
+                })
+
+            }
+        }
+        ,
+        exportEntity: function (req, res, next) {
             let array = [];
             req.httpRequest({
                 method: "get",
@@ -189,6 +231,15 @@ var self = (Model) => {
         }
         ,
         edit: function (req, res, next) {
+            if (!req.params.id) {
+
+                return res.json({
+                    success: false,
+                    message: 'send /edit/:id please, you did not enter id',
+                });
+
+
+            }
             Model.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, menu) {
                 if (err || !menu) {
                     res.json({
@@ -226,7 +277,57 @@ var self = (Model) => {
             });
         }
         ,
+        copy: function (req, res, next) {
+            if (!req.headers.lan) {
+                req.headers.lan = "fa";
+            }
+            if (!req.params.id) {
 
+                return res.json({
+                    success: false,
+                    message: 'send /copy/:id please, you did not enter id',
+                });
+
+
+            }
+            Model.findById(req.params.id, function (err, product) {
+                if (err || !product) {
+                    res.json({
+                        success: false,
+                        message: "error!"
+                    });
+                    return 0;
+                }
+                delete product._id;
+                Model.create(product, function (err, product) {
+                    if (err || !product) {
+                        res.json({
+                            err: err,
+                            success: false,
+                            message: "error!"
+                        });
+                        return 0;
+                    }
+                    // console.log("req.headers", req.headers);
+                    // if (req.headers.user && req.headers.token) {
+                    //     let action = {
+                    //         user: req.headers.user._id,
+                    //         title: "copy product " + product._id,
+                    //         data: product,
+                    //         history: req.body,
+                    //         product: product._id
+                    //     };
+                    //     global.submitAction(action);
+                    // }
+                    res.json(product);
+                    return 0;
+
+                });
+
+
+            }).lean();
+        }
+        ,
 
     })
 };

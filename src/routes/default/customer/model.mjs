@@ -20,8 +20,10 @@ export default (mongoose)=>{
         },
         firstName: String,
         lastName: String,
+        birthday: String,
         internationalCode: String,
         sex: String,
+        source: String,
         bankData: {},
         data: {},
         type: {

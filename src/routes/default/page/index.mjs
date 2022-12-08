@@ -6,6 +6,8 @@ export default {
     "model": model,
     "modelName": "Page",
     "routes": routes,
+    "sitemap": true,
+
     "admin": {
         "list": {
             "header": [

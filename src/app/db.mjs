@@ -54,6 +54,7 @@ export default (props = {}, app) => {
                 createPublicMediaFolder()
                 createAdminFolder()
                 createThemeFolder()
+                createPluginFolder()
                 // let filePath = path.join(__dirname, thePath, file_name);
                 // try {
                 //     // fs.promises.ex
@@ -168,6 +169,16 @@ const updateThemeConfig = function () {
         "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
         "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
         "window.SHOP_URL='" + process.env.SHOP_URL + "';")
+}
+const createPluginFolder = function () {
+    let pluginPath = path.join(__dirname, "./plugins/");
+    if (fs.existsSync(pluginPath)) {
+
+    } else {
+        fs.mkdir(pluginPath, () => {
+        });
+    }
+
 }
 const createThemeFolder = function () {
     const appDirectory = fs.realpathSync(process.cwd());

@@ -6,6 +6,7 @@ export default {
     "model": model,
     "modelName": "Post",
     "routes": routes,
+    "sitemap": true,
     "admin": {
         "list": {
             "header": [

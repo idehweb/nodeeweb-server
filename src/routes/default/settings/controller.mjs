@@ -1,10 +1,38 @@
 import shell from 'shelljs';
 import path from "path";
-var self = ( {
-    configuration: function(req, res, next) {
+import fs from "fs";
+import _ from "lodash";
+
+var self = ({
+    plugins: function (req, res, next) {
+        let __dirname = path.resolve();
+        let pluginPath = path.join(__dirname, "./plugins/");
+        const getDirectories = (source, callback) =>
+            fs.readdir(source, {withFileTypes: true}, (err, files) => {
+                if (err) {
+                    callback(err)
+                } else {
+                    callback(
+                        files
+                            .filter(dirent => dirent.isDirectory())
+                    )
+                }
+            })
+        getDirectories(pluginPath, function (f) {
+            let p = _.map(f, (item) => {
+                item.path = '/' + item.name + '/index.js'
+                item.image = '/' + item.name + '/image.jpg'
+                item.active = '/' + item.name + '/image.jpg'
+            })
+            return res.json(f);
+        });
+
+
+    },
+    configuration: function (req, res, next) {
         let Settings = req.mongoose.model('Settings');
 
-        Settings.findOneAndUpdate({}, req.body, { new: true }, function(err, setting) {
+        Settings.findOneAndUpdate({}, req.body, {new: true}, function (err, setting) {
 
 
             if (err && !setting) {
@@ -25,12 +53,12 @@ var self = ( {
             // fstream.on("close", function() {
             //
             // });
-            res.json({success:true,setting})
+            res.json({success: true, setting})
 
         });
 
     },
-    last: function(req, res, next) {
+    last: function (req, res, next) {
         let Settings = req.mongoose.model('Settings');
 
         console.log("last setting ==> ");
@@ -39,7 +67,7 @@ var self = ( {
             offset = parseInt(req.params.offset);
         }
 
-        Settings.find(function(err, settingss) {
+        Settings.find(function (err, settingss) {
             // console.log('Settings find==> ');
 
             if (err || !settingss) {
@@ -57,21 +85,21 @@ var self = ( {
             return 0;
 
 
-        }).skip(offset).sort({ _id: -1 }).limit(1);
+        }).skip(offset).sort({_id: -1}).limit(1);
         // res.json([]);
     },
-    restart: function(req, res, next){
+    restart: function (req, res, next) {
         const _dirname = path.resolve();
         let site = process.env.SITE_NAME;
         site = site.toLowerCase();
         console.log("Site ==> ", site);
         // console.log("dirname ===> " ,_dirname);
         const scripts = path.join(_dirname, "node_modules/@nodeeweb/server/scripts");
-        console.log("scripts ==> ", 'sh '+scripts+`/restart.sh ${site}`);
+        console.log("scripts ==> ", 'sh ' + scripts + `/restart.sh ${site}`);
         res.json({
-            success:true
+            success: true
         })
-        shell.exec('sh '+scripts+`/restart.sh ${site}`);
+        shell.exec('sh ' + scripts + `/restart.sh ${site}`);
 
     },
 

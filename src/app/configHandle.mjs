@@ -1,10 +1,14 @@
 // console.log("#f configHandle.mjs", new Date());
+import mongoose from "mongoose"
 
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import busboy from "connect-busboy";
 import path from "path";
+import _ from "lodash";
 import {createPublicRoute} from "#routes/index";
+import expressSitemapXml from 'express-sitemap-xml';
+import controller from "#controllers/index";
 
 const __dirname = path.resolve();
 // const viewsFolder = path.join(__dirname, "./src/views");
@@ -21,6 +25,32 @@ const themeFolder = path.join(__dirname, "./theme");
 let configHandle = (express, app, props = {}) => {
     app.disable("x-powered-by");
     app.use(logger("dev"));
+
+    app.use(expressSitemapXml(getUrls, process.env.BASE_URL))
+
+    async function getUrls() {
+        let g = [];
+        for(var i=0;i<props.entity.length;i++){
+            if (props.entity[i].sitemap) {
+                let Model = mongoose.model(props.entity[i].modelName);
+                await allAsXml(Model).then(async (d) => {
+                    console.log('d is here', d.length);
+                    g = [...g,...d];
+                });
+            }
+        }
+
+
+        // Model = mongoose.model('Page');
+        //
+        // await allAsXml(Model).then(async (d) => {
+        //     console.log('d is here', d.length);
+        //     g = [...g,...d];
+        // });
+        await console.log('x', g);
+        return await g;
+
+    }
 
     // const adminFolder = path.join(__dirname, props.base, "./admin");
     // const themeFolder = path.join(__dirname, props.base, "./theme");
@@ -39,9 +69,9 @@ let configHandle = (express, app, props = {}) => {
     console.log("adminFolder: ", adminFolder)
     console.log("themeFolder: ", themeFolder)
     console.log("public_mediaFolder: ", public_mediaFolder)
-    app.use('/site_setting',express.static(themeFolder+'/site_setting'));
-    app.use('/static',express.static(themeFolder+'/static'));
-    app.use('/admin',express.static(adminFolder));
+    app.use('/site_setting', express.static(themeFolder + '/site_setting'));
+    app.use('/static', express.static(themeFolder + '/static'));
+    app.use('/admin', express.static(adminFolder));
     // }
     // // let R = createPublicRoute('/admin')
     // if(props.admin) {
@@ -56,4 +86,39 @@ let configHandle = (express, app, props = {}) => {
     // app.use(express.static(assetsFolder));
     // console.log("==> configHandle");
 };
+const allAsXml= async function (Model) {
+    console.log('allAsXml')
+    let XTL = [{
+        url: '/',
+        lastMod: new Date(),
+        changeFreq: 'hourly'
+    }], offset = 0, search = {};
+    return new Promise(async function (resolve, reject) {
+        console.log('Promis')
+        search['status'] = 'published';
+        console.log('Model', Model)
+        Model.find({},'_id slug updatedAt', function (err, posts) {
+            // console.log(err)
+            // console.log(posts)
+            if(err || !posts.length){
+                console.log('return')
+                return resolve(XTL)
+            }
+            _.forEach(posts, (p) => {
+                XTL.push({
+                    url: '/' + Model.modelName.toLowerCase()+
+                    '/' + p._id + '/' + p.slug,
+                    lastMod: p.updatedAt,
+                    changeFreq: 'hourly'
+                });
+                // console.log(posts.length, '===', XTL.length + 1)
+                if (posts.length === XTL.length + 1)
+                    resolve(XTL);
+            });
+
+        }).skip(offset).sort({_id: -1});
+        // resolve(XTL)
+    });
+};
+
 export default configHandle;

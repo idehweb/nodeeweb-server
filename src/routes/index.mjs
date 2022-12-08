@@ -7,7 +7,7 @@ import axios from "axios";
 // const publicFolder = path.join(__dirname, "./public");
 // import _ from 'loadash';
 // import menu from "#routes/menu";
-import {StaticRouter} from "react-router-dom/server";
+// import {StaticRouter} from "react-router-dom/server";
 
 import controller from "#controllers/index";
 // import post from "#routes/post";
@@ -16,13 +16,13 @@ import mongoose from "mongoose";
 // import user from "#routes/default/user/index";
 import global from '#root/global';
 import fs from "fs";
-import store from "#c/store";
-import "ignore-styles";
-import * as React from "react";
+// import store from "#c/store";
+// import "ignore-styles";
+// import * as React from "react";
 // import * as ReactDOMServer from "react-router-dom/server";
-import * as ReactDOMServer from "react-dom/server";
+// import * as ReactDOMServer from "react-dom/server";
 
-import {Provider} from "react-redux";
+// import {Provider} from "react-redux";
 // import { StaticRouter } from "react-router-dom/server";
 
 const __dirname = path.resolve();
@@ -51,11 +51,14 @@ export function createRoute(modelName, routes, label) {
     router = create_standard_route('', routes, router);
     router.get('/', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.all, ...returnThisRouteRules('/', 'get', routes)}));
     router.get('/count', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.all, ...returnThisRouteRules('/count', 'get', routes)}));
+    router.post('/copy/:id', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.copy, ...returnThisRouteRules('/copy/:id', 'post', routes)}));
+
     router.get('/:offset/:limit', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.all, ...returnThisRouteRules('/:offset/:limit', 'get', routes)}));
     router.get('/:offset/:limit/:search', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.all, ...returnThisRouteRules('/:offset/:limit/:search', 'get', routes)}));
     router.get('/:id', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.viewOne, ...returnThisRouteRules('/:id', 'get', routes)}));
     router.post('/', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.create, ...returnThisRouteRules('/', 'post', routes)}));
     router.post('/import', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.importEntity, ...returnThisRouteRules('/import', 'post', routes)}));
+    router.post('/export', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.exportEntity, ...returnThisRouteRules('/export', 'post', routes)}));
     router.put('/:id', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.edit, ...returnThisRouteRules('/:id', 'put', routes)}));
     router.delete('/:id', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.destroy, ...returnThisRouteRules('/:id', 'delete', routes)}));
 
@@ -128,9 +131,9 @@ function make_routes_safe(req, res, next, rou) {
                 // if(req.route.path=='/product/:_id/:_slug'){
                 //
                 // }
-                handle_ssr(req, res, next)
-                const renderedData = (<div></div>);
-                return res.status(200).send(body);
+                // handle_ssr(req, res, next)
+                // const renderedData = (<div></div>);
+                // return res.status(200).send(body);
                 resolve(body);
             });
         });
@@ -312,9 +315,9 @@ function create_standard_route(suf = '/', routes = [], router) {
 function handle_ssr(req, res, next) {
     {/*<StaticRouter context={context} location={req.url}>*/}
         {/*<AppSSR url={req.url}/></StaticRouter>*/}
-    const renderedData = ReactDOMServer.renderToString(<Provider store={store}>
-
-    </Provider>);
+    // const renderedData = ReactDOMServer.renderToString(<Provider store={store}>
+    //
+    // </Provider>);
     console.log('renderedData', renderedData)
 }
 
