@@ -1,5 +1,6 @@
 // console.log("#f index.mjs", new Date());
 import "ignore-styles";
+import _ from "lodash";
 import express from "express";
 import React from 'react';
 
@@ -21,7 +22,10 @@ import Menu from "#routes/default/menu/index";
 import Template from "#routes/default/template/index";
 import Media from "#routes/default/media/index";
 import Post from "#routes/default/post/index";
+import Form from "#routes/default/form/index";
+import Entry from "#routes/default/entry/index";
 import Notification from "#routes/default/notification/index";
+import Gateways from "#routes/default/gateways/index";
 // import router from "../routes/public/p";
 // import uploadHandle from "#root/app/uploadHandle";
 
@@ -53,6 +57,9 @@ export default function BaseApp(theProps = {}) {
     props['entity'].push(Media);
     props['entity'].push(Notification);
     props['entity'].push(Template);
+    props['entity'].push(Form);
+    props['entity'].push(Entry);
+    props['entity'].push(Gateways);
 //make routes standard
     // console.log('rules',rules);
     if (!props['front']) {
@@ -305,111 +312,117 @@ export default function BaseApp(theProps = {}) {
                     "access": "",
                     "controller": (req, res, next) => {
                         console.log('get theme settings... ', req.headers.token);
+                        let Settings = req.mongoose.model('Settings');
                         let Template = req.mongoose.model('Template');
                         let Page = req.mongoose.model('Page');
 
                         let rules = {};
                         rules = req.rules(rules);
                         // console.log('rules', rules);
-                        Template.findOne({type: 'header'}, function (err, header) {
-                            // console.log('header error',err);
-                            // console.log('header',header);
-                            Template.findOne({type: 'footer'}, function (err, footer) {
-                                let routes = [];
-                                Page.find({}, function (err, pages) {
-                                    if (pages)
-                                        pages.forEach((page) => {
-                                            if (page.path)
-                                                routes.push({
-                                                    path: page.path,
+                        Settings.findOne({}, function (err, setting) {
+                            Template.findOne({type: 'header'}, function (err, header) {
+                                Template.findOne({type: 'footer'}, function (err, footer) {
+                                    let routes = [];
+                                    Page.find({}, function (err, pages) {
+                                        if (pages)
+                                            pages.forEach((page) => {
+                                                if (page.path)
+                                                    routes.push({
+                                                        path: page.path,
+                                                        exact: true,
+                                                        layout: 'DefaultLayout',
+                                                        element: 'DynamicPage',
+                                                        elements: page.elements || [],
+                                                    });
+                                            })
+                                        // console.log('footer error',err);
+                                        // console.log('footer',footer);
+                                        if (req.headers.token) {
+
+                                        }
+                                        // let headerMaxWidth='100%';
+                                        // if()
+                                        let currency='rial';
+                                        if(setting && setting.currency){
+                                            currency=setting.currency;
+                                        }
+                                        return res.json({
+                                            currency:currency,
+                                            header: {
+                                                maxWidth: (header && header.maxWidth) ? header.maxWidth : '100%',
+                                                backgroundColor: (header && header.backgroundColor) ? header.backgroundColor : '',
+                                                classes: (header && header.classes) ? header.classes : '',
+                                                padding: (header && header.padding) ? header.padding : '',
+                                                elements: header ? header.elements : []
+                                            },
+                                            body: [{name: 'MainContent'}],
+                                            footer: {
+                                                maxWidth: (footer && footer.maxWidth) ? footer.maxWidth : '100%',
+                                                backgroundColor: (footer && footer.backgroundColor) ? footer.backgroundColor : '',
+                                                classes: (footer && footer.classes) ? footer.classes : '',
+                                                padding: (footer && footer.padding) ? footer.padding : '',
+                                                elements: footer ? footer.elements : []
+                                            },
+                                            routes: [
+                                                {
+                                                    path: '/',
                                                     exact: true,
                                                     layout: 'DefaultLayout',
-                                                    element: 'DynamicPage',
-                                                    elements: page.elements || [],
-                                                });
-                                        })
-                                    // console.log('footer error',err);
-                                    // console.log('footer',footer);
-                                    if (req.headers.token) {
-
-                                    }
-                                    // let headerMaxWidth='100%';
-                                    // if()
-                                    return res.json({
-                                        header: {
-                                            maxWidth: (header && header.maxWidth) ? header.maxWidth : '100%',
-                                            backgroundColor: (header && header.backgroundColor) ? header.backgroundColor : '',
-                                            classes: (header && header.classes) ? header.classes : '',
-                                            padding: (header && header.padding) ? header.padding : '',
-                                            elements: header ? header.elements : []
-                                        },
-                                        body: [{name: 'MainContent'}],
-                                        footer: {
-                                            maxWidth: (footer && footer.maxWidth) ? footer.maxWidth : '100%',
-                                            backgroundColor: (footer && footer.backgroundColor) ? footer.backgroundColor : '',
-                                            classes: (footer && footer.classes) ? footer.classes : '',
-                                            padding: (footer && footer.padding) ? footer.padding : '',
-                                            elements: footer ? footer.elements : []
-                                        },
-                                        routes: [
-                                            {
-                                                path: '/',
-                                                exact: true,
-                                                layout: 'DefaultLayout',
-                                                element: 'Home',
-                                            },
-
-                                            {
-                                                path: '/chat',
-                                                exact: true,
-                                                layout: 'Nohf',
-                                                element: 'Chat',
-                                            }, {
-                                                path: '/transaction',
-                                                exact: true,
-                                                layout: 'Nohf',
-                                                element: 'Transaction',
-                                            },
-                                            {
-                                                path: '/admin',
-                                                exact: true,
-                                                layout: 'Nohf',
-                                                element: 'Admin',
-                                            }, {
-                                                path: '/admin/:model',
-                                                exact: true,
-                                                layout: 'Nohf',
-                                                element: 'Admin',
-                                            }, {
-                                                path: '/admin/:model/:action',
-                                                exact: true,
-                                                layout: 'Nohf',
-                                                element: 'Admin',
-                                            }, {
-                                                path: '/admin/:model/:action/:_id',
-                                                exact: true,
-                                                layout: 'Nohf',
-                                                element: 'Admin',
-                                            },
-                                            {
-                                                "path": "/a/:_entity/:_id/:_slug",
-                                                "method": "get",
-                                                "access": "customer_all",
-                                                "controller": (req, res, next) => {
-                                                    console.log('show front, go visit ', process.env.SHOP_URL);
-                                                    res.show()
+                                                    element: 'Home',
                                                 },
 
-                                            },
-                                            ...routes
-                                        ],
-                                        models: req.models(),
-                                        rules: JSON.parse(JSON.stringify(rules)),
-                                        components: req.builderComponents(),
+                                                {
+                                                    path: '/chat',
+                                                    exact: true,
+                                                    layout: 'Nohf',
+                                                    element: 'Chat',
+                                                }, {
+                                                    path: '/transaction',
+                                                    exact: true,
+                                                    layout: 'Nohf',
+                                                    element: 'Transaction',
+                                                },
+                                                {
+                                                    path: '/admin',
+                                                    exact: true,
+                                                    layout: 'Nohf',
+                                                    element: 'Admin',
+                                                }, {
+                                                    path: '/admin/:model',
+                                                    exact: true,
+                                                    layout: 'Nohf',
+                                                    element: 'Admin',
+                                                }, {
+                                                    path: '/admin/:model/:action',
+                                                    exact: true,
+                                                    layout: 'Nohf',
+                                                    element: 'Admin',
+                                                }, {
+                                                    path: '/admin/:model/:action/:_id',
+                                                    exact: true,
+                                                    layout: 'Nohf',
+                                                    element: 'Admin',
+                                                },
+                                                {
+                                                    "path": "/a/:_entity/:_id/:_slug",
+                                                    "method": "get",
+                                                    "access": "customer_all",
+                                                    "controller": (req, res, next) => {
+                                                        console.log('show front, go visit ', process.env.SHOP_URL);
+                                                        res.show()
+                                                    },
 
-                                    })
+                                                },
+                                                ...routes
+                                            ],
+                                            models: req.models(),
+                                            rules: JSON.parse(JSON.stringify(rules)),
+                                            components: req.builderComponents(),
+
+                                        })
+                                    });
+
                                 });
-
                             });
                         });
                     },

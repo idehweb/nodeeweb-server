@@ -21,9 +21,10 @@ export default (mongoose)=>{
         firstName: String,
         lastName: String,
         birthday: String,
+        birthdate: { type: Date},
         internationalCode: String,
         sex: String,
-        source: String,
+        source:  { type: String, default: "WEBSITE"},
         bankData: {},
         data: {},
         type: {

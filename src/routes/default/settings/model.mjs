@@ -29,6 +29,7 @@ export default (mongoose) => {
         createdAt: {type: Date, default: Date.now},
         updatedAt: {type: Date, default: Date.now},
         activeCategory: [{type: mongoose.Schema.Types.ObjectId, ref: "Category"}],
+        currency: {type: String, default: 'Toman'},
         dollarPrice: Number,
         derhamPrice: Number,
         sms_welcome: {},

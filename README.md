@@ -198,6 +198,32 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.88
+    add weight to product
+    add rial
+
+- 0.0.87
+    enhance front
+    add currency system
+
+- 0.0.86
+    add gateways
+
+- 0.0.85
+    add form and entry
+
+- 0.0.84
+    add order by admin
+
+- 0.0.83
+    add birthdate
+
+- 0.0.82
+    add pagination
+
+- 0.0.81
+    add attributes part to products
+
 - 0.0.80
     remove babel
 

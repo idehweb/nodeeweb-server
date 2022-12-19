@@ -96,7 +96,7 @@ const allAsXml= async function (Model) {
     return new Promise(async function (resolve, reject) {
         console.log('Promis')
         search['status'] = 'published';
-        console.log('Model', Model)
+        // console.log('Model', Model)
         Model.find({},'_id slug updatedAt', function (err, posts) {
             // console.log(err)
             // console.log(posts)
@@ -104,21 +104,25 @@ const allAsXml= async function (Model) {
                 console.log('return')
                 return resolve(XTL)
             }
+            console.log('length',posts.length,XTL.length)
             _.forEach(posts, (p) => {
+                // console.log('p',p)
+
                 XTL.push({
                     url: '/' + Model.modelName.toLowerCase()+
                     '/' + p._id + '/' + p.slug,
                     lastMod: p.updatedAt,
                     changeFreq: 'hourly'
                 });
-                // console.log(posts.length, '===', XTL.length + 1)
-                if (posts.length === XTL.length + 1)
+                console.log(posts.length + 1, '===', XTL.length )
+                if (posts.length + 1 === XTL.length) {
+                    console.log('xtl',XTL)
                     resolve(XTL);
+                }
             });
 
         }).skip(offset).sort({_id: -1});
         // resolve(XTL)
     });
 };
-
 export default configHandle;
