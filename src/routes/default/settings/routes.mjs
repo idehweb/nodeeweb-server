@@ -23,4 +23,10 @@ export default [{
     "access": "admin_user",
     "controller": controller.plugins,
 
+},{
+    "path": "/update",
+    "method": "post",
+    "access": "admin_user",
+    "controller": controller.update,
+
 }]

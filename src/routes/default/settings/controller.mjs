@@ -102,6 +102,19 @@ var self = ({
         shell.exec('sh ' + scripts + `/restart.sh ${site}`);
 
     },
+    update: function(req, res, next){
+        const _dirname = path.resolve();
+        let site = process.env.SITE_NAME;
+        site = site.toLowerCase();
+        console.log("Site ==> ", site);
+        // console.log("dirname ===> " ,_dirname);
+        const scripts = path.join(_dirname, "node_modules/@nodeeweb/server/scripts");
+        console.log("scripts ==> ", 'sh ' + scripts + `/update.sh ${site}`);
+        res.json({
+            success: true
+        })
+        shell.exec('sh ' + scripts + `/update.sh ${site}`);
+    }
 
 });
 export default self;
