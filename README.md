@@ -198,6 +198,40 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.956
+    select attributes to filters
+
+- 0.0.955
+    add expire, exclude products, exclude product categories to discounts
+
+- 0.0.954
+    change sidebar behaviour
+
+- 0.0.953
+    add tax
+
+- 0.0.95
+    remove price part bugs in front
+
+- 0.0.94
+    update discount code
+    update sidebar attrs and cats
+
+- 0.0.93
+    update admin, add favicon
+
+- 0.0.92
+    add orders, notifications, addresses to customer details in admin
+    add export products and import products
+    add new filters to admin , order parts
+    add new filters to admin , customer parts
+
+- 0.0.91
+    add self-update button and route in admin
+
+- 0.0.90
+    add self-update
+    
 - 0.0.88
     add weight to product
     add rial

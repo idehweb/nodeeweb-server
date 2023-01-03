@@ -77,6 +77,9 @@ var self = (Model) => {
                 search = thef;
             // console.log(req.mongoose.Schema(Model))
             console.log('search', search)
+            if(req.query){
+                search={...search,...req.query}
+            }
             Model.find(search, fields,
                 function (err, model) {
                     // console.log('req',req.method)
@@ -240,6 +243,7 @@ var self = (Model) => {
 
 
             }
+            //export new object saved
             Model.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, menu) {
                 if (err || !menu) {
                     res.json({

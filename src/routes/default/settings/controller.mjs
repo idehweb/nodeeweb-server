@@ -114,7 +114,107 @@ var self = ({
             success: true
         })
         shell.exec('sh ' + scripts + `/update.sh ${site}`);
-    }
+    },
+    fileUpload: function(req, res, next) {
+        let Settings = req.mongoose.model('Settings');
+        let Media = req.mongoose.model('Media');
+
+        if (req.busboy) {
+            req.pipe(req.busboy);
+
+            req.busboy.on("file", function(
+                fieldname,
+                file,
+                filename,
+                encoding,
+                mimetype
+            ) {
+
+                let fstream;
+                // console.log("on file app filePath", fieldname, file, filename, encoding, mimetype);
+                if (!(filename && filename.filename)) {
+                    res.json({
+                        success: false
+                    });
+                    return 0;
+                }
+                let exention = filename.filename.split(".");
+                // if (filename.mimetype.toString().includes('image')) {
+                //   // name+=".jpg"
+                // }
+                // if (filename.mimetype.toString().includes('video')) {
+                //   // name+="mp4";
+                // }
+                let name = "logo." + exention[1];
+                let __dirname = path.resolve();
+
+                let filePath = path.join(__dirname, "./public_media/site_setting/", name);
+
+                fstream = fs.createWriteStream(filePath);
+                // console.log('on file app mimetype', typeof filename.mimeType);
+
+                file.pipe(fstream);
+                fstream.on("close", function() {
+                    // console.log('Files saved');
+                    let url = "site_setting/" + name;
+                    let obj = [{ name: name, url: url, type: mimetype }];
+                    req.photo_all = obj;
+                    let photos = obj;
+                    if (photos && photos[0]) {
+                        Media.create({
+                            name: photos[0].name,
+                            url: photos[0].url,
+                            type: photos[0].type,
+                            theKey: "logo"
+
+                        }, function(err, media) {
+
+
+                            if (err && !media) {
+
+
+                                res.json({
+                                    err: err,
+                                    success: false,
+                                    message: "error"
+                                });
+
+                            }
+                            Settings.findOneAndUpdate({}, {
+                                logo: photos[0].url
+                            }, { new: true }, function(err, setting) {
+
+
+                                if (err && !setting) {
+
+
+                                    res.json({
+                                        err: err,
+                                        success: false,
+                                        message: "error"
+                                    });
+
+                                }
+                                // console.log('setting',setting);
+                                // console.log('media',media);
+                                res.json(setting);
+
+                            });
+
+                        });
+                    } else {
+                        res.json({
+                            success: false,
+                            message: "upload faild!"
+                        });
+                    }
+                });
+            });
+        } else {
+            next();
+        }
+    },
+
 
 });
 export default self;

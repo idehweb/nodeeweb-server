@@ -346,7 +346,9 @@ export default function BaseApp(theProps = {}) {
                                         if(setting && setting.currency){
                                             currency=setting.currency;
                                         }
+
                                         return res.json({
+                                            tax:setting.tax,
                                             currency:currency,
                                             header: {
                                                 maxWidth: (header && header.maxWidth) ? header.maxWidth : '100%',

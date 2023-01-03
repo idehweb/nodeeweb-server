@@ -29,4 +29,10 @@ export default [{
     "access": "admin_user",
     "controller": controller.update,
 
+},{
+    "path": "/fileUpload",
+    "method": "post",
+    "access": "admin_user",
+    "controller": controller.fileUpload,
+
 }]

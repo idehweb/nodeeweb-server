@@ -9,6 +9,7 @@ export default (mongoose) => {
         data: [],
         settings: {},
         siteActive: {type: Boolean, default: true},
+        tax: {type: Boolean, default: true},
         siteActiveMessage: String,
         logo: String,
         header_first: String,
