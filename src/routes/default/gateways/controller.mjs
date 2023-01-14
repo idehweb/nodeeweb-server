@@ -5,6 +5,7 @@ import fs from 'fs'
 import https from 'https'
 
 let self = ({
+
     importFromWordpress: function (req, res, next) {
         let url = '';
         if (req.query.url) {

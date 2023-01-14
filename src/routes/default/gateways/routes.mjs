@@ -13,6 +13,8 @@ export default [
     {
         "path": "/:offset/:limit",
         "method": "get",
+        // "controller": controller.all,
+
         // "access": "admin_user,admin_shopManager,customer_all",
     },
     {

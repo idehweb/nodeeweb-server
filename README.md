@@ -198,6 +198,31 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.966
+    change admin ui, add dragging, add field, remove field
+
+- 0.0.965
+    add transaction verify
+
+- 0.0.962
+    update gateway
+
+- 0.0.961
+    add sms gateways, send sms parts , change gateway edit and create
+
+- 0.0.960
+    add order reports to admin dashboard
+
+- 0.0.959
+    tax && taxAmount
+
+- 0.0.958
+    remove title,phone number from adding address
+    go to page 2 in checkout always
+
+- 0.0.957
+    remove bugs of front
+
 - 0.0.956
     select attributes to filters
 

@@ -1,4 +1,5 @@
 import persianJs from "persianjs";
+import _ from 'lodash';
 import global from '#root/global';
 import bcrypt from 'bcrypt';
 
@@ -679,6 +680,68 @@ var self = ({
 
         });
 
+
+    },
+    rewriteCustomers: function (req, res, next) {
+        let Customer = req.mongoose.model('Customer');
+        Customer.find({}, function (err, respo) {
+            _.forEach(respo, (c) => {
+                // console.log('get phoneNumber', c.phoneNumber)
+                if(c.phoneNumber.length<12){
+                    Customer.findByIdAndDelete(c._id,function(err,it){
+                        console.log('delete it',it._id)
+                    });
+                }
+                if(c.phoneNumber.length==12) {
+
+                    if (!c.lastName && c.firstName) {
+                        let obj = {};
+                        let las = c.firstName.split(' ');
+                        let fi = las.shift()
+                        obj['firstName'] = fi;
+                        if (obj['firstName'] == 'سید') {
+                            let tt = las.shift();
+                            obj['firstName'] = obj['firstName'] + ' ' + tt;
+                        }
+                        obj['lastName'] = las.join(' ', ' ')
+                        Customer.findByIdAndUpdate(c._id, obj, function (err, responses) {
+                        });
+                    }
+                }
+            })
+        });
+
+    },
+    removeDuplicatesCustomers: function (req, res, next) {
+        let Customer = req.mongoose.model('Customer');
+        Customer.find({}, function (err, respo) {
+            _.forEach(respo, (cus) => {
+                console.log('get phoneNumber', cus.phoneNumber)
+                Customer.find({phoneNumber: cus.phoneNumber}, function (err, responses) {
+                    if (responses && responses.length > 1) {
+                        let mainCust = responses[0];
+                        let IDSToDELETE = [];
+                        _.forEach(responses, (theOtherCustomer, j) => {
+                            if (j != 0)
+                                IDSToDELETE.push(theOtherCustomer._id)
+                            if (theOtherCustomer.sex) {
+                                mainCust.sex = theOtherCustomer.sex;
+                            }
+                            if (theOtherCustomer.email) {
+                                mainCust.email = theOtherCustomer.email;
+                            }
+                        })
+                        Customer.findByIdAndUpdate(mainCust._id, mainCust);
+                        // Customer.deleteMany({_id: {$in: IDSToDELETE}})
+                        IDSToDELETE.map(async id => {
+                            console.log('delete id:', id)
+
+                            await Customer.findByIdAndDelete(id);
+                        });
+                    }
+                });
+            })
+        });
 
     },
     updateAddress: function (req, res, next) {

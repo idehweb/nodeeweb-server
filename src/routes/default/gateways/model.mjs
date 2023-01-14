@@ -9,6 +9,7 @@ export default (mongoose) => {
         description: {},
         request: "",
         verify: "",
+        type:  {type: String, default: 'bank'},
         title: {},
         slug: {
             type: String,
