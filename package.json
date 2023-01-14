@@ -2,6 +2,12 @@
   "name": "@nodeeweb/server",
   "version": "0.0.967",
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/icons-material": "^5.10.14",
+    "@mui/material": "^5.10.14",
+    "@mui/styles": "^5.10.14",
+    "@mui/x-data-grid": "^5.17.12",
     "@react-ssr/core": "^0.24.0",
     "@react-ssr/express": "^0.24.0",
     "axios": "^0.27.2",
