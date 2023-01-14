@@ -151,6 +151,10 @@
     "type": "git",
     "url": "https://github.com/idehweb/nodeeweb-server"
   },
+
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/idehweb"
+  },
   "bugs": {
     "url": "https://github.com/idehweb/nodeeweb-server/issues"
   },
