@@ -198,6 +198,9 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.970
+    add showInMobile & showInDesktop to templates
+
 - 0.0.969
     remove bugs of custom query and objects
 

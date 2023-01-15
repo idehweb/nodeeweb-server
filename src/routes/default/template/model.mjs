@@ -10,6 +10,8 @@ export default (mongoose) => {
         classes: String,
         padding: String,
         backgroundColor: String,
+        showInDesktop: Boolean,
+        showInMobile: Boolean,
         createdAt: { type: Date, default: Date.now },
         updatedAt: { type: Date, default: Date.now },
 

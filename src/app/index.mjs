@@ -365,6 +365,8 @@ export default function BaseApp(theProps = {}) {
                                                 backgroundColor: (header && header.backgroundColor) ? header.backgroundColor : '',
                                                 classes: (header && header.classes) ? header.classes : '',
                                                 padding: (header && header.padding) ? header.padding : '',
+                                                showInDesktop: (header && header.showInDesktop) ? header.showInDesktop : '',
+                                                showInMobile: (header && header.showInMobile) ? header.showInMobile : '',
                                                 elements: header ? header.elements : []
                                             },
                                             body: [{name: 'MainContent'}],
