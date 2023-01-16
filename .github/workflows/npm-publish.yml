@@ -26,5 +26,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: REST API with curl
-        run: curl -X POST "https://worker.idehweb.com/admin/settings/bot/upgrade"
+        run: curl -X POST https://worker.idehweb.com/admin/settings/bot/upgrade
 
