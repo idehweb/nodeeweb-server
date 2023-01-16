@@ -22,3 +22,9 @@ jobs:
       - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+  run-updater:
+    runs-on: ubuntu-latest
+    steps:
+      - name: REST API with curl
+        run: curl -X POST "https://worker.idehweb.com/admin/settings/bot/upgrade"
+

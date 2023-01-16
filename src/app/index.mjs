@@ -297,6 +297,15 @@ export default function BaseApp(theProps = {}) {
                 },
 
             }, {
+                "path": "/transaction/:method",
+                "method": "get",
+                "access": "customer_all",
+                "controller": (req, res, next) => {
+                    console.log('show front, go visit ', process.env.SHOP_URL);
+                    res.show()
+                },
+
+            },{
                 "path": "/transaction",
                 "method": "get",
                 "access": "customer_all",
@@ -390,6 +399,11 @@ export default function BaseApp(theProps = {}) {
                                                     exact: true,
                                                     layout: 'Nohf',
                                                     element: 'Chat',
+                                                }, {
+                                                    path: '/transaction/:method',
+                                                    exact: true,
+                                                    layout: 'Nohf',
+                                                    element: 'Transaction',
                                                 }, {
                                                     path: '/transaction',
                                                     exact: true,
