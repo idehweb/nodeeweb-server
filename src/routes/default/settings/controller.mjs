@@ -88,6 +88,36 @@ var self = ({
         }).skip(offset).sort({_id: -1}).limit(1);
         // res.json([]);
     },
+    factore: function (req, res, next) {
+        let Settings = req.mongoose.model('Settings');
+
+        console.log("last setting ==> ");
+        let offset = 0;
+        if (req.params.offset) {
+            offset = parseInt(req.params.offset);
+        }
+
+        Settings.findOne({},'factore_shop_name factore_shop_site_name factore_shop_address factore_shop_phoneNumber factore_shop_faxNumber factore_shop_postalCode factore_shop_submitCode factore_shop_internationalCode',function (err, settingss) {
+            // console.log('Settings find==> ');
+
+            if (err || !settingss) {
+                res.json({
+                    success: false,
+                    message: "error!"
+                });
+                return 0;
+            }
+            // console.log('settingss',settingss);
+            if (settingss)
+                res.json(settingss);
+            else
+                res.json({});
+            return 0;
+
+
+        }).skip(offset).sort({_id: -1});
+        // res.json([]);
+    },
     restart: function (req, res, next) {
         const _dirname = path.resolve();
         let site = process.env.SITE_NAME;

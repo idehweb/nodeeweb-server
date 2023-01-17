@@ -1,5 +1,5 @@
-window.BASE_URL='https://cinemachoob.shop';
-window.ADMIN_URL='https://cinemachoob.shop';
-window.ADMIN_ROUTE='https://cinemachoob.shop/admin';
-window.SHOP_URL='https://cinemachoob.shop/';
-window.THEME_URL='https://cinemachoob.shop/theme/';
+window.BASE_URL='http://localhost:3000';
+window.ADMIN_URL='http://localhost:3000';
+window.ADMIN_ROUTE='http://localhost:3000/admin';
+window.SHOP_URL='http://localhost:3000/';
+window.THEME_URL='http://localhost:3000/theme/';

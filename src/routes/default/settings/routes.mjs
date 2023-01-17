@@ -18,6 +18,12 @@ export default [{
     "controller": controller.configuration,
 
 },{
+    "path": "/factore",
+    "method": "get",
+    "access": "admin_user",
+    "controller": controller.factore,
+
+},{
     "path": "/plugins",
     "method": "get",
     "access": "admin_user",

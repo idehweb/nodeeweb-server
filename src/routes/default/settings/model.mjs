@@ -12,6 +12,8 @@ export default (mongoose) => {
         tax: {type: Boolean, default: true},
         taxAmount: Number,
         factore_shop_name: String,
+        factore_shop_site_name: String,
+        factore_shop_site_address: String,
         factore_shop_address: String,
         factore_shop_phoneNumber: String,
         factore_shop_faxNumber: String,
