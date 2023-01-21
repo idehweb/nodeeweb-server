@@ -687,12 +687,12 @@ var self = ({
         Customer.find({}, function (err, respo) {
             _.forEach(respo, (c) => {
                 // console.log('get phoneNumber', c.phoneNumber)
-                if(c.phoneNumber.length<12){
-                    Customer.findByIdAndDelete(c._id,function(err,it){
-                        console.log('delete it',it._id)
+                if (c.phoneNumber.length < 12) {
+                    Customer.findByIdAndDelete(c._id, function (err, it) {
+                        console.log('delete it', it._id)
                     });
                 }
-                if(c.phoneNumber.length==12) {
+                if (c.phoneNumber.length == 12) {
 
                     if (!c.lastName && c.firstName) {
                         let obj = {};
@@ -743,6 +743,49 @@ var self = ({
             })
         });
 
+    },
+    status: function(req, res, next) {
+        // console.clear();
+        req.body.updatedAt = new Date();
+        let Customer = req.mongoose.model('Customer');
+
+        Customer.findByIdAndUpdate(
+            req.params._id,
+            {
+                $push: {
+                    "status": {
+                        user: req.headers._id,
+                        status: req.body.status,
+                        description: req.body.description,
+                        createdAt: new Date()
+
+                    }
+                }
+            }
+            , function(err, post) {
+                if (err || !post) {
+                    res.json({
+                        success: false,
+                        message: "error!"
+                    });
+                    return 0;
+                }
+
+                res.json({
+                    success: true,
+                    post: post
+                });
+
+            });
+
+    },
+
+    statu1s: function (req, res, next) {
+
+        console.log('status', req.body)
+        res.json({
+            success: true
+        })
     },
     updateAddress: function (req, res, next) {
         let Customer = req.mongoose.model('Customer');

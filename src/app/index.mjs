@@ -26,6 +26,9 @@ import Form from "#routes/default/form/index";
 import Entry from "#routes/default/entry/index";
 import Notification from "#routes/default/notification/index";
 import Gateways from "#routes/default/gateways/index";
+import Task from "#routes/default/task/index";
+import Note from "#routes/default/note/index";
+import Document from "#routes/default/document/index";
 // import router from "../routes/public/p";
 // import uploadHandle from "#root/app/uploadHandle";
 
@@ -60,6 +63,9 @@ export default function BaseApp(theProps = {}) {
     props['entity'].push(Form);
     props['entity'].push(Entry);
     props['entity'].push(Gateways);
+    props['entity'].push(Task);
+    props['entity'].push(Document);
+    props['entity'].push(Note);
 //make routes standard
     // console.log('rules',rules);
     if (!props['front']) {

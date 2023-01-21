@@ -50,6 +50,11 @@ export default (mongoose)=>{
         invitation_list: [{
             customer_id: String
         }],
+        status: [{createdAt: { type: Date, default: Date.now },
+            description:String,
+            status:String,
+            user:{ type: mongoose.Schema.Types.ObjectId, ref: "Admin" }
+        }],
         photos: [{
             name: String,
             url: String

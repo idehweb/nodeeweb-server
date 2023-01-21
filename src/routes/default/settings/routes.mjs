@@ -12,6 +12,12 @@ export default [{
     "controller": controller.restart,
 
 },{
+    "path": "/customerStatus",
+    "method": "get",
+    "access": "admin_user",
+    "controller": controller.customerStatus,
+
+},{
     "path": "/configuration",
     "method": "put",
     "access": "admin_user",

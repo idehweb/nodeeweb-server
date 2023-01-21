@@ -49,6 +49,13 @@ export default [{
         "access": "customer_all",
         "controller": controller.removeDuplicatesCustomers,
 
-    }
+    },
+    {
+        "path": "/status/:_id",
+        "method": "put",
+        "access": "admin_user",
+        "controller": controller.status,
+
+    },
 ]
 
