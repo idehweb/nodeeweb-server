@@ -198,6 +198,10 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.983
+    * update transaction and order on buy
+    * decrease stock quantity
+
 - 0.0.982
     * added tasks, notes, customer status, documents
 
