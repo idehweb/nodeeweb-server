@@ -198,6 +198,13 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.985
+    * update technical seo
+    * add post category
+    * add `product/:slug` and `post/:slug` global routes
+    * add `category` to Post model and remove firstCategory, secondCategory, thirdCategory
+    * add `schema` code of google in article, products, posts...
+
 - 0.0.983
     * update transaction and order on buy
     * decrease stock quantity

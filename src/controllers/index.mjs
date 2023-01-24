@@ -114,12 +114,15 @@ var self = (Model) => {
                 obj["slug"] = req.params.id;
 
             }
+            console.log('obj',obj)
             Model.findOne(obj,
                 function (err, menu) {
                     if (err || !menu) {
                         res.json({
                             success: false,
-                            message: 'error!'
+                            message: 'error!',
+                            err:err,
+                            obj
                         });
                         return 0;
                     }
@@ -130,6 +133,9 @@ var self = (Model) => {
         }
         ,
         create: function (req, res, next) {
+            if(req.body.slug){
+                req.body.slug=req.body.slug.replace(/\s+/g, '-').toLowerCase();
+            }
             Model.create(req.body, function (err, menu) {
                 if (err || !menu) {
                     res.json({
@@ -244,6 +250,9 @@ var self = (Model) => {
 
             }
             //export new object saved
+            if(req.body.slug){
+                req.body.slug=req.body.slug.replace(/\s+/g, '-').toLowerCase();
+            }
             Model.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, menu) {
                 if (err || !menu) {
                     res.json({
