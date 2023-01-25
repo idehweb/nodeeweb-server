@@ -133,7 +133,7 @@ var self = (Model) => {
         }
         ,
         create: function (req, res, next) {
-            if(req.body.slug){
+            if(req.body && req.body.slug){
                 req.body.slug=req.body.slug.replace(/\s+/g, '-').toLowerCase();
             }
             Model.create(req.body, function (err, menu) {

@@ -5,7 +5,7 @@ import routes from './routes.mjs'
 export default {
     "name": "document",
     "model": model,
-    "modelName": "Ddocument",
+    "modelName": "Document",
     "routes": routes,
     "admin": {
         "list": {

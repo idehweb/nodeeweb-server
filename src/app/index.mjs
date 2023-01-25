@@ -92,7 +92,7 @@ export default function BaseApp(theProps = {}) {
         next();
     });
     handlePlugins(props, app).then(fsl => {
-        console.log('fsl', fsl)
+        console.log('handlePlugins resolved()')
         db(props, app).then(e => {
             headerHandle(app);
             configHandle(express, app, props);
