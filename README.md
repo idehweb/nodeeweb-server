@@ -198,6 +198,10 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.9854
+    * make search bar stylable in front
+    * improve order chart in admin
+
 - 0.0.9851
     * update front
 

@@ -1,5 +1,5 @@
-window.BASE_URL='https://alvarstrading.com';
-window.ADMIN_URL='https://alvarstrading.com';
-window.ADMIN_ROUTE='https://alvarstrading.com/admin';
-window.SHOP_URL='https://alvarstrading.com/';
-window.THEME_URL='https://alvarstrading.com/theme/';
+window.BASE_URL='https://gameboss.shop';
+window.ADMIN_URL='https://gameboss.shop';
+window.ADMIN_ROUTE='https://gameboss.shop/admin';
+window.SHOP_URL='https://gameboss.shop/';
+window.THEME_URL='https://gameboss.shop/theme/';
