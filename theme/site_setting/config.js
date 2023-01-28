@@ -1,8 +1,4 @@
-window.BASE_URL='https://gameboss.shop';
-window.ADMIN_URL='https://gameboss.shop';
-window.SHOP_URL='https://gameboss.shop/';
-window.THEME_URL='https://gameboss.shop/theme/';
-// window.BASE_URL='https://gameboss.shop';
-// window.ADMIN_URL='https://gameboss.shop';
-// window.SHOP_URL='https://gameboss.shop/';
-// window.THEME_URL='https://gameboss.shop/theme/';
+window.BASE_URL='http://localhost:3000';
+window.ADMIN_URL='http://localhost:3002';
+window.THEME_URL='http://localhost:3000/theme';
+window.SHOP_URL='http://localhost:3000/';

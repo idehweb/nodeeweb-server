@@ -1,5 +1,5 @@
-window.BASE_URL='https://gameboss.shop';
-window.ADMIN_URL='https://gameboss.shop';
-window.ADMIN_ROUTE='https://gameboss.shop/admin';
-window.SHOP_URL='https://gameboss.shop/';
-window.THEME_URL='https://gameboss.shop/theme/';
+window.BASE_URL='http://localhost:3000';
+window.ADMIN_URL='http://localhost:3002';
+window.THEME_URL='http://localhost:3000/theme';
+window.ADMIN_ROUTE='http://localhost:3000/admin';
+window.SHOP_URL='http://localhost:3000/';
