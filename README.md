@@ -198,6 +198,9 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.9857
+    * change default link behaviour
+    
 - 0.0.9855
     * add multiple site map
     * remove some extra packages

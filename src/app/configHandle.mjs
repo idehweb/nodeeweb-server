@@ -110,7 +110,7 @@ export const allAsXml = async function (Model) {
 
                 XTL.push({
                     url: '/' + Model.modelName.toLowerCase() +
-                    '/' + p._id + '/' + p.slug,
+                    '/' + p.slug + '/',
                     lastMod: p.updatedAt,
                     changeFreq: 'hourly'
                 });
