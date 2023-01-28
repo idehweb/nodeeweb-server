@@ -198,6 +198,9 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.9858
+    * remove limit of category in adding product in admin
+
 - 0.0.9857
     * change default link behaviour
     
