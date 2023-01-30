@@ -112,6 +112,7 @@ export const allAsXml = async function (Model) {
                     url: '/' + Model.modelName.toLowerCase() +
                     '/' + p.slug + '/',
                     lastMod: p.updatedAt,
+                    id: p._id,
                     changeFreq: 'hourly'
                 });
                 console.log(posts.length + 1, '===', XTL.length)
@@ -131,7 +132,7 @@ export const allAsXmlRules = async function (Model, slug = null) {
     let XTL = [], offset = 0, search = {};
     return new Promise(async function (resolve, reject) {
         search['status'] = 'published';
-        Model.find({}, '_id slug updatedAt thumbnail photos', function (err, posts) {
+        Model.find({}, '_id slug updatedAt thumbnail photos status', function (err, posts) {
             if (err || !posts.length) {
                 // console.log('return')
                 return resolve(XTL)

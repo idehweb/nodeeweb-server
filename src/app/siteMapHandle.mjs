@@ -46,10 +46,10 @@ let siteMapHandle = async (express, app, props = {}) => {
                 url.loc = process.env.BASE_URL + records[i].url;
                 url.lastmod = moment(records[i].lastMod).format("YYYY-MM-DD");
                 url.changeFreq = records[i].changeFreq;
-                if (records[i]["image:image"])
-                    url["image:image"] = {
-                        "image:loc": process.env.SHOP_URL + records[i]["image:image"]
-                    };
+                // if (records[i]["image:image"])
+                //     url["image:image"] = {
+                //         "image:loc": process.env.SHOP_URL + records[i]["image:image"]
+                //     };
 
                 await collection.push(url);
             }
@@ -76,13 +76,24 @@ let siteMapHandle = async (express, app, props = {}) => {
             for (let i = 0; i < records.length; i++) {
                 const url = {};
                 // url.id = records[i].id.toString();
+                const rootUrl = {};
+                rootUrl.loc = process.env.SHOP_URL;
+                // rootUrl.lastmod = today;
+                rootUrl.changefreq = "daily";
+                rootUrl.priority = "1.0";
+                // rootUrl["image:image"] = {
+                //     "image:loc": "s://javaniceday.com/default-image.jpg",
+                //     "image:caption":
+                //         "javaniceday.com. Software development blog. Java, Node JS, Salesforce among other technologies",
+                // };
+                await collection.push(rootUrl);
                 url.loc = process.env.BASE_URL + records[i].url;
                 url.lastmod = moment(records[i].lastMod).format("YYYY-MM-DD");
                 url.changeFreq = records[i].changeFreq;
-                if (records[i]["image:image"])
-                    url["image:image"] = {
-                        "image:loc": process.env.SHOP_URL + records[i]["image:image"]
-                    };
+                // if (records[i]["image:image"])
+                //     url["image:image"] = {
+                //         "image:loc": process.env.SHOP_URL + records[i]["image:image"]
+                //     };
 
                 await collection.push(url);
             }
@@ -112,10 +123,10 @@ let siteMapHandle = async (express, app, props = {}) => {
                 url.loc = process.env.BASE_URL + records[i].url;
                 url.lastmod = moment(records[i].lastMod).format("YYYY-MM-DD");
                 url.changeFreq = records[i].changeFreq;
-                if (records[i]["image:image"])
-                    url["image:image"] = {
-                        "image:loc": process.env.SHOP_URL + records[i]["image:image"]
-                    };
+                // if (records[i]["image:image"])
+                //     url["image:image"] = {
+                //         "image:loc": process.env.SHOP_URL + records[i]["image:image"]
+                //     };
 
                 await collection.push(url);
             }

@@ -206,7 +206,7 @@ export default [
                         res.ssrParse().then(body => {
                             body = body.replace('</head>', `<title>${obj.title}</title></head>`);
                             body = body.replace('</head>', `<meta name="description" content="${obj.metadescription}" /></head>`);
-                            body = body.replace('</head>', `<link rel="canonical" href="${process.env.SHOP_URL}product/${req.params._id}/${req.params._slug}" /></head>`);
+                            body = body.replace('</head>', `<link rel="canonical" href="${process.env.SHOP_URL}product/${req.params._id}/${req.params._slug}/" /></head>`);
                             body = body.replace('</head>', `<meta name="product_id" content="${obj._id}" /></head>`);
                             body = body.replace('</head>', `<meta name="product_name" content="${obj.product_name}" /></head>`);
                             body = body.replace('</head>', `<meta name="product_price" content="${obj.product_price}" /></head>`);
@@ -329,9 +329,9 @@ export default [
 
                         let obj = {
                             _id: product._id,
-                            product_price: product_price || "",
+                            product_price: product_price || 0,
                             product_old_price: product_old_price || "",
-                            availability: in_stock || "",
+                            availability: in_stock || false,
                             image: img,
                             keywords: "",
                             metadescription: "",
@@ -376,7 +376,7 @@ export default [
                             body = body.replace('</head>', `<meta name="product_price" content="${obj.product_price}" /></head>`);
                             body = body.replace('</head>', `<meta name="product_old_price" content="${obj.product_old_price}" /></head>`);
                             body = body.replace('</head>', `<meta name="product_image" content="/${obj.image}" /></head>`);
-                            body = body.replace('</head>', `<link rel="canonical" href="${process.env.SHOP_URL}product/${req.params._slug}" /></head>`);
+                            body = body.replace('</head>', `<link rel="canonical" href="${process.env.SHOP_URL}product/${req.params._slug}/" /></head>`);
                             body = body.replace('</head>', `<meta name="image" content="/${obj.image}" /></head>`);
                             body = body.replace('</head>', `<meta name="availability" content="${obj.availability}" /></head>`);
                             body = body.replace('</head>', `<meta name="og:image" content="/${obj.image}" /></head>`);
@@ -412,7 +412,7 @@ export default [
         "method": "get",
         "access": "",
         "controller": (req, res, next) => {
-            console.log('show front, go visit ', process.env.SHOP_URL);
+            // console.log('show front, go visit ', process.env.SHOP_URL);
             console.log('show front, go visit ', process.env.SHOP_URL);
 
             let obj = {};
@@ -703,6 +703,17 @@ export default [
 
     },
     {
+        "path": "/profile",
+        "method": "get",
+        "access": "customer_all",
+        "controller": (req, res, next) => {
+            console.log('show front, go visit ', process.env.SHOP_URL);
+
+            res.show()
+        },
+
+    },
+    {
         "path": "/:_slug",
         "method": "get",
         "access": "customer_all",
@@ -802,7 +813,8 @@ export default [
             // res.show()
         },
 
-    }, {
+    },
+    {
         "path": "/a/:_entity/:_id/:_slug",
         "method": "get",
         "access": "customer_all",
