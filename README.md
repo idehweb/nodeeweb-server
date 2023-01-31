@@ -198,6 +198,11 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.9863
+    * add my orders
+    * add perPage to slider
+    * add classes to child level of grid and slider
+
 - 0.0.9862
     * for Pouriya ;-) , grid element
 
