@@ -127,12 +127,12 @@ var self = ({
         let XTL = [{
             url: "/",
             lastMod: new Date(),
-            changeFreq: "hourly"
+            changefreq: "hourly"
         },
             {
                 url: "/add-new-post",
                 lastMod: new Date(),
-                changeFreq: "monthly"
+                changefreq: "monthly"
             }], offset = 0, search = {};
         return new Promise(async function(resolve, reject) {
 
@@ -146,7 +146,7 @@ var self = ({
                     await XTL.push({
                         url: "/attributes/" + c._id + "/" + c.name["fa"],
                         lastMod: cd,
-                        changeFreq: "daily"
+                        changefreq: "daily"
                     });
                 });
                 search["active"] = true;
@@ -155,7 +155,7 @@ var self = ({
                         await XTL.push({
                             url: "/p/" + p._id + "/" + p.title["fa"],
                             lastMod: p.updatedAt,
-                            changeFreq: "weekly"
+                            changefreq: "weekly"
                         });
                     });
                     resolve(XTL);

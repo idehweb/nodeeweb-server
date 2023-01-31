@@ -91,7 +91,7 @@ export const allAsXml = async function (Model) {
     let XTL = [{
         url: '/',
         lastMod: new Date(),
-        changeFreq: 'hourly'
+        changefreq: 'hourly'
     }], offset = 0, search = {};
     return new Promise(async function (resolve, reject) {
         console.log('Promis')
@@ -113,7 +113,7 @@ export const allAsXml = async function (Model) {
                     '/' + p.slug + '/',
                     lastMod: p.updatedAt,
                     id: p._id,
-                    changeFreq: 'hourly'
+                    changefreq: 'hourly'
                 });
                 console.log(posts.length + 1, '===', XTL.length)
                 if (posts.length + 1 === XTL.length) {
@@ -151,7 +151,7 @@ export const allAsXmlRules = async function (Model, slug = null) {
                         url: '/' + (slug ? slug : Model.modelName.toLowerCase()) +
                         '/' + p.slug + '/',
                         lastMod: p.updatedAt,
-                        changeFreq: 'hourly'
+                        changefreq: 'hourly'
                     };
                     if (p.photos && p.photos[0]) {
                         tobj['image:image'] = p.photos[0];

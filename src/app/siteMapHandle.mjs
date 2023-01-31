@@ -45,7 +45,7 @@ let siteMapHandle = async (express, app, props = {}) => {
                 // console.log('records[i].id',records[i].id)
                 url.loc = process.env.BASE_URL + records[i].url;
                 url.lastmod = moment(records[i].lastMod).format("YYYY-MM-DD");
-                url.changeFreq = records[i].changeFreq;
+                url.changefreq = records[i].changefreq;
                 // if (records[i]["image:image"])
                 //     url["image:image"] = {
                 //         "image:loc": process.env.SHOP_URL + records[i]["image:image"]
@@ -89,7 +89,7 @@ let siteMapHandle = async (express, app, props = {}) => {
                 await collection.push(rootUrl);
                 url.loc = process.env.BASE_URL + records[i].url;
                 url.lastmod = moment(records[i].lastMod).format("YYYY-MM-DD");
-                url.changeFreq = records[i].changeFreq;
+                url.changefreq = records[i].changefreq;
                 // if (records[i]["image:image"])
                 //     url["image:image"] = {
                 //         "image:loc": process.env.SHOP_URL + records[i]["image:image"]
@@ -122,7 +122,7 @@ let siteMapHandle = async (express, app, props = {}) => {
                 // url.id = records[i].id.toString();
                 url.loc = process.env.BASE_URL + records[i].url;
                 url.lastmod = moment(records[i].lastMod).format("YYYY-MM-DD");
-                url.changeFreq = records[i].changeFreq;
+                url.changefreq = records[i].changefreq;
                 // if (records[i]["image:image"])
                 //     url["image:image"] = {
                 //         "image:loc": process.env.SHOP_URL + records[i]["image:image"]
@@ -155,7 +155,7 @@ let siteMapHandle = async (express, app, props = {}) => {
                 // url.id = records[i].id.toString();
                 url.loc = process.env.BASE_URL + records[i].url;
                 url.lastmod = moment(records[i].lastMod).format("YYYY-MM-DD");
-                url.changeFreq = records[i].changeFreq;
+                url.changefreq = records[i].changefreq;
                 if (records[i]["image:image"])
                     url["image:image"] = {
                         "image:loc": process.env.SHOP_URL + records[i]["image:image"]
