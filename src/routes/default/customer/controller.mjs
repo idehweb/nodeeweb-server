@@ -4,6 +4,196 @@ import global from '#root/global';
 import bcrypt from 'bcrypt';
 
 var self = ({
+    allCustomers: function (req, res, next) {
+        console.log('get all orders...')
+        let Customer = req.mongoose.model('Customer');
+        let Order = req.mongoose.model('Order');
+
+        let offset = 0;
+        if (req.params.offset) {
+            offset = parseInt(req.params.offset);
+        }
+
+        let search = {};
+        // search['$or'] = [{
+        //     firstCategory: req.params._id
+        // }, {
+        //     secondCategory: req.params._id
+        // }, {
+        //     thirdCategory: req.params._id
+        // }];
+
+        if (req.query['customer']) {
+            search['customer'] = req.query['customer']
+        }
+
+        if (req.query['firstName']) {
+            // if (!Array.isArray(search['$or'])) {
+            //     search['$or'] = [];
+            //
+            // }
+            // search['$or'].push({
+            //     "customer_data.firstName": {
+            //         $exists: true,
+            //         "$regex": req.query['firstName'],
+            //         "$options": "i"
+            //     }
+            // });
+
+            search['customer_data.firstName'] = {
+                $exists: true,
+                '$regex': req.query['firstName'],
+                '$options': 'i',
+
+            };
+
+        }
+        if (req.query['lastName']) {
+            // if (!Array.isArray(search['$or'])) {
+            //     search['$or'] = [];
+            //
+            // }
+            // search['$or'].push({
+            //     "customer_data.lastName": {
+            //         $exists: true,
+            //         "$regex": req.query['lastName'],
+            //         "$options": "i"
+            //     }
+            // });
+            search['customer_data.lastName'] = {
+                $exists: true,
+                '$regex': req.query['lastName'],
+                '$options': 'i',
+
+            };
+
+
+        }
+        if (req.query['paymentStatus']) {
+            // if (!Array.isArray(search['$or'])) {
+            //     search['$or'] = [];
+            //
+            // }
+            // search['$or'].push({
+            //     paymentStatus: req.query['paymentStatus']
+            // });
+
+            search['paymentStatus'] = req.query['paymentStatus'];
+        }
+        if (req.query['date_gte']) {
+
+            search['createdAt'] = {$gt: new Date(req.query['date_gte'])};
+        }
+        if (req.query['date_lte']) {
+
+            search['createdAt']['$lt'] = new Date(req.query['date_lte']);
+        }
+
+        // search['status'] = {
+        //     $nin: ['cart', 'checkout', ''],
+        // };
+        // if (req.query['status'] && req.query['status'] != 'all') {
+        //     if (!search['status']) {
+        //
+        //         search['status'] = {};
+        //     }
+        //     search['status']['$in'] = (req.query['status']);
+        // }
+
+        if (req.query['search']) {
+            // if (!Array.isArray(search['$or'])) {
+            //     search['$or'] = [];
+            //
+            // }
+            // search['$or'] = [];
+            // search['$or'].push({
+            //     "customer_data.phoneNumber": {
+            //         $exists: true,
+            //         "$regex": req.query['search'],
+            //         "$options": "i"
+            //     }
+            // });
+            // search['$or'].push({
+            //     // "$where": "function() { return this.orderNumber.toString().match(/" + req.query['search'] + "/) != null; }"
+            //     "orderNumber": parseInt(req.query['search'])
+            // });
+            // search['orderNumber'] = {
+            //         $exists: true,
+            //         "$regex": req.query['search'],
+            //         "$options": "i"
+            // };
+            // search["$where"]=
+            //     "function() { return this.orderNumber.toString().match(/" + req.params.search + "/) != null; }"};
+
+            // search['orderNumber'] = { "$where": "function() { return this.number.toString().match(/"+req.query['search']+"/) != null; }" };
+            // search['orderNumber'] = parseInt(req.query['search']);
+            // delete search['status'];
+
+        }
+
+        console.log('search', search);
+        Customer.find(search, '_id , orderNumber , customer_data , customer , sum , amount , paymentStatus , status , createdAt , updatedAt', function (err, customers) {
+            if (err || !orders) {
+                console.log('err', err);
+                res.json([]);
+                return 0;
+            }
+            let thelength = orders.length, p = 0;
+            // console.log('orders', orders);
+            // delete search['$or'];
+            Customer.countDocuments(search, function (err, count) {
+                console.log('countDocuments', count, err);
+                if (err || !count) {
+                    res.json([]);
+                    return 0;
+                }
+                res.setHeader(
+                    'X-Total-Count',
+                    count,
+                );
+                _.forEach(customers, (item, i) => {
+                    console.log('item._id', item._id)
+                    if (item.customer && item.customer._id) {
+                        let sObj={customer: item.customer._id};
+                        //
+                        // if (req.query['date_gte']) {
+                        //
+                        //     sObj['createdAt'] = {$lt: new Date(req.query['date_gte'])};
+                        // }
+                        // if(search['status']){
+                        //     sObj['status']=search['status'];
+                        // }
+                        // console.log('sObj',sObj)
+                        Order.countDocuments(sObj, function (err, theOrderCount) {
+                            customers[i].orderCount = (theOrderCount-1);
+                            p++;
+                            if (p == thelength) {
+                                return res.json(customers);
+                                // 0;
+                            }
+                        })
+                    } else {
+                        p++;
+                    }
+                    if (p == thelength) {
+                        return res.json(customers);
+                        // 0;
+                    }
+                })
+                // console.log('orders.length', orders.length)
+
+
+            });
+
+        }).skip(offset).sort({
+            createdAt: -1,
+
+            updatedAt: -1,
+            _id: -1,
+
+        }).limit(parseInt(req.params.limit)).lean();
+    },
+
     authCustomer: function (req, res, next) {
         let Customer = req.mongoose.model('Customer');
         console.log("\n\n\n\n\n =====> try login/register user:");
@@ -780,13 +970,6 @@ var self = ({
 
     },
 
-    statu1s: function (req, res, next) {
-
-        console.log('status', req.body)
-        res.json({
-            success: true
-        })
-    },
     updateAddress: function (req, res, next) {
         let Customer = req.mongoose.model('Customer');
 

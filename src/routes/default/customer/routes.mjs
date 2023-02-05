@@ -1,60 +1,76 @@
 import controller from "./controller.mjs";
 
-export default [{
-    "path": "/authCustomer",
-    "method": "post",
-    "access": "customer_all",
-    "controller": controller.authCustomer,
+export default [
+    {
+        "path": "/",
+        "method": "get",
+        "access": "admin_user,admin_shopManager",
+        "controller": controller.allCustomers,
 
-}, {
-    "path": "/activateCustomer",
-    "method": "post",
-    "access": "customer_all",
-    "controller": controller.activateCustomer,
+    },
+    {
+        "path": "/authCustomer",
+        "method": "post",
+        "access": "customer_all",
+        "controller": controller.authCustomer,
 
-}, {
-    "path": "/authCustomerWithPassword",
-    "method": "post",
-    "access": "customer_all",
-    "controller": controller.authCustomerWithPassword,
+    }, {
+        "path": "/activateCustomer",
+        "method": "post",
+        "access": "customer_all",
+        "controller": controller.activateCustomer,
 
-}, {
-    "path": "/authCustomerForgotPass",
-    "method": "post",
-    "access": "customer_all",
-    "controller": controller.authCustomerForgotPass,
+    }, {
+        "path": "/authCustomerWithPassword",
+        "method": "post",
+        "access": "customer_all",
+        "controller": controller.authCustomerWithPassword,
 
-}, {
-    "path": "/setPassword",
-    "method": "post",
-    "access": "customer_user",
-    "controller": controller.setPassword,
+    }, {
+        "path": "/authCustomerForgotPass",
+        "method": "post",
+        "access": "customer_all",
+        "controller": controller.authCustomerForgotPass,
 
-}, {
-    "path": "/updateAddress",
-    "method": "put",
-    "access": "customer_user",
-    "controller": controller.updateAddress,
+    }, {
+        "path": "/setPassword",
+        "method": "post",
+        "access": "customer_user",
+        "controller": controller.setPassword,
 
-},
+    }, {
+        "path": "/updateAddress",
+        "method": "put",
+        "access": "customer_user",
+        "controller": controller.updateAddress,
+
+    },
     {
         "path": "/rewriteCustomers",
         "method": "get",
         "access": "customer_all",
         "controller": controller.rewriteCustomers,
 
-    },{
+    }, {
         "path": "/removeDuplicatesCustomers",
         "method": "get",
         "access": "customer_all",
         "controller": controller.removeDuplicatesCustomers,
 
     },
+
     {
         "path": "/status/:_id",
         "method": "put",
         "access": "admin_user",
         "controller": controller.status,
+
+    },
+    {
+        "path": "/:offset/:limit",
+        "method": "get",
+        "access": "admin_user,admin_shopManager",
+        "controller": controller.allCustomers,
 
     },
 ]

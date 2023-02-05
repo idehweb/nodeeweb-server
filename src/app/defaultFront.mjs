@@ -13,31 +13,40 @@ export default [
             console.log('show front, go visit ', process.env.SHOP_URL);
             let Settings = req.mongoose.model('Settings');
             // console.log('obj', obj)
-            Settings.findOne({}, "title header_last body_first metadescription contactType areaServed availableLanguage", function (err, hea) {
+            Settings.findOne({}, "title header_last body_first metadescription contactType areaServed availableLanguage factore_shop_name factore_shop_phoneNumber", function (err, hea) {
                 console.log('hea', hea)
                 if (!hea) {
                     hea = {}
                 }
                 let obj = {
-                    title: "",
+                    title: (hea.title && hea.title[req.headers.lan]) ? hea.title[req.headers.lan] : 'Nodeeweb',
                     url: process.env.SHOP_URL,
                     logo: "",
-                    phone: "",
+                    phone: (hea.factore_shop_phoneNumber ? hea.factore_shop_phoneNumber : "") ,
                     contactType: (hea.contactType ? hea.contactType : "customer service"),
                     areaServed: (hea.areaServed ? hea.areaServed : "IR"),
                     availableLanguage: (hea.availableLanguage ? hea.availableLanguage : "Persian"),
                 }
                 res.ssrParse().then(body => {
                     body = body.replace('</head>', `<title>${(hea.title && hea.title[req.headers.lan]) ? hea.title[req.headers.lan] : 'Nodeeweb'}</title></head>`);
-
-                    // body = body.replace('</head>', `<title>${hea.title}</title></head>`);
                     if (hea && hea.metadescription)
                         body = body.replace('</head>', `<meta name="description" content="${hea.metadescription}" /></head>`);
+
+                    body = body.replace('</head>', `<link rel="canonical" href="${process.env.SHOP_URL}" /></head>`);
+                    body = body.replace('</head>', `<meta property="og:locale" content="fa_IR" /></head>`);
+                    body = body.replace('</head>', `<meta property="og:type" content="website" /></head>`);
+                    body = body.replace('</head>', `<meta property="og:title" content="${(hea.title && hea.title[req.headers.lan]) ? hea.title[req.headers.lan] : 'Nodeeweb'}" /></head>`);
+                    if (hea && hea.metadescription)
+                        body = body.replace('</head>', `<meta property="og:description" content="${hea.metadescription}" /></head>`);
+                    body = body.replace('</head>', `<meta property="og:url" content="${process.env.SHOP_URL}" /></head>`);
+                    body = body.replace('</head>', `<meta property="og:site_name" content="${(hea.factore_shop_name) ? hea.factore_shop_name : 'Nodeeweb'}" /></head>`);
+
+                    // body = body.replace('</head>', `<title>${hea.title}</title></head>`);
                     // body = body.replace('</head>', `<meta name="product_id" content="${obj._id}" /></head>`);
                     // body = body.replace('</head>', `<meta name="product_name" content="${obj.product_name}" /></head>`);
                     // body = body.replace('</head>', `<meta name="product_price" content="${obj.product_price}" /></head>`);
                     // body = body.replace('</head>', `<meta name="product_old_price" content="${obj.product_old_price}" /></head>`);
-                    body = body.replace('</head>', `<script type="application/ld+json">{"@context": "https://schema.org","@type": "Organization","name": "${obj.title}", "alternateName": "${obj.title}", "url": "${obj.url}", "logo": "${obj.logo}", "contactPoint": {"@type": "ContactPoint", "telephone": "${obj.phone}", "contactType": "customer service", "areaServed": "IR", "availableLanguage": "Persian", "sameAs": ["https://instagram.com", "https://twitter.com"]}}</script>` + '</head>');
+                    body = body.replace('</head>', `<script type="application/ld+json">{"@context": "https://schema.org","@type": "Organization","name": "${(hea.factore_shop_name) ? hea.factore_shop_name : 'Nodeeweb'}", "url": "${obj.url}", "logo": "${obj.logo}", "contactPoint": {"@type": "ContactPoint", "telephone": "${obj.phone}", "contactType": "customer service", "areaServed": "IR", "availableLanguage": "Persian", "sameAs": ["https://instagram.com", "https://twitter.com"]}}</script>` + '</head>');
 
                     body = body.replace('</head>', ((hea && hea.header_last) ? hea.header_last : "") + '</head>');
                     body = body.replace('<body>', '<body>' + ((hea && hea.body_first) ? hea.body_first : ""));
@@ -50,6 +59,15 @@ export default [
 
     }, {
         "path": "/login",
+        "method": "get",
+        "access": "customer_all",
+        "controller": (req, res, next) => {
+            console.log('show front, go visit ', process.env.SHOP_URL);
+            res.show()
+        },
+
+    }, {
+        "path": "/checkout",
         "method": "get",
         "access": "customer_all",
         "controller": (req, res, next) => {
@@ -457,7 +475,7 @@ export default [
                             createdAt: post.createdAt,
                             updatedAt: post.updatedAt,
                             keywords: "",
-                            url:`${process.env.SHOP_URL}post/${post.slug}/`,
+                            url: `${process.env.SHOP_URL}post/${post.slug}/`,
                             metadescription: "",
                         };
                         if (post["keywords"]) {
@@ -487,7 +505,7 @@ export default [
                         if (!obj.metadescription) {
                             obj.metadescription = obj["description"]
                         }
-                        console.log('obj',obj);
+                        console.log('obj', obj);
                         res.ssrParse().then(body => {
                             body = body.replace('</head>', `<title>${obj.title}</title></head>`);
                             body = body.replace('</head>', `<meta name="description" content="${obj.metadescription}" /></head>`);
