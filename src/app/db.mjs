@@ -155,6 +155,14 @@ export default (props = {}, app) => {
             });
     });
 }
+const updatePublicMediaConfig = function () {
+    // updateFile("./admin/site_setting/", "config.js",
+    //     "window.BASE_URL='" + process.env.BASE_URL + "';\n" +
+    //     "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
+    //     "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
+    //     "window.ADMIN_ROUTE='" + process.env.BASE_URL + "/admin" + "';\n" +
+    //     "window.SHOP_URL='" + process.env.SHOP_URL + "';")
+}
 const updateAdminConfig = function () {
     updateFile("./admin/site_setting/", "config.js",
         "window.BASE_URL='" + process.env.BASE_URL + "';\n" +
