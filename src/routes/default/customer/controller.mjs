@@ -132,13 +132,13 @@ var self = ({
         }
 
         console.log('search', search);
-        Customer.find(search, '_id , orderNumber , customer_data , customer , sum , amount , paymentStatus , status , createdAt , updatedAt', function (err, customers) {
-            if (err || !orders) {
+        Customer.find(search, '_id , firstName , lastName , internationalCode , active , source , email , phoneNumber , activationCode , credit , customerGroup  , createdAt , updatedAt', function (err, customers) {
+            if (err || !customers) {
                 console.log('err', err);
                 res.json([]);
                 return 0;
             }
-            let thelength = orders.length, p = 0;
+            let thelength = customers.length, p = 0;
             // console.log('orders', orders);
             // delete search['$or'];
             Customer.countDocuments(search, function (err, count) {
@@ -153,8 +153,8 @@ var self = ({
                 );
                 _.forEach(customers, (item, i) => {
                     console.log('item._id', item._id)
-                    if (item.customer && item.customer._id) {
-                        let sObj={customer: item.customer._id};
+                    if (item._id) {
+                        let sObj={customer: item._id};
                         //
                         // if (req.query['date_gte']) {
                         //
@@ -163,9 +163,9 @@ var self = ({
                         // if(search['status']){
                         //     sObj['status']=search['status'];
                         // }
-                        // console.log('sObj',sObj)
+                        console.log('sObj',sObj)
                         Order.countDocuments(sObj, function (err, theOrderCount) {
-                            customers[i].orderCount = (theOrderCount-1);
+                            customers[i].orderCount = (theOrderCount);
                             p++;
                             if (p == thelength) {
                                 return res.json(customers);

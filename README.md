@@ -198,6 +198,9 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.9867
+    * filter by order count
+
 - 0.0.9865
     * add $lt to order and add export to orders
 
