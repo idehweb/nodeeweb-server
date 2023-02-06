@@ -425,7 +425,8 @@ export default [
             res.show()
         },
 
-    }, {
+    },
+    {
         "path": "/post/:_slug",
         "method": "get",
         "access": "",
@@ -530,7 +531,8 @@ export default [
             })
         },
 
-    }, {
+    },
+    {
         "path": "/chat",
         "method": "get",
         "access": "admin_user,admin_shopManager,customer_all",
@@ -541,6 +543,15 @@ export default [
 
     }, {
         "path": "/transaction/:method",
+        "method": "get",
+        "access": "customer_all",
+        "controller": (req, res, next) => {
+            console.log('show front, go visit ', process.env.SHOP_URL);
+            res.show()
+        },
+
+    }, {
+        "path": "/order-details/:id",
         "method": "get",
         "access": "customer_all",
         "controller": (req, res, next) => {
@@ -722,6 +733,17 @@ export default [
     },
     {
         "path": "/profile",
+        "method": "get",
+        "access": "customer_all",
+        "controller": (req, res, next) => {
+            console.log('show front, go visit ', process.env.SHOP_URL);
+
+            res.show()
+        },
+
+    },
+    {
+        "path": "/my-orders",
         "method": "get",
         "access": "customer_all",
         "controller": (req, res, next) => {
