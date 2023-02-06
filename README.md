@@ -198,6 +198,10 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.9869
+    * resolve search issues
+    * show from in prices in list
+
 - 0.0.9867
     * filter by order count
 
