@@ -758,7 +758,7 @@ export default [
         "method": "get",
         "access": "customer_all",
         "controller": (req, res, next) => {
-            console.log('show front, go visit ', process.env.SHOP_URL);
+            console.log('show front, go visit ', process.env.SHOP_URL,req.params._slug);
 
             let obj = {};
             if (req.mongoose.isValidObjectId(req.params._slug)) {
@@ -771,9 +771,14 @@ export default [
                 obj["_id"] = req.params._id;
                 delete obj["slug"];
             }
+            // if(obj.slug=='robots.txt'){
+            //     return res.sendFile('../../../robots.txt')
+            // }
+
             let Page = req.mongoose.model('Page');
             let Settings = req.mongoose.model('Settings');
-            console.log('\n\nobj', obj)
+            console.log('\n\nobj2', obj)
+
             Settings.findOne({}, "header_last", function (err, hea) {
                 console.log('hea', hea)
                 Page.findOne(obj, "title metadescription keywords excerpt type price in_stock salePrice combinations thumbnail photos slug labels _id",

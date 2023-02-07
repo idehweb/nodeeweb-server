@@ -71,6 +71,8 @@ let configHandle = async (express, app, props = {}) => {
     console.log("public_mediaFolder: ", public_mediaFolder)
     app.use('/site_setting', express.static(themeFolder + '/site_setting'));
     app.use('/static', express.static(themeFolder + '/static'));
+    // app.use('/', express.static(themeFolder));
+    // app.use('/', express.static(themeFolder , {index:'/robots.txt'}));
     app.use('/admin', express.static(adminFolder));
     // }
     // // let R = createPublicRoute('/admin')

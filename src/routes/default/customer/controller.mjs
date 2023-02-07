@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt';
 
 var self = ({
     allCustomers: function (req, res, next) {
-        console.log('get all orders...')
+        console.log('get all customers...')
         let Customer = req.mongoose.model('Customer');
         let Order = req.mongoose.model('Order');
 
@@ -13,121 +13,69 @@ var self = ({
         if (req.params.offset) {
             offset = parseInt(req.params.offset);
         }
-
+        let fields = '';
+        if (req.headers && req.headers.fields) {
+            fields = req.headers.fields
+        }
         let search = {};
-        // search['$or'] = [{
-        //     firstCategory: req.params._id
-        // }, {
-        //     secondCategory: req.params._id
-        // }, {
-        //     thirdCategory: req.params._id
-        // }];
+        if (req.params.search) {
 
-        if (req.query['customer']) {
-            search['customer'] = req.query['customer']
-        }
-
-        if (req.query['firstName']) {
-            // if (!Array.isArray(search['$or'])) {
-            //     search['$or'] = [];
-            //
-            // }
-            // search['$or'].push({
-            //     "customer_data.firstName": {
-            //         $exists: true,
-            //         "$regex": req.query['firstName'],
-            //         "$options": "i"
-            //     }
-            // });
-
-            search['customer_data.firstName'] = {
+            search["title." + req.headers.lan] = {
                 $exists: true,
-                '$regex': req.query['firstName'],
-                '$options': 'i',
-
+                "$regex": req.params.search,
+                "$options": "i"
             };
-
         }
-        if (req.query['lastName']) {
-            // if (!Array.isArray(search['$or'])) {
-            //     search['$or'] = [];
-            //
-            // }
-            // search['$or'].push({
-            //     "customer_data.lastName": {
-            //         $exists: true,
-            //         "$regex": req.query['lastName'],
-            //         "$options": "i"
-            //     }
-            // });
-            search['customer_data.lastName'] = {
+        if (req.query.search) {
+
+            search["title." + req.headers.lan] = {
                 $exists: true,
-                '$regex': req.query['lastName'],
-                '$options': 'i',
-
+                "$regex": req.query.search,
+                "$options": "i"
             };
-
-
         }
-        if (req.query['paymentStatus']) {
-            // if (!Array.isArray(search['$or'])) {
-            //     search['$or'] = [];
-            //
-            // }
-            // search['$or'].push({
-            //     paymentStatus: req.query['paymentStatus']
-            // });
+        if (req.query.Search) {
 
-            search['paymentStatus'] = req.query['paymentStatus'];
+            search["title." + req.headers.lan] = {
+                $exists: true,
+                "$regex": req.query.Search,
+                "$options": "i"
+            };
         }
-        if (req.query['date_gte']) {
-
-            search['createdAt'] = {$gt: new Date(req.query['date_gte'])};
-        }
-        if (req.query['date_lte']) {
-
-            search['createdAt']['$lt'] = new Date(req.query['date_lte']);
+        if (req.query) {
+            console.log(req.query);
         }
 
-        // search['status'] = {
-        //     $nin: ['cart', 'checkout', ''],
-        // };
-        // if (req.query['status'] && req.query['status'] != 'all') {
-        //     if (!search['status']) {
-        //
-        //         search['status'] = {};
+        let thef = req.query;
+        // if (req.query.filter) {
+        //     if (JSON.parse(req.query.filter)) {
+        //         thef = JSON.parse(req.query.filter);
         //     }
-        //     search['status']['$in'] = (req.query['status']);
         // }
+        console.log('thef', thef);
+        // if (thef && thef != '')
+        //     search = thef;
+        // // console.log(req.mongoose.Schema(Model))
+        console.log('search', search)
 
-        if (req.query['search']) {
-            // if (!Array.isArray(search['$or'])) {
-            //     search['$or'] = [];
-            //
-            // }
-            // search['$or'] = [];
-            // search['$or'].push({
-            //     "customer_data.phoneNumber": {
-            //         $exists: true,
-            //         "$regex": req.query['search'],
-            //         "$options": "i"
-            //     }
-            // });
-            // search['$or'].push({
-            //     // "$where": "function() { return this.orderNumber.toString().match(/" + req.query['search'] + "/) != null; }"
-            //     "orderNumber": parseInt(req.query['search'])
-            // });
-            // search['orderNumber'] = {
-            //         $exists: true,
-            //         "$regex": req.query['search'],
-            //         "$options": "i"
-            // };
-            // search["$where"]=
-            //     "function() { return this.orderNumber.toString().match(/" + req.params.search + "/) != null; }"};
 
-            // search['orderNumber'] = { "$where": "function() { return this.number.toString().match(/"+req.query['search']+"/) != null; }" };
-            // search['orderNumber'] = parseInt(req.query['search']);
-            // delete search['status'];
+        if (thef.firstName || thef.lastName || thef.phoneNumber || thef.internationalCode) {
+            search = {"$or": []}
+        }
+        if (thef.firstName) {
+            search["$or"].push({"firstName": {"$regex": thef.firstName, "$options": "i"}})
+
+        }
+        if (thef.lastName) {
+            search["$or"].push({"lastName": {"$regex": thef.lastName, "$options": "i"}})
+
+        }
+        if (thef.phoneNumber) {
+            search["$or"].push({"phoneNumber": {"$regex": thef.phoneNumber, "$options": "i"}})
+
+        }
+        if (thef.internationalCode) {
+            search["$or"].push({"internationalCode": {"$regex": thef.internationalCode, "$options": "i"}})
 
         }
 
@@ -154,7 +102,7 @@ var self = ({
                 _.forEach(customers, (item, i) => {
                     console.log('item._id', item._id)
                     if (item._id) {
-                        let sObj={customer: item._id};
+                        let sObj = {customer: item._id};
                         //
                         // if (req.query['date_gte']) {
                         //
@@ -163,7 +111,7 @@ var self = ({
                         // if(search['status']){
                         //     sObj['status']=search['status'];
                         // }
-                        console.log('sObj',sObj)
+                        console.log('sObj', sObj)
                         Order.countDocuments(sObj, function (err, theOrderCount) {
                             customers[i].orderCount = (theOrderCount);
                             p++;
@@ -934,7 +882,7 @@ var self = ({
         });
 
     },
-    status: function(req, res, next) {
+    status: function (req, res, next) {
         // console.clear();
         req.body.updatedAt = new Date();
         let Customer = req.mongoose.model('Customer');
@@ -952,7 +900,7 @@ var self = ({
                     }
                 }
             }
-            , function(err, post) {
+            , function (err, post) {
                 if (err || !post) {
                     res.json({
                         success: false,

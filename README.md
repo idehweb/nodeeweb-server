@@ -199,6 +199,9 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 ## Changelogs
 
 - 0.0.9871
+    * bugs of my orders, show my orders and my order details page
+
+- 0.0.9869
     * resolve search issues
     * show from in prices in list
 
