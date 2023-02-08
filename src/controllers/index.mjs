@@ -253,6 +253,10 @@ var self = (Model) => {
             if(req.body.slug){
                 req.body.slug=req.body.slug.replace(/\s+/g, '-').toLowerCase();
             }
+            if(!req.body){
+                req.body={};
+            }
+            req.body.updatedAt=new Date();
             Model.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, menu) {
                 if (err || !menu) {
                     res.json({

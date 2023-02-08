@@ -264,16 +264,19 @@ export default [
                     });
             };
             let obj = {};
-            if (req.mongoose.isValidObjectId(req.params._slug)) {
-                obj["_id"] = req.params._slug;
-            } else {
-                obj["slug"] = req.params._slug;
+            // if (req.mongoose.isValidObjectId(req.params._slug)) {
+            //     obj["_id"] = req.params._slug;
+            // } else {
 
-            }
-            if (req.mongoose.isValidObjectId(req.params._id)) {
-                obj["_id"] = req.params._id;
-                delete obj["slug"];
-            }
+            //     obj["slug"] = req.params._slug;
+            //
+            // }
+            obj["slug"] = req.params._slug;
+
+            // if (req.mongoose.isValidObjectId(req.params._id)) {
+            //     obj["_id"] = req.params._id;
+            //     delete obj["slug"];
+            // }
             let Product = req.mongoose.model('Product');
             let Settings = req.mongoose.model('Settings');
             console.log('\n\nobj', obj)
