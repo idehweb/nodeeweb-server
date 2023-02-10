@@ -156,12 +156,12 @@ export default (props = {}, app) => {
     });
 }
 const updatePublicMediaConfig = function () {
-    // updateFile("./admin/site_setting/", "config.js",
-    //     "window.BASE_URL='" + process.env.BASE_URL + "';\n" +
-    //     "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
-    //     "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
-    //     "window.ADMIN_ROUTE='" + process.env.BASE_URL + "/admin" + "';\n" +
-    //     "window.SHOP_URL='" + process.env.SHOP_URL + "';")
+    updateFile("./public_media/site_setting/", "config.js",
+        "window.BASE_URL='" + process.env.BASE_URL + "';\n" +
+        "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
+        "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
+        "window.ADMIN_ROUTE='" + process.env.BASE_URL + "/admin" + "';\n" +
+        "window.SHOP_URL='" + process.env.SHOP_URL + "';")
 }
 const updateAdminConfig = function () {
     updateFile("./admin/site_setting/", "config.js",
@@ -265,6 +265,7 @@ const createPublicMediaFolder = function () {
     let public_media_customerPath = path.join(__dirname, "./public_media/customer/");
     if (fs.existsSync(public_mediaPath)) {
         // console.log('public_mediaPath exist...')
+        updatePublicMediaConfig();
         if (fs.existsSync(public_media_customerPath)) {
             // console.log('public_media_customerPath exist...')
         }
@@ -281,6 +282,7 @@ const createPublicMediaFolder = function () {
         // Below code to create the folder, if its not there
         fs.mkdir(public_mediaPath, () => {
             // console.log('we created public_mediaPath')
+            updatePublicMediaConfig();
             fs.mkdir(public_media_customerPath, () => {
                 // console.log('we created public_media_customerPath')
             });

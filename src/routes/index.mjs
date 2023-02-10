@@ -4,11 +4,6 @@
 import express from 'express';
 import path from "path";
 import axios from "axios";
-// const publicFolder = path.join(__dirname, "./public");
-// import _ from 'loadash';
-// import menu from "#routes/menu";
-// import {StaticRouter} from "react-router-dom/server";
-
 import controller from "#controllers/index";
 // import post from "#routes/post";
 // import settings from "#routes/settings";
@@ -16,6 +11,10 @@ import mongoose from "mongoose";
 // import user from "#routes/default/user/index";
 import global from '#root/global';
 import fs from "fs";
+// const publicFolder = path.join(__dirname, "./public");
+// import _ from 'loadash';
+// import menu from "#routes/menu";
+// import {StaticRouter} from "react-router-dom/server";
 // import store from "#c/store";
 // import "ignore-styles";
 // import * as React from "react";
@@ -152,6 +151,29 @@ function make_routes_safe(req, res, next, rou) {
 
     req.global = global;
 
+    req.publishToTelegram = (message) => {
+        return new Promise(function (resolve, reject) {
+            let url = encodeURI(process.env.telegramLink);
+            req.httpRequest({
+                method: "post",
+                url: url,
+                data: {message,chatId:process.env.telegramChatID},
+                json: true
+            }).then(function (parsedBody) {
+                resolve({
+                    success: true
+                    // body:parsedBody
+                });
+            }).catch(function (err) {
+                reject({
+                    success: false
+                });
+            });
+
+
+        });
+
+    };
     req.models = () => {
         var models = mongoose.modelNames()
         return models;
@@ -313,8 +335,10 @@ function create_standard_route(suf = '/', routes = [], router) {
 }
 
 function handle_ssr(req, res, next) {
-    {/*<StaticRouter context={context} location={req.url}>*/}
-        {/*<AppSSR url={req.url}/></StaticRouter>*/}
+    {/*<StaticRouter context={context} location={req.url}>*/
+    }
+    {/*<AppSSR url={req.url}/></StaticRouter>*/
+    }
     // const renderedData = ReactDOMServer.renderToString(<Provider store={store}>
     //
     // </Provider>);
