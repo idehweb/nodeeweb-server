@@ -152,6 +152,15 @@ function make_routes_safe(req, res, next, rou) {
     req.global = global;
 
     req.publishToTelegram = (message) => {
+        console.log('publishToTelegram====>',message);
+        if(!process.env.telegramLink){
+            console.log('process.env.telegramLink is empty')
+            return
+        }
+        if(!process.env.telegramChatID){
+            console.log('process.env.telegramChatID is empty')
+            return
+        }
         return new Promise(function (resolve, reject) {
             let url = encodeURI(process.env.telegramLink);
             req.httpRequest({
