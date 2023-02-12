@@ -714,7 +714,7 @@ export default [
         "method": "get",
         "access": "",
         "controller": (req, res, next) => {
-            theme('front', req, res, next)
+            theme('admin', req, res, next)
         },
 
     },
