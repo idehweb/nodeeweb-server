@@ -1,8 +1,8 @@
-window.BASE_URL='https://gameboss.shop';
-window.ADMIN_URL='https://gameboss.shop';
-window.SHOP_URL='https://gameboss.shop/';
-window.THEME_URL='https://gameboss.shop/theme/';
-// window.BASE_URL='https://gameboss.shop';
-// window.ADMIN_URL='https://gameboss.shop';
-// window.SHOP_URL='https://gameboss.shop/';
-// window.THEME_URL='https://gameboss.shop/theme/';
+window.BASE_URL='https://gilbanu.ir';
+window.ADMIN_URL='https://gilbanu.ir';
+window.SHOP_URL='https://gilbanu.ir/';
+window.THEME_URL='https://gilbanu.ir/theme/';
+// window.BASE_URL='https://gilbanu.ir';
+// window.ADMIN_URL='https://gilbanu.ir';
+// window.SHOP_URL='https://gilbanu.ir/';
+// window.THEME_URL='https://gilbanu.ir/theme/';

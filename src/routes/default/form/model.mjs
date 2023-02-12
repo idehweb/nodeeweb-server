@@ -3,6 +3,7 @@ export default (mongoose)=>{
     const FormSchema = new mongoose.Schema({
         description: {},
         title: {},
+        slug: String,
         button: {
             type: String,
             default: "send",
@@ -12,6 +13,7 @@ export default (mongoose)=>{
         active: {type: Boolean, default: true},
         elements: [],
         responses:[],
+        status: {type: String, default: 'processing'},
         view:{type: Number, default: 1},
 
     });

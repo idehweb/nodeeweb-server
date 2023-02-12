@@ -198,6 +198,12 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.9877
+    * add break points
+
+- 0.0.9876
+    * change theme function
+
 - 0.0.9875
     * add offset and limit query
     * rebuild pagination
