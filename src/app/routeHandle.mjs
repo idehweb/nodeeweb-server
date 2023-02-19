@@ -269,6 +269,8 @@ let routeHandle = (app, props = {}) => {
         };
 
         expressListRoutes(app)
+        console.log('end at:', new Date())
+
     }
 };
 export default routeHandle;

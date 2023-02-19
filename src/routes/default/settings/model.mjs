@@ -6,6 +6,7 @@ export default (mongoose) => {
         siteName: {},
         description: {},
         messages: [],
+        plugins: {},
         data: [],
         settings: {},
         siteActive: {type: Boolean, default: true},

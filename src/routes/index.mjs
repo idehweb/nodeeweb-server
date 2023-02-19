@@ -93,7 +93,15 @@ function returnThisRouteRules(path, method, routes) {
 function make_routes_safe(req, res, next, rou) {
     console.log('make_routes_safe:', rou);
     req.mongoose = mongoose;
-
+    req.props.entity.forEach((en, d) => {
+        if (en.req) {
+            let op = Object.keys(en.req);
+            op.forEach((o)=>{
+                req[o]=en.req[o];
+            })
+        }
+    })
+    // console.log('req',req);
     res.ssrParse = (req, res, next) => {
 
 
@@ -152,12 +160,12 @@ function make_routes_safe(req, res, next, rou) {
     req.global = global;
 
     req.publishToTelegram = (message) => {
-        console.log('publishToTelegram====>',message);
-        if(!process.env.telegramLink){
+        console.log('publishToTelegram====>', message);
+        if (!process.env.telegramLink) {
             console.log('process.env.telegramLink is empty')
             return
         }
-        if(!process.env.telegramChatID){
+        if (!process.env.telegramChatID) {
             console.log('process.env.telegramChatID is empty')
             return
         }
@@ -166,7 +174,7 @@ function make_routes_safe(req, res, next, rou) {
             req.httpRequest({
                 method: "post",
                 url: url,
-                data: {message,chatId:process.env.telegramChatID},
+                data: {message, chatId: process.env.telegramChatID},
                 json: true
             }).then(function (parsedBody) {
                 resolve({
@@ -204,6 +212,61 @@ function make_routes_safe(req, res, next, rou) {
 
     }
     req.httpRequest = axios;
+    req.fireEvent = (event, params = {}) => {
+        //if event was in list
+        //do the job
+        console.log('Fire events...')
+        let functions = [];
+        req.props.entity.forEach((en, d) => {
+            if (en.functions) {
+                en.functions.forEach((fn) => {
+                    console.log('fn', fn)
+                    functions.push(fn);
+                });
+            }
+            if (en.hook) {
+                en.hook.forEach((hook) => {
+                    if (hook.event == event) {
+                        console.log('run event ...', hook.name)
+                        hook.func(req,res,next,params);
+                    }
+                });
+            }
+        })
+        let Automation = req.mongoose.model('Automation');
+        Automation.find({trigger: event}, function (err, automations) {
+            if (err || !automations) {
+                console.log('return...')
+                return;
+            }
+            if (automations) {
+                automations.forEach((item, i) => {
+                    if (item && item.functions) {
+
+                        item.functions.forEach((func, j) => {
+                            functions.forEach((call) => {
+                                // if(call==func.name)
+                            })
+                        })
+                    }
+                })
+            }
+
+        });
+    };
+    req.functions = () => {
+        console.log('get functions...')
+        let functions = [];
+        req.props.entity.forEach((en) => {
+            if (en.functions) {
+                en.functions.forEach((fn) => {
+                    console.log('fn', fn)
+                    functions.push(fn);
+                });
+            }
+        })
+        return functions;
+    }
     req.rules = (rules) => {
         req.props.entity.forEach((en) => {
             let model = req.mongoose.model(en.modelName),
@@ -248,9 +311,9 @@ function make_routes_safe(req, res, next, rou) {
 
         }
         let isPassed = false, the_id = null;
-        console.log('we need check access...', accessList, req.headers.token);
+        // console.log('we need check access...', accessList, req.headers.token);
         if (!req.headers.token) {
-            console.log('we have no token...');
+            // console.log('we have no token...');
             if (req.headers.response !== "json") {
                 return res.redirect('/admin/login')
             } else {
@@ -271,13 +334,13 @@ function make_routes_safe(req, res, next, rou) {
             // if (the_role[1]) {
             //     findObject['type'] = the_role[1];
             // }
-            console.log('check ' + j + '...', the_role[0], findObject)
+            // console.log('check ' + j + '...', the_role[0], findObject)
             if (!isPassed)
                 theModel.findOne(
                     findObject,
                     function (err, obj) {
                         counter++;
-                        console.log('obj', obj)
+                        // console.log('obj', obj)
                         if (err || !obj) {
                             return res.json({
                                 theModel: theModel,
@@ -292,11 +355,11 @@ function make_routes_safe(req, res, next, rou) {
                             the_id = obj._id;
 
                         } else {
-                            console.log('#' + j + ' is not...')
+                            // console.log('#' + j + ' is not...')
                         }
                         if (counter === accessList.length) {
                             if (isPassed && the_id) {
-                                console.log('#' + j + ' is passed...', ' counter:', counter)
+                                // console.log('#' + j + ' is passed...', ' counter:', counter)
                                 req.headers._id = the_id;
                                 return rou.controller(req, res, next)
                             } else {

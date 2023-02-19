@@ -1,4 +1,4 @@
-// console.log("#f loadEnv")
+console.log("#loadEnv.mjs")
 console.log('start at:', new Date())
 import path from 'path';
 import fs from 'fs'

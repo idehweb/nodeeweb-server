@@ -3,7 +3,12 @@ export default (mongoose)=>{
     const FormSchema = new mongoose.Schema({
         description: {},
         title: {},
-        slug: String,
+        slug: {
+            type: String,
+            unique: true,
+            required: true,
+            trim: true
+        },
         button: {
             type: String,
             default: "send",

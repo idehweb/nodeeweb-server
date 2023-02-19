@@ -1,6 +1,5 @@
 // console.log("#f index.mjs", new Date());
 import "ignore-styles";
-import _ from "lodash";
 import express from "express";
 import React from 'react';
 
@@ -13,6 +12,7 @@ import global from "#root/global";
 import configHandle from "#root/app/configHandle";
 import routeHandle from "#root/app/routeHandle";
 import headerHandle from "#root/app/headerHandle";
+import Automation from "#routes/default/automation/index";
 import Admin from "#routes/default/admin/index";
 import Settings from "#routes/default/settings/index";
 import Page from "#routes/default/page/index";
@@ -54,6 +54,7 @@ export default function BaseApp(theProps = {}) {
         props['entity'] = [];
     }
 
+    props['entity'].push(Automation);
     props['entity'].push(Admin);
     props['entity'].push(Settings);
     props['entity'].push(Page);
@@ -81,6 +82,10 @@ export default function BaseApp(theProps = {}) {
         props['admin'] = {
             routes: defaultAdmin
         };
+    }
+
+    if (!props['plugin']) {
+        props['plugin'] = [];
     }
 
 

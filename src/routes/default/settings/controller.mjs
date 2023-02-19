@@ -4,6 +4,50 @@ import fs from "fs";
 import _ from "lodash";
 
 var self = ({
+    functions: function (req, res, next) {
+        let functions = req.functions() || [];
+        return res.json(functions);
+    },
+    deactivatePlugin: function (req, res, next) {
+        console.log('deactivatePlugin')
+        let plugin = req.body;
+        if (plugin && plugin.path && plugin.name) {
+            let __dirname = path.resolve();
+            let pluginPath = path.join(__dirname, "./plugins", plugin.name);
+            let newPluginPath = path.join(__dirname, "./plugins", plugin.name + '-deactive');
+            const scripts = path.join(__dirname, "node_modules/@nodeeweb/server/scripts");
+
+            shell.exec('sh ' + scripts + `/mv.sh ${pluginPath} ${newPluginPath}`);
+            // console.log('newPluginPath', newPluginPath)
+            return res.json({
+                success: true,
+            })
+        } else {
+            return res.json({
+                success: false
+            })
+        }
+    },
+    activatePlugin: function (req, res, next) {
+        console.log('activatePlugin')
+        let plugin = req.body;
+        if (plugin && plugin.path && plugin.name) {
+            let __dirname = path.resolve();
+            let pluginPath = path.join(__dirname, "./plugins", plugin.name);
+            let newPluginPath = path.join(__dirname, "./plugins", plugin.name.replace('-deactive', ''));
+            const scripts = path.join(__dirname, "node_modules/@nodeeweb/server/scripts");
+
+            shell.exec('sh ' + scripts + `/mv.sh ${pluginPath} ${newPluginPath}`);
+            // console.log('newPluginPath', newPluginPath)
+            return res.json({
+                success: true,
+            })
+        } else {
+            return res.json({
+                success: false
+            })
+        }
+    },
     plugins: function (req, res, next) {
         let __dirname = path.resolve();
         let pluginPath = path.join(__dirname, "./plugins/");
@@ -14,7 +58,9 @@ var self = ({
                 } else {
                     callback(
                         files
-                            .filter(dirent => dirent.isDirectory())
+                            .filter(dirent => {
+                                return (dirent.isDirectory() && (dirent.name.indexOf('deactive') == -1))
+                            })
                     )
                 }
             })
@@ -22,7 +68,87 @@ var self = ({
             let p = _.map(f, (item) => {
                 item.path = '/' + item.name + '/index.js'
                 item.image = '/' + item.name + '/image.jpg'
-                item.active = '/' + item.name + '/image.jpg'
+            })
+            return res.json(f);
+        });
+
+
+    },
+    market: function (req, res, next) {
+
+
+    },
+    updatePluginRules: function (req, res, next) {
+        let pluginName = req.params.plugin;
+        let Settings = req.mongoose.model('Settings');
+
+        Settings.findOne({}, 'plugins', function (err, setting) {
+            if (!setting.plugins) {
+                setting.plugins = {};
+            }
+            setting.plugins[pluginName] = req.body;
+            console.log('setting.plugins', setting.plugins)
+            Settings.findOneAndUpdate({}, {$set: {plugins: setting.plugins}}, {
+                projection: {
+                    plugins: 1
+                },
+            }, function (err, setting) {
+                if (err && !setting) {
+                    res.json({
+                        err: err,
+                        success: false,
+                        message: "error"
+                    });
+                }
+                res.json({success: true, setting})
+
+            });
+        });
+    },
+    pluginRules: function (req, res, next) {
+        // let Settings = req.mongoose.model('Settings');
+        if (req.props['plugin'] && req.props['plugin'][req.params.plugin]) {
+
+            let Settings = req.mongoose.model('Settings');
+
+            Settings.findOne({}, 'plugins', function (err, setting) {
+                if (!setting.plugins) {
+                    setting.plugins = [];
+                }
+
+                if (setting.plugins[req.params.plugin]) {
+
+                    console.log('setting.plugins[req.params.plugin]', setting.plugins[req.params.plugin])
+                    _.forEach(req.props['plugin'][req.params.plugin],(item,j)=>{
+                        req.props['plugin'][req.params.plugin][j].value=setting.plugins[req.params.plugin][item.name];
+                    })
+                }
+                return res.json({fields: req.props['plugin'][req.params.plugin]})
+
+            })
+        } else
+            return res.json({fields: []})
+    },
+    deActivePlugins: function (req, res, next) {
+        let __dirname = path.resolve();
+        let pluginPath = path.join(__dirname, "./plugins/");
+        const getDirectories = (source, callback) =>
+            fs.readdir(source, {withFileTypes: true}, (err, files) => {
+                if (err) {
+                    callback(err)
+                } else {
+                    callback(
+                        files
+                            .filter(dirent => {
+                                return (dirent.isDirectory() && (dirent.name.indexOf('deactive') > -1))
+                            })
+                    )
+                }
+            })
+        getDirectories(pluginPath, function (f) {
+            let p = _.map(f, (item) => {
+                item.path = '/' + item.name + '/index.js'
+                item.image = '/' + item.name + '/image.jpg'
             })
             return res.json(f);
         });
@@ -97,7 +223,7 @@ var self = ({
             offset = parseInt(req.params.offset);
         }
 
-        Settings.findOne({},'customerStatus',function (err, settingss) {
+        Settings.findOne({}, 'customerStatus', function (err, settingss) {
             // console.log('Settings find==> ');
 
             if (err || !settingss) {
@@ -127,7 +253,7 @@ var self = ({
             offset = parseInt(req.params.offset);
         }
 
-        Settings.findOne({},'factore_shop_name factore_shop_site_name factore_shop_address factore_shop_phoneNumber factore_shop_faxNumber factore_shop_postalCode factore_shop_submitCode factore_shop_internationalCode',function (err, settingss) {
+        Settings.findOne({}, 'factore_shop_name factore_shop_site_name factore_shop_address factore_shop_phoneNumber factore_shop_faxNumber factore_shop_postalCode factore_shop_submitCode factore_shop_internationalCode', function (err, settingss) {
             // console.log('Settings find==> ');
 
             if (err || !settingss) {
@@ -162,7 +288,7 @@ var self = ({
         shell.exec('sh ' + scripts + `/restart.sh ${site}`);
 
     },
-    update: function(req, res, next){
+    update: function (req, res, next) {
         const _dirname = path.resolve();
         let site = process.env.SITE_NAME;
         site = site.toLowerCase();
@@ -175,14 +301,14 @@ var self = ({
         })
         shell.exec('sh ' + scripts + `/update.sh ${site}`);
     },
-    fileUpload: function(req, res, next) {
+    fileUpload: function (req, res, next) {
         let Settings = req.mongoose.model('Settings');
         let Media = req.mongoose.model('Media');
 
         if (req.busboy) {
             req.pipe(req.busboy);
 
-            req.busboy.on("file", function(
+            req.busboy.on("file", function (
                 fieldname,
                 file,
                 filename,
@@ -214,10 +340,10 @@ var self = ({
                 // console.log('on file app mimetype', typeof filename.mimeType);
 
                 file.pipe(fstream);
-                fstream.on("close", function() {
+                fstream.on("close", function () {
                     // console.log('Files saved');
                     let url = "site_setting/" + name;
-                    let obj = [{ name: name, url: url, type: mimetype }];
+                    let obj = [{name: name, url: url, type: mimetype}];
                     req.photo_all = obj;
                     let photos = obj;
                     if (photos && photos[0]) {
@@ -227,7 +353,7 @@ var self = ({
                             type: photos[0].type,
                             theKey: "logo"
 
-                        }, function(err, media) {
+                        }, function (err, media) {
 
 
                             if (err && !media) {
@@ -242,7 +368,7 @@ var self = ({
                             }
                             Settings.findOneAndUpdate({}, {
                                 logo: photos[0].url
-                            }, { new: true }, function(err, setting) {
+                            }, {new: true}, function (err, setting) {
 
 
                                 if (err && !setting) {

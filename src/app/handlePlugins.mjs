@@ -32,13 +32,12 @@ export default (props = {}, app) => {
             if (f && f.length > 0)
                 _.map(f, async (item) => {
                     let pluginPath = path.join(__dirname, "./plugins/", item.name, 'index.js');
-                    // console.log('pluginPath', pluginPath,r,f.length)
-                    const {default: module} = await import(pluginPath);
-                    props = module(props);
+                    if(item.name && item.name.indexOf('deactive')==-1) {
+                        const {default: module} = await import(pluginPath);
+                        props = module(props);
+                    }
                     r++;
-                    // console.log('r is:', r)
                     if (r == f.length) {
-                        // console.log('resolve this shit ,', r, f.length)
                         return resolve(props);
                     }
 

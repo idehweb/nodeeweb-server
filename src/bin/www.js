@@ -1,3 +1,4 @@
+console.log('www.js')
 /**
  * Module dependencies.
  */
