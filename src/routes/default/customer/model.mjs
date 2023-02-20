@@ -20,6 +20,8 @@ export default (mongoose)=>{
         },
         firstName: String,
         lastName: String,
+        birth_day: String,
+        birth_month: String,
         birthday: String,
         birthdate: { type: Date},
         internationalCode: String,
