@@ -19,6 +19,12 @@ export default [{
     "controller": controller.functions,
 
 },{
+    "path": "/events/:offset/:limit",
+    "method": "get",
+    "access": "admin_user",
+    "controller": controller.events,
+
+},{
     "path": "/plugins/rules/:plugin",
     "method": "get",
     "access": "admin_user",

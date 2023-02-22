@@ -8,6 +8,10 @@ var self = ({
         let functions = req.functions() || [];
         return res.json(functions);
     },
+    events: function (req, res, next) {
+        let events = req.events() || [];
+        return res.json(events);
+    },
     deactivatePlugin: function (req, res, next) {
         console.log('deactivatePlugin')
         let plugin = req.body;
@@ -116,13 +120,15 @@ var self = ({
                     setting.plugins = [];
                 }
 
-                if (setting.plugins[req.params.plugin]) {
 
-                    console.log('setting.plugins[req.params.plugin]', setting.plugins[req.params.plugin])
-                    _.forEach(req.props['plugin'][req.params.plugin],(item,j)=>{
-                        req.props['plugin'][req.params.plugin][j].value=setting.plugins[req.params.plugin][item.name];
-                    })
-                }
+                // console.log('setting.plugins[req.params.plugin]', setting.plugins[req.params.plugin])
+console.log('req.props[\'plugin\']',req.props['plugin'])
+                _.forEach(req.props['plugin'][req.params.plugin], (item, j) => {
+                    if (setting.plugins[req.params.plugin]) {
+
+                        req.props['plugin'][req.params.plugin][j].value = setting.plugins[req.params.plugin][item.name];
+                    }
+                })
                 return res.json({fields: req.props['plugin'][req.params.plugin]})
 
             })

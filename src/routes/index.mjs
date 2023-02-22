@@ -267,6 +267,19 @@ function make_routes_safe(req, res, next, rou) {
         })
         return functions;
     }
+    req.events = () => {
+        console.log('get events...')
+        let events = [];
+        req.props.entity.forEach((en) => {
+            if (en.events) {
+                en.events.forEach((fn) => {
+                    console.log('fn', fn)
+                    events.push(fn);
+                });
+            }
+        })
+        return events;
+    }
     req.rules = (rules) => {
         req.props.entity.forEach((en) => {
             let model = req.mongoose.model(en.modelName),
