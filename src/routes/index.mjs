@@ -280,6 +280,20 @@ function make_routes_safe(req, res, next, rou) {
         })
         return events;
     }
+    req.submitAction = (obj) => {
+        return new Promise(function (resolve, reject) {
+            let Action = req.mongoose.model('Action');
+
+            Action.create(obj).then((res) => {
+                    resolve(res);
+                }).catch(err => {
+                    reject(err);
+                });
+
+            });
+
+    }
+
     req.rules = (rules) => {
         req.props.entity.forEach((en) => {
             let model = req.mongoose.model(en.modelName),

@@ -12,6 +12,7 @@ import global from "#root/global";
 import configHandle from "#root/app/configHandle";
 import routeHandle from "#root/app/routeHandle";
 import headerHandle from "#root/app/headerHandle";
+import Action from "#routes/default/action/index";
 import Automation from "#routes/default/automation/index";
 import Admin from "#routes/default/admin/index";
 import Settings from "#routes/default/settings/index";
@@ -54,6 +55,7 @@ export default function BaseApp(theProps = {}) {
         props['entity'] = [];
     }
 
+    props['entity'].push(Action);
     props['entity'].push(Automation);
     props['entity'].push(Admin);
     props['entity'].push(Settings);
