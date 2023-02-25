@@ -12,7 +12,7 @@ export default (mongoose)=>{
         task: {},
         customer: { type: mongoose.Schema.Types.ObjectId, ref: "Customer" }, //category_id
         comment: { type: mongoose.Schema.Types.ObjectId, ref: "Comment" }, //category_id
-        user: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, //category_id
+        user: { type: mongoose.Schema.Types.ObjectId, ref: "Admin" }, //category_id
         product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" }, //category_id
         order: { type: mongoose.Schema.Types.ObjectId, ref: "Order" }, //category_id
         transaction: { type: mongoose.Schema.Types.ObjectId, ref: "Transaction" }, //category_id
