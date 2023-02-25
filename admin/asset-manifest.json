@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "./static/css/main.3df6c048.css",
-    "main.js": "./static/js/main.5e868b69.js",
+    "main.css": "./static/css/main.936c10fc.css",
+    "main.js": "./static/js/main.91f8944a.js",
     "static/media/IRANSansWebLight.ttf": "./static/media/IRANSansWebLight.3e99a4d54d76ef687a4f.ttf",
     "static/media/IRANSansWeb.eot": "./static/media/IRANSansWeb.96c836c332e8f8d83979.eot",
     "static/media/IRANSansWeb.ttf": "./static/media/IRANSansWeb.cfda181b49ac22fb9f4a.ttf",
@@ -24,11 +24,11 @@
     "static/media/IRANSansWebBold.woff2": "./static/media/IRANSansWebBold.62df0689da0baf986fba.woff2",
     "static/media/welcome_illustration.svg": "./static/media/welcome_illustration.cd84d2be0e7683dface66dfee9959989.svg",
     "index.html": "./index.html",
-    "main.3df6c048.css.map": "./static/css/main.3df6c048.css.map",
-    "main.5e868b69.js.map": "./static/js/main.5e868b69.js.map"
+    "main.936c10fc.css.map": "./static/css/main.936c10fc.css.map",
+    "main.91f8944a.js.map": "./static/js/main.91f8944a.js.map"
   },
   "entrypoints": [
-    "static/css/main.3df6c048.css",
-    "static/js/main.5e868b69.js"
+    "static/css/main.936c10fc.css",
+    "static/js/main.91f8944a.js"
   ]
 }
