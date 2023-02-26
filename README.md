@@ -198,6 +198,10 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.0.9891
+    * add price limit
+    * add metatitle
+
 - 0.0.9889
     * get actions
 

@@ -150,7 +150,7 @@ export default [
             console.log('show front, go visit ', process.env.SHOP_URL);
             let Settings = req.mongoose.model('Settings');
             // console.log('obj', obj)
-            Settings.findOne({}, "title header_last body_first metadescription contactType areaServed availableLanguage factore_shop_name factore_shop_phoneNumber", function (err, hea) {
+            Settings.findOne({}, "title header_last body_first description contactType areaServed availableLanguage factore_shop_name factore_shop_phoneNumber", function (err, hea) {
                 console.log('hea', hea)
                 if (!hea) {
                     hea = {}
@@ -166,15 +166,15 @@ export default [
                 }
                 res.ssrParse().then(body => {
                     body = body.replace('</head>', `<title>${(hea.title && hea.title[req.headers.lan]) ? hea.title[req.headers.lan] : 'Nodeeweb'}</title></head>`);
-                    if (hea && hea.metadescription)
-                        body = body.replace('</head>', `<meta name="description" content="${hea.metadescription}" /></head>`);
+                    if (hea && hea.description)
+                        body = body.replace('</head>', `<meta name="description" content="${hea.description}" /></head>`);
 
                     body = body.replace('</head>', `<link rel="canonical" href="${process.env.SHOP_URL}" /></head>`);
                     body = body.replace('</head>', `<meta property="og:locale" content="fa_IR" /></head>`);
                     body = body.replace('</head>', `<meta property="og:type" content="website" /></head>`);
                     body = body.replace('</head>', `<meta property="og:title" content="${(hea.title && hea.title[req.headers.lan]) ? hea.title[req.headers.lan] : 'Nodeeweb'}" /></head>`);
-                    if (hea && hea.metadescription)
-                        body = body.replace('</head>', `<meta property="og:description" content="${hea.metadescription}" /></head>`);
+                    if (hea && hea.description)
+                        body = body.replace('</head>', `<meta property="og:description" content="${hea.description}" /></head>`);
                     body = body.replace('</head>', `<meta property="og:url" content="${process.env.SHOP_URL}" /></head>`);
                     body = body.replace('</head>', `<meta property="og:site_name" content="${(hea.factore_shop_name) ? hea.factore_shop_name : 'Nodeeweb'}" /></head>`);
 

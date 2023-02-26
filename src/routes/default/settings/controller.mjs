@@ -282,7 +282,7 @@ console.log('req.props[\'plugin\']',req.props['plugin'])
     },
     restart: function (req, res, next) {
         const _dirname = path.resolve();
-        let site = process.env.SITE_NAME;
+        let site = process.env.SITE_NAME || "";
         site = site.toLowerCase();
         console.log("Site ==> ", site);
         // console.log("dirname ===> " ,_dirname);
