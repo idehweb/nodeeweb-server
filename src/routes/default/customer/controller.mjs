@@ -80,7 +80,7 @@ var self = ({
         }
 
         console.log('search', search);
-        Customer.find(search, '_id , firstName , lastName , internationalCode , active , source , email , phoneNumber , activationCode , credit , customerGroup  , createdAt , updatedAt', function (err, customers) {
+        Customer.find(search, '_id , firstName , lastName , internationalCode , active , source , email , phoneNumber , activationCode , credit , customerGroup  , createdAt , updatedAt , status', function (err, customers) {
             if (err || !customers) {
                 console.log('err', err);
                 res.json([]);

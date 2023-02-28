@@ -109,9 +109,12 @@ export const allAsXml = async function (Model) {
             console.log('length', posts.length, XTL.length)
             _.forEach(posts, (p) => {
                 // console.log('p',p)
-
+                let the_base = '/' + Model.modelName.toLowerCase();
+                if ('page' == Model.modelName.toLowerCase()) {
+                    the_base = ''
+                }
                 XTL.push({
-                    url: '/' + Model.modelName.toLowerCase() +
+                    url: the_base +
                     '/' + p.slug + '/',
                     lastMod: p.updatedAt,
                     id: p._id,
