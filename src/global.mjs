@@ -220,12 +220,7 @@ let global = {
         });
 
     },
-    submitAction: function (obj) {
-        return new Promise(function (resolve, reject) {
 
-        });
-
-    },
     notifateToTelegram: function (obj) {
         return new Promise(function (resolve, reject) {
             //     // obj.message += "\n\n\n" + "ثبت آگهی رایگان در زومی روم..." + "\n" + "@zmnotifications" + "\n" + "https://zoomiroom.com"

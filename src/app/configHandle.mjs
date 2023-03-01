@@ -151,9 +151,15 @@ export const allAsXmlRules = async function (Model, slug = null) {
                 } else {
                     // console.log('found duplicate? ',f.indexOf(p.slug));
                     f.push(p.slug);
+                    let gy='/' + (slug ? slug : Model.modelName.toLowerCase())
+
+                    if(slug=="page"){
+                        gy="";
+                    }
+                    console.log('gy',gy)
                     let tobj = {
                         id: p._id,
-                        url: '/' + (slug ? slug : Model.modelName.toLowerCase()) +
+                        url: gy +
                         '/' + p.slug + '/',
                         lastMod: p.updatedAt,
                         changefreq: 'hourly'
