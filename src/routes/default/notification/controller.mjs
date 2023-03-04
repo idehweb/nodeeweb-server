@@ -8,7 +8,32 @@ var self = ({
         let Settings = req.mongoose.model('Settings');
         let Gateway = req.mongoose.model('Gateway');
         delete req.body._id
-        Notification.create(req.body, function (err, notification) {
+        if (!req.body.message) {
+            return res.json({
+                success: false,
+                message: 'enter message!'
+            });
+
+        }
+        let obj = {
+            message: req.body.message
+        }
+        if (req.body.limit) {
+            obj["limit"] = req.body.limit
+        }
+        if (req.body.customerGroup) {
+            obj["customerGroup"] = req.body.customerGroup
+        }
+        if (req.body.source) {
+            obj["source"] = req.body.source
+        }
+        if (req.body.offset) {
+            obj["offset"] = req.body.offset
+        }
+        if (req.body.phoneNumber) {
+            obj["phoneNumber"] = req.body.phoneNumber
+        }
+        Notification.create(obj, function (err, notification) {
             if (err || !notification) {
                 res.json({
                     err: err,
@@ -51,11 +76,16 @@ var self = ({
 
                             req.httpRequest(theReq).then(function (parsedBody) {
                                 // console.log('parsedBody', parsedBody)
-
-                                return res.json({
-                                    success: true,
-                                    data: (parsedBody && parsedBody['data']) ? parsedBody['data'] : ''
-                                });
+                                // {
+                                //     success: true,
+                                //         data
+                                // :
+                                //     (parsedBody && parsedBody['data']) ? parsedBody['data'] : '',
+                                // ...
+                                // }
+                                return res.json(
+                                    notification
+                                );
 
                             }).catch(e => res.json({e, requ: theReq}));
                         }

@@ -3,11 +3,15 @@ import _ from "lodash";
 var self = ({
     all: function (req, res, next) {
         let Model = req.mongoose.model('Entry');
-        let offset = 0;
+        let offset = 0,limit=1000;
         if (req.params.offset) {
             offset = parseInt(req.params.offset);
         }
-        let fields = '';
+        if (req.params.limit) {
+            limit = req.params.limit;
+        }
+        let fields = 'updatedAt trackingCode createdAt _id form';
+
         if (req.headers && req.headers.fields) {
             fields = req.headers.fields
         }
@@ -76,7 +80,19 @@ var self = ({
         console.log('search', search)
         if(req.query){
             search={...search,...req.query}
+            if (req.query['date_gte']) {
+
+                search['createdAt'] = {$gt: new Date(req.query['date_gte'])};
+                delete search.date_gte;
+            }
+            if (req.query['date_lte']) {
+
+                search['createdAt']['$lt'] = new Date(req.query['date_lte']);
+                delete search.date_lte;
+
+            }
         }
+        console.log('search',search);
         Model.find(search, fields,
             function (err, model) {
                 // console.log('req',req.method)
@@ -99,7 +115,7 @@ var self = ({
                     return res.json(model);
 
                 })
-            }).populate('form','_id slug title').skip(offset).sort({_id: -1}).limit(parseInt(req.params.limit));
+            }).populate('form','_id slug title').skip(offset).sort({_id: -1}).limit(parseInt(limit));
     },
 });
 export default self;
