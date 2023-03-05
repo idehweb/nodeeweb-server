@@ -156,7 +156,7 @@ export const allAsXmlRules = async function (Model, slug = null) {
                     if(slug=="page"){
                         gy="";
                     }
-                    console.log('gy',gy)
+                    console.log('gy',gy,'slug',p.slug)
                     let tobj = {
                         id: p._id,
                         url: gy +

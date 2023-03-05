@@ -251,7 +251,7 @@ export default [
             console.log('obj', obj)
             Settings.findOne({}, "header_last", function (err, hea) {
                 console.log('hea', hea)
-                Product.findOne(obj, "title metadescription keywords excerpt type price in_stock salePrice combinations thumbnail photos slug labels _id",
+                Product.findOne(obj, "title metadescription metatitle keywords excerpt type price in_stock salePrice combinations thumbnail photos slug labels _id",
                     function (err, product) {
                         if (err || !product) {
                             // resolve({});
@@ -358,8 +358,12 @@ export default [
                         if (!obj.metadescription) {
                             obj.metadescription = obj["description"]
                         }
+                        let mainTitle=obj.title;
+                        if(product.metatitle){
+                            mainTitle=product.metatitle
+                        }
                         res.ssrParse().then(body => {
-                            body = body.replace('</head>', `<title>${obj.title}</title></head>`);
+                            body = body.replace('</head>', `<title>${mainTitle}</title></head>`);
                             body = body.replace('</head>', `<meta name="description" content="${obj.metadescription}" /></head>`);
                             body = body.replace('</head>', `<link rel="canonical" href="${process.env.SHOP_URL}product/${req.params._id}/${req.params._slug}/" /></head>`);
                             body = body.replace('</head>', `<meta name="product_id" content="${obj._id}" /></head>`);
@@ -375,7 +379,7 @@ export default [
                             body = body.replace('</head>', `<meta name="og:image:height" content="675" /></head>`);
                             body = body.replace('</head>', `<meta name="og:locale" content="fa_IR" /></head>`);
                             body = body.replace('</head>', `<meta name="og:type" content="website" /></head>`);
-                            body = body.replace('</head>', `<meta name="og:title" content="${obj.title}" /></head>`);
+                            body = body.replace('</head>', `<meta name="og:title" content="${mainTitle}" /></head>`);
                             body = body.replace('</head>', `<meta name="og:description" content="${obj.description}" /></head>`);
                             body = body.replace('</head>', `<meta name="og:url" content="." /></head>`);
                             body = body.replace('</head>', (hea && hea.header_last) ? hea.header_last : "" + `</head>`);
@@ -419,7 +423,7 @@ export default [
             console.log('\n\nobj', obj)
             Settings.findOne({}, "header_last", function (err, hea) {
                 console.log('hea', hea)
-                Product.findOne(obj, "title metadescription keywords excerpt type price in_stock salePrice combinations thumbnail photos slug labels _id",
+                Product.findOne(obj, "title metadescription metatitle excerpt type price in_stock salePrice combinations thumbnail photos slug labels _id",
                     function (err, product) {
                         if (err || !product) {
                             // resolve({});
@@ -526,8 +530,12 @@ export default [
                         if (!obj.metadescription) {
                             obj.metadescription = obj["description"]
                         }
+                        let mainTitle=obj.title;
+                        if(product.metatitle){
+                            mainTitle=product.metatitle
+                        }
                         res.ssrParse().then(body => {
-                            body = body.replace('</head>', `<title>${obj.title}</title></head>`);
+                            body = body.replace('</head>', `<title>${mainTitle}</title></head>`);
                             body = body.replace('</head>', `<meta name="description" content="${obj.metadescription}" /></head>`);
                             body = body.replace('</head>', `<meta name="product_id" content="${obj._id}" /></head>`);
                             body = body.replace('</head>', `<meta name="product_name" content="${obj.product_name}" /></head>`);
@@ -543,10 +551,10 @@ export default [
                             body = body.replace('</head>', `<meta name="og:image:height" content="675" /></head>`);
                             body = body.replace('</head>', `<meta name="og:locale" content="fa_IR" /></head>`);
                             body = body.replace('</head>', `<meta name="og:type" content="website" /></head>`);
-                            body = body.replace('</head>', `<meta name="og:title" content="${obj.title}" /></head>`);
+                            body = body.replace('</head>', `<meta name="og:title" content="${mainTitle}" /></head>`);
                             body = body.replace('</head>', `<meta name="og:description" content="${obj.description}" /></head>`);
                             body = body.replace('</head>', `<meta name="og:url" content="." /></head>`);
-                            body = body.replace('</head>', `<script type="application/ld+json">{"@context": "https://schema.org/","@type": "Product","name": "${obj.title}","image": ["${process.env.SHOP_URL}${obj.image}"],"description": "${obj.description}","offers": {"@type": "Offer","url": "${process.env.SHOP_URL}product/${req.params._slug}","priceCurrency":"IRR","price": "${obj.product_price}","priceValidUntil":"2024-07-22","availability": "https://schema.org/InStock","itemCondition": "https://schema.org/NewCondition"}}</script></head>`);
+                            body = body.replace('</head>', `<script type="application/ld+json">{"@context": "https://schema.org/","@type": "Product","name": "${mainTitle}","image": ["${process.env.SHOP_URL}${obj.image}"],"description": "${obj.description}","offers": {"@type": "Offer","url": "${process.env.SHOP_URL}product/${req.params._slug}","priceCurrency":"IRR","price": "${obj.product_price}","priceValidUntil":"2024-07-22","availability": "https://schema.org/InStock","itemCondition": "https://schema.org/NewCondition"}}</script></head>`);
                             body = body.replace('</head>', (hea && hea.header_last) ? hea.header_last : "" + `</head>`);
 
                             res.status(200).send(body);
