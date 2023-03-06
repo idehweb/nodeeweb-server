@@ -33,6 +33,7 @@ import Note from "#routes/default/note/index";
 import Document from "#routes/default/document/index";
 import defaultFront from "#root/app/defaultFront";
 import defaultAdmin from "#root/app/defaultAdmin";
+import initScheduledJobs from "#root/app/scheduleHandle";
 
 // import router from "../routes/public/p";
 // import uploadHandle from "#root/app/uploadHandle";
@@ -175,6 +176,7 @@ export default function BaseApp(theProps = {}) {
 
                 // console.log('routes', props['front'].routes.reverse())
                 // props['front'].routes=[...props['front'].routes,...routes]
+                initScheduledJobs(props);
                 routeHandle(app, props);
 
             });

@@ -212,48 +212,7 @@ function make_routes_safe(req, res, next, rou) {
 
     }
     req.httpRequest = axios;
-    req.fireEvent = (event, params = {}) => {
-        //if event was in list
-        //do the job
-        console.log('Fire events...')
-        let functions = [];
-        req.props.entity.forEach((en, d) => {
-            if (en.functions) {
-                en.functions.forEach((fn) => {
-                    console.log('fn', fn)
-                    functions.push(fn);
-                });
-            }
-            if (en.hook) {
-                en.hook.forEach((hook) => {
-                    if (hook.event == event) {
-                        console.log('run event ...', hook.name)
-                        hook.func(req,res,next,params);
-                    }
-                });
-            }
-        })
-        let Automation = req.mongoose.model('Automation');
-        Automation.find({trigger: event}, function (err, automations) {
-            if (err || !automations) {
-                console.log('return...')
-                return;
-            }
-            if (automations) {
-                automations.forEach((item, i) => {
-                    if (item && item.functions) {
-
-                        item.functions.forEach((func, j) => {
-                            functions.forEach((call) => {
-                                // if(call==func.name)
-                            })
-                        })
-                    }
-                })
-            }
-
-        });
-    };
+    req.fireEvent=(event,params={}) => global.fireEvent(event, params,props);
     req.functions = () => {
         console.log('get functions...')
         let functions = [];

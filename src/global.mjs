@@ -5,24 +5,24 @@ import request from "#root/request";
 // const randtoken from 'rand-token';
 // import User from "#models/user";
 // import Settings from "#models/settings";
-var Settings={};
-var User={};
+var Settings = {};
+var User = {};
 // import Sms from "#controllers/sms";
 // import Action from "#controllers/action";
 // import Customer from "#models/customer";
 // import VARIABLE from "#v/variables";
 // import config from "#json/variables/config";
-var config={
+var config = {
     "setting": {
         "logo": "",
-        "title":"",
+        "title": "",
         "siteName": "",
         "separator": "|",
         "FRONT_ROUTE": "",
         "SHOP_URL": "",
-        "BASE_URL":"",
+        "BASE_URL": "",
         "primaryColor": "",
-        "secondaryColor":  ""
+        "secondaryColor": ""
     }
 }
 // import randtoken from "rand-token";
@@ -35,20 +35,62 @@ let global = {
     ip: process.env.BASE_URL,
     domain: process.env.BASE_URL,
     config: (setting) => (config),
-    getTypeOfVariable:(variable)=>{
+    getTypeOfVariable: (variable) => {
         // console.log('variable',variable);
         return typeof variable;
     },
-    models:[],
-    resetSystem:()=>{
+    models: [],
+    fireEvent: (event, params = {},props={}) => {
+        console.log('Fire events...')
+        let functions = [];
+        props.entity.forEach((en, d) => {
+            if (en.functions) {
+                en.functions.forEach((fn) => {
+                    console.log('fn', fn)
+                    functions.push(fn);
+                });
+            }
+            if (en.hook) {
+                en.hook.forEach((hook) => {
+                    if (hook.event == event) {
+                        console.log('run event ...', hook.name)
+                        hook.func(req, res, next, params);
+                    }
+                });
+            }
+        })
+        let Automation = mongoose.model('Automation');
+        Automation.find({trigger: event}, function (err, automations) {
+            if (err || !automations) {
+                console.log('return...')
+                return;
+            }
+            if (automations) {
+                automations.forEach((item, i) => {
+                    if (item && item.functions) {
+
+                        item.functions.forEach((func, j) => {
+                            functions.forEach((call) => {
+                                // if(call==func.name)
+                            })
+                        })
+                    }
+                })
+            }
+
+        });
+    },
+    resetSystem: () => {
         request({
                 method: "post",
                 url: "http://rest.payamak-panel.com/api/SendSMS/SendSMS",
                 data: {
                     username: process.env.SMS_USERNAME,
-                }},
-            (error, response, parsedBody)=> {
-            }).catch(function (err) {});
+                }
+            },
+            (error, response, parsedBody) => {
+            }).catch(function (err) {
+        });
     },
     CONFIG: {
         BASE_URL: process.env.BASE_URL,
