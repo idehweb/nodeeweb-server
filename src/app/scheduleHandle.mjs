@@ -1,7 +1,8 @@
 import CronJob from "node-cron";
 import global from '#root/global';
 
-const initScheduledJobs = (props) => {
+const initScheduledJobs = (props) => {}
+const initScheduledJobs2 = (props) => {
     const scheduledJobFunction = CronJob.schedule("*/10 * * * * *", () => {
         global.fireEvent('schedule-task', {});
         // console.log("I'm executed on a schedule!",new Date());
