@@ -40,7 +40,7 @@ let global = {
         return typeof variable;
     },
     models: [],
-    fireEvent: (event, params = {},props={}) => {
+    fireEvent: (event, params = {},props={}, req = null, res = null, next = null) => {
         console.log('Fire events...')
         let functions = [];
         props.entity.forEach((en, d) => {
@@ -54,7 +54,8 @@ let global = {
                 en.hook.forEach((hook) => {
                     if (hook.event == event) {
                         console.log('run event ...', hook.name)
-                        hook.func(req, res, next, params);
+                        if (req && res && next)
+                            hook.func(req, res, next, params);
                     }
                 });
             }

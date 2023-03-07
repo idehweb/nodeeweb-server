@@ -212,7 +212,9 @@ function make_routes_safe(req, res, next, rou) {
 
     }
     req.httpRequest = axios;
-    req.fireEvent=(event,params={}) => global.fireEvent(event, params,props);
+    req.fireEvent=(event,params={}) => {
+        return global.fireEvent(event, params,req.props,req,res,next);
+    }
     req.functions = () => {
         console.log('get functions...')
         let functions = [];
