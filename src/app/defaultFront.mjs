@@ -364,7 +364,7 @@ export default [
                         res.ssrParse().then(body => {
                             body = body.replace('</head>', `<title>${mainTitle}</title></head>`);
                             body = body.replace('</head>', `<meta name="description" content="${obj.metadescription}" /></head>`);
-                            body = body.replace('</head>', `<link rel="canonical" href="${process.env.SHOP_URL}product/${req.params._id}/${req.params._slug}/" /></head>`);
+                            body = body.replace('</head>', `<link rel="canonical" href="${process.env.SHOP_URL}product/${product.slug}/" /></head>`);
                             body = body.replace('</head>', `<meta name="product_id" content="${obj._id}" /></head>`);
                             body = body.replace('</head>', `<meta name="product_name" content="${obj.product_name}" /></head>`);
                             body = body.replace('</head>', `<meta name="product_price" content="${obj.product_price}" /></head>`);
@@ -671,7 +671,7 @@ export default [
 
                         }
                         if (product["metadescription"]) {
-                            obj["metadescription"] = product["metadescription"][req.headers.lan] || product["metadescription"];
+                            obj["metadescription"] = product["metadescription"][req.headers.lan] || '';
 
                         }
                         if (product["title"]) {
@@ -696,13 +696,13 @@ export default [
                             obj["labels"] = product["labels"];
                         }
                         if (!obj.metadescription) {
-                            obj.metadescription = obj["description"]
+                            obj.metadescription = obj["metadescription"] || ''
                         }
                         let mainTitle=obj.title;
                         if(product.metatitle){
                             mainTitle=product.metatitle[req.headers.lan] ? product.metatitle[req.headers.lan] : obj.title
                         }
-                        console.log('mainTitle',mainTitle)
+                        console.log('obj.metadescription',obj.metadescription)
                         res.ssrParse().then(body => {
                             body = body.replace('</head>', `<title>${mainTitle}</title></head>`);
                             body = body.replace('</head>', `<meta name="description" content="${obj.metadescription}" /></head>`);

@@ -44,17 +44,19 @@ let global = {
         console.log('Fire events...')
         let functions = [];
         props.entity.forEach((en, d) => {
-            if (en.functions) {
-                en.functions.forEach((fn) => {
-                    console.log('fn', fn)
-                    functions.push(fn);
-                });
-            }
+            // console.log('en',en.name)
+            // if (en.functions) {
+            //     en.functions.forEach((fn) => {
+            //         console.log('fn', fn)
+            //         functions.push(fn);
+            //     });
+            // }
             if (en.hook) {
                 en.hook.forEach((hook) => {
+                    // console.log('hook',hook)
                     if (hook.event == event) {
                         console.log('run event ...', hook.name)
-                        if (req && res && next)
+                        // if (req && res && next)
                             hook.func(req, res, next, params);
                     }
                 });
