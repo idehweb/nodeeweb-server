@@ -13,70 +13,12 @@ import {createPublicRoute, createRoute, returnDefaultModels} from "#routes/index
 
 // createDefaultRoute();
 let routeHandle = (app, props = {}) => {
-    // console.log("==> routeHandle(app,props)",props.front);
 
-    // if (config().set///////ting.BASE_URL) {
-
-    // res.status(200);
-    // let keys = Object.keys(CustomerRT);
-    // keys.forEach((x) => {
-    //   app.use("/boy/" + x, BoyRT[x]);
-    // });
-    // keys = Object.keys(AdminRT);
-    // keys.forEach((x) => {
-    //   app.use("/admin/" + x, AdminRT[x]);
-    // });
-    // keys = Object.keys(CustomerRT);
-    // keys.forEach((x) => {
-    //     console.log('/admin/'+x)
-    //
-    //     app.use("/admin/" + x, CustomerRT[x]);
-    //     // app.use("/customer/" + x, CustomerRT[x]);
-    // });
-    // let keys = Object.keys(PublicRT);
-    // keys.forEach((x) => {
-    //   console.log('/'+x)
-    //
-    //   app.use("/" + x, PublicRT[x]);
-    //
-    // });
     if (props && props.front && props.front.routes) {
-        // console.log('createTheme')
-
         let PR = createPublicRoute('', props.front.routes);
         app.use("/", PR);
-
-
     }
 
-    // let defaultRoute=returnDefaultModels();
-    // if (defaultRoute) {
-    //     // console.log('adnu',returnDefaultModels())
-    //
-    //     // let PR = createPublicRoute('/',defaultRoute.routes);
-    //     let DR = createRoute(defaultRoute.modelName, defaultRoute.routes);
-    //
-    //     app.use("/admin", DR);
-    //
-    //
-    //
-    //
-    // }
-
-    // props.theme.routes.forEach((x) => {
-    //   console.log('/',x)
-    //
-    //   app.use("/" + x, PR);
-    //
-    // });
-    // app.use("/", (req,res,next)=>{
-    //   the_public_route(req,res,next);
-    // });
-    // let PR = createPublicRoute('/admin/', []);
-
-    // app.use('/admin',express.static(adminFolder, {index: ['index.html']}));
-
-    // app.use("/customer/settings", CustomerRT.settings);
     let temp = [];
     let allRoutes = [], roles = [];
     props.entity.forEach((en) => {

@@ -18,7 +18,7 @@ var self = ( {
             search['product']=req.query.product;
 
         }
-        Action.find(search,'user , customer , _id , title , createdAt', function (err, actions) {
+        Action.find(search,'user , customer , product , order , _id , title , createdAt', function (err, actions) {
 
             if (err || !actions) {
                 res.json({
@@ -45,7 +45,7 @@ var self = ( {
 
             });
 
-        }).populate('customer','phoneNumber firstName lastName _id').populate('product','title _id').populate('user','username _id nickname').skip(offset).sort({_id: -1}).limit(parseInt(req.params.limit));
+        }).populate('customer','phoneNumber firstName lastName _id').populate('product','title _id').populate('user','username _id nickname').skip(offset).sort({createdAt: -1,_id: -1}).limit(parseInt(req.params.limit));
     },
 });
 export default self;

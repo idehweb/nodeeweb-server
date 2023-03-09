@@ -33,5 +33,7 @@ export default {
         "func": (req, res, next) => {
         }
     }],
-
+    "events": [{
+        "name": "send-schedule-message-by-system"
+    }],
 }

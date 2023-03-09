@@ -39,8 +39,31 @@ let global = {
         // console.log('variable',variable);
         return typeof variable;
     },
+    submitAction: (obj) => {
+        return new Promise(function (resolve, reject) {
+            let Action = mongoose.model('Action');
+
+            Action.create(obj,function(err,res) {
+                if(err || !res){
+                    console.log('xxx submitAction error:',err)
+                    reject({});
+                }
+                if (res.title)
+                    console.log('==> submitAction', res.title)
+                resolve(res);
+            })
+
+        // .catch(err => {
+        //         console.error('==> Failed submitAction', res._id)
+        //
+        //         reject(err);
+        //     });
+
+        });
+
+    },
     models: [],
-    fireEvent: (event, params = {},props={}, req = null, res = null, next = null) => {
+    fireEvent: (event, params = {}, props = {}, req = null, res = null, next = null) => {
         console.log('Fire events...')
         let functions = [];
         props.entity.forEach((en, d) => {
@@ -57,7 +80,7 @@ let global = {
                     if (hook.event == event) {
                         console.log('run event ...', hook.name)
                         // if (req && res && next)
-                            hook.func(req, res, next, params);
+                        hook.func(req, res, next, params);
                     }
                 });
             }

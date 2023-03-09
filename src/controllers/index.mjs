@@ -1,11 +1,14 @@
 import mongoose from "mongoose";
 import _ from 'lodash'
-
+const capitalize = (str) => {
+    return `${str[0].toLowerCase()}${str.slice(1)}`
+    // return str[0].toUpperCase() + str.slice(1)   // without template string
+}
 var self = (Model) => {
     // console.log('Model', Model)
     return ({
         all: function (req, res, next) {
-            console.log('==> all()', Model);
+            console.log('==> all()', Model.modelName);
             let offset = 0;
             if (req.params.offset) {
                 offset = parseInt(req.params.offset);
@@ -145,6 +148,20 @@ var self = (Model) => {
                     });
                     return 0;
                 }
+                let modelName=Model.modelName;
+                modelName=capitalize(modelName)
+                // console.log('modelName',modelName,req.headers._id,req.headers.token)
+                if (req.headers._id && req.headers.token) {
+                    let action = {
+                        user: req.headers._id,
+                        title: "create "+modelName+" " + menu._id,
+                        action: "create-"+modelName,
+                        data: menu,
+                        history: req.body,
+                    };
+                    action[modelName]=menu;
+                    req.submitAction(action);
+                }
                 res.json(menu);
                 return 0;
 
@@ -266,7 +283,21 @@ var self = (Model) => {
                     });
                     return 0;
                 }
-
+                let modelName=Model.modelName;
+                modelName=capitalize(modelName)
+                // console.log('modelName',modelName,req.headers._id,req.headers.token)
+                if (req.headers._id && req.headers.token) {
+                    let action = {
+                        user: req.headers._id,
+                        title: "edit "+modelName+" " + menu._id,
+                        action: "edit-"+modelName,
+                        data: menu,
+                        history: req.body,
+                    };
+                    action[modelName]=menu;
+                    // console.log('submit action:')
+                    req.submitAction(action);
+                }
                 res.json(menu);
                 return 0;
 

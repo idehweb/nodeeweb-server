@@ -96,8 +96,8 @@ function make_routes_safe(req, res, next, rou) {
     req.props.entity.forEach((en, d) => {
         if (en.req) {
             let op = Object.keys(en.req);
-            op.forEach((o)=>{
-                req[o]=en.req[o];
+            op.forEach((o) => {
+                req[o] = en.req[o];
             })
         }
     })
@@ -212,8 +212,8 @@ function make_routes_safe(req, res, next, rou) {
 
     }
     req.httpRequest = axios;
-    req.fireEvent=(event,params={}) => {
-        return global.fireEvent(event, params,req.props,req,res,next);
+    req.fireEvent = (event, params = {}) => {
+        return global.fireEvent(event, params, req.props, req, res, next);
     }
     req.functions = () => {
         console.log('get functions...')
@@ -241,19 +241,7 @@ function make_routes_safe(req, res, next, rou) {
         })
         return events;
     }
-    req.submitAction = (obj) => {
-        return new Promise(function (resolve, reject) {
-            let Action = req.mongoose.model('Action');
-
-            Action.create(obj).then((res) => {
-                    resolve(res);
-                }).catch(err => {
-                    reject(err);
-                });
-
-            });
-
-    }
+    req.submitAction = (obj) => global.submitAction(obj)
 
     req.rules = (rules) => {
         req.props.entity.forEach((en) => {

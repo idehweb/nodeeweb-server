@@ -198,6 +198,9 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.1.09
+    * add telegram more complete
+
 - 0.1.08
     * add cron and schedules job
 

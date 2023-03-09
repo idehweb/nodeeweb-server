@@ -12,7 +12,7 @@ const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 //
 let envLocalPath = resolveApp('.env.local')
 let envModulePath = resolveApp('./node_modules/@nodeeweb/server/.env.local')
-console.error('.env is loaded from:', envLocalPath);
+console.log('.env is loaded from:', envLocalPath);
 let envExist = fs.existsSync(envLocalPath);
 
 //

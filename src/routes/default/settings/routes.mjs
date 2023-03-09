@@ -96,4 +96,9 @@ export default [{
     "access": "admin_user",
     "controller": controller.fileUpload,
 
+}, {
+    "path": "/:id",
+    "method": "put",
+    "access": "admin_user",
+
 }]

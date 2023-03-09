@@ -6,7 +6,7 @@ import axios from "axios";
 const initScheduledJobs2 = (props) => {}
 const initScheduledJobs = (props) => {
     console.log('new time',new Date())
-    const scheduledJobFunction = CronJob.schedule("0 0 2 * * *", () => {
+    const scheduledJobFunction = CronJob.schedule("0 0 0 * * *", () => {
     // const scheduledJobFunction = CronJob.schedule("0,15,30,45 * * * * *", () => {
         // process.env.TZ="Asia/Tehran";
 
@@ -35,7 +35,7 @@ const initScheduledJobs = (props) => {
         // })
         // Add your custom logic here
     },{
-        timezone:"Asia/Tehran"
+        timezone:process.env.TZ || "Asia/Tehran"
     });
 
     scheduledJobFunction.start();
