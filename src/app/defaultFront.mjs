@@ -4,144 +4,7 @@ import _ from "lodash";
 import React from 'react';
 import global from '#root/global';
 
-// const theme = (mode = 'admin', req, res, next) => {
-//     console.log('get theme settings... ', req.headers.token,mode);
-//     // return;
-//
-//     let Settings = req.mongoose.model('Settings');
-//     let Template = req.mongoose.model('Template');
-//     let Page = req.mongoose.model('Page');
-//     Settings.findOne({},'currency tax taxAmount', function (err, setting) {
-//         console.log('setting',setting)
-//         Template.findOne({type: 'header'}, function (err, header) {
-//             Template.findOne({type: 'footer'}, function (err, footer) {
-//                 let routes = [];
-//                 Page.find({}, function (err, pages) {
-//                     if (pages)
-//                         pages.forEach((page) => {
-//                             if (page.path)
-//                                 routes.push({
-//                                     path: page.path,
-//                                     exact: true,
-//                                     layout: 'DefaultLayout',
-//                                     element: 'DynamicPage',
-//                                     elements: page.elements || [],
-//                                 });
-//                         })
-//                     // console.log('footer error',err);
-//                     // console.log('footer',footer);
-//                     if (req.headers.token) {
-//
-//                     }
-//                     // let headerMaxWidth='100%';
-//                     // if()
-//                     let currency = 'rial';
-//                     if (setting && setting.currency) {
-//                         currency = setting.currency;
-//                     }
-//
-//                     let tax = false;
-//                     if (setting && setting.tax) {
-//                         tax = setting.tax;
-//                     }
-//                     let taxAmount = 0;
-//                     if (setting && setting.taxAmount) {
-//                         taxAmount = setting.taxAmount;
-//                     }
-//                     let lastObj = {
-//                         taxAmount: taxAmount,
-//                         tax: tax,
-//                         currency: currency,
-//                         header: {
-//                             maxWidth: (header && header.maxWidth) ? header.maxWidth : '100%',
-//                             backgroundColor: (header && header.backgroundColor) ? header.backgroundColor : '',
-//                             classes: (header && header.classes) ? header.classes : '',
-//                             padding: (header && header.padding) ? header.padding : '',
-//                             showInDesktop: (header && header.showInDesktop) ? header.showInDesktop : '',
-//                             showInMobile: (header && header.showInMobile) ? header.showInMobile : '',
-//                             elements: header ? header.elements : []
-//                         },
-//                         body: [{name: 'MainContent'}],
-//                         footer: {
-//                             maxWidth: (footer && footer.maxWidth) ? footer.maxWidth : '100%',
-//                             backgroundColor: (footer && footer.backgroundColor) ? footer.backgroundColor : '',
-//                             classes: (footer && footer.classes) ? footer.classes : '',
-//                             padding: (footer && footer.padding) ? footer.padding : '',
-//                             elements: footer ? footer.elements : []
-//                         },
-//                         routes: [
-//                             {
-//                                 path: '/',
-//                                 exact: true,
-//                                 layout: 'DefaultLayout',
-//                                 element: 'Home',
-//                             },
-//
-//                             {
-//                                 path: '/chat',
-//                                 exact: true,
-//                                 layout: 'Nohf',
-//                                 element: 'Chat',
-//                             }, {
-//                                 path: '/transaction/:method',
-//                                 exact: true,
-//                                 layout: 'Nohf',
-//                                 element: 'Transaction',
-//                             }, {
-//                                 path: '/transaction',
-//                                 exact: true,
-//                                 layout: 'Nohf',
-//                                 element: 'Transaction',
-//                             },
-//                             {
-//                                 path: '/admin',
-//                                 exact: true,
-//                                 layout: 'Nohf',
-//                                 element: 'Admin',
-//                             }, {
-//                                 path: '/admin/:model',
-//                                 exact: true,
-//                                 layout: 'Nohf',
-//                                 element: 'Admin',
-//                             }, {
-//                                 path: '/admin/:model/:action',
-//                                 exact: true,
-//                                 layout: 'Nohf',
-//                                 element: 'Admin',
-//                             }, {
-//                                 path: '/admin/:model/:action/:_id',
-//                                 exact: true,
-//                                 layout: 'Nohf',
-//                                 element: 'Admin',
-//                             },
-//                             {
-//                                 "path": "/a/:_entity/:_id/:_slug",
-//                                 "method": "get",
-//                                 "access": "customer_all",
-//                                 "controller": (req, res, next) => {
-//                                     console.log('show front, go visit ', process.env.SHOP_URL);
-//                                     res.show()
-//                                 },
-//
-//                             },
-//                             ...routes
-//                         ],
-//                         components: req.builderComponents(),
-//
-//                     }
-//                     if (mode == 'admin') {
-//                         let rules = {};
-//                         rules = req.rules(rules);
-//                         lastObj['models'] = req.models()
-//                         lastObj['rules'] = JSON.parse(JSON.stringify(rules))
-//                     }
-//                     return res.json(lastObj)
-//                 });
-//
-//             });
-//         });
-//     });
-// }
+
 export default [
     {
         "path": "/",
@@ -152,7 +15,7 @@ export default [
             let Settings = req.mongoose.model('Settings');
             // console.log('obj', obj)
             Settings.findOne({}, "title header_last body_first description contactType areaServed availableLanguage factore_shop_name factore_shop_phoneNumber", function (err, hea) {
-                console.log('hea', hea)
+                // console.log('hea', hea)
                 if (!hea) {
                     hea = {}
                 }
@@ -213,7 +76,8 @@ export default [
             res.show()
         },
 
-    }, {
+    },
+    {
         "path": "/login/:_action",
         "method": "get",
         "access": "customer_all",
@@ -248,9 +112,9 @@ export default [
             }
             let Product = req.mongoose.model('Product');
             let Settings = req.mongoose.model('Settings');
-            console.log('obj', obj)
+            // console.log('obj', obj)
             Settings.findOne({}, "header_last", function (err, hea) {
-                console.log('hea', hea)
+                // console.log('hea', hea)
                 Product.findOne(obj, "title metadescription metatitle keywords excerpt type price in_stock salePrice combinations thumbnail photos slug labels _id",
                     function (err, product) {
                         if (err || !product) {
@@ -419,7 +283,7 @@ export default [
             let Settings = req.mongoose.model('Settings');
             console.log('obj', obj)
             Settings.findOne({}, "header_last", function (err, hea) {
-                console.log('hea', hea)
+                // console.log('hea', hea)
                 Product.findOne(obj, "title metadescription metatitle keywords excerpt type price in_stock salePrice combinations thumbnail photos slug labels _id",
                     function (err, product) {
                         if (err || !product) {
@@ -591,7 +455,7 @@ export default [
             let Settings = req.mongoose.model('Settings');
             console.log('\n\nobj', obj)
             Settings.findOne({}, "header_last", function (err, hea) {
-                console.log('hea', hea)
+                // console.log('hea', hea)
                 Product.findOne(obj, "title metadescription metatitle excerpt type price in_stock salePrice combinations thumbnail photos slug labels _id",
                     function (err, product) {
                         if (err || !product) {
@@ -734,6 +598,8 @@ export default [
         },
 
     },
+
+
     {
         "path": "/post/:_id/:_slug",
         "method": "get",
@@ -765,9 +631,9 @@ export default [
             }
             let Post = req.mongoose.model('Post');
             let Settings = req.mongoose.model('Settings');
-            console.log('\n\nobj', obj)
+            // console.log('\n\nobj', obj)
             Settings.findOne({}, "header_last", function (err, hea) {
-                console.log('hea', hea)
+                // console.log('hea', hea)
                 Post.findOne(obj, "title metadescription keywords excerpt type price in_stock salePrice combinations thumbnail photos slug labels _id",
                     function (err, post) {
                         if (err || !post) {
@@ -974,10 +840,10 @@ export default [
 
             let Page = req.mongoose.model('Page');
             let Settings = req.mongoose.model('Settings');
-            console.log('\n\nobj2', obj)
+            // console.log('\n\nobj2', obj)
 
             Settings.findOne({}, "header_last", function (err, hea) {
-                console.log('hea', hea)
+                // console.log('hea', hea)
                 Page.findOne(obj, "title metadescription keywords excerpt type price in_stock salePrice combinations thumbnail photos slug labels _id",
                     function (err, page) {
                         if (err || !page) {

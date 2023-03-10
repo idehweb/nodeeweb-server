@@ -156,19 +156,132 @@ export default function BaseApp(theProps = {}) {
                     pages.forEach((page) => {
                         if (page.path) {
                             console.log('page.path', page.path)
-                            routes.push({
-                                path: page.path,
-                                method: 'get',
-                                access: 'customer_all',
-                                controller: (req, res, next) => {
-                                    console.log('show front, go visit ', process.env.SHOP_URL);
-                                    res.show()
-                                },
+                            if (page.path.indexOf('product-category')>-1) {
+                                routes.push({
+                                    path: page.path,
+                                    method: 'get',
+                                    access: 'customer_all',
+                                    controller: (req, res, next) => {
+                                        console.log('show /product-category/:_id, /index.mjs line: 606 ');
 
-                                layout: 'DefaultLayout',
-                                element: 'DynamicPage',
-                                elements: page.elements || [],
-                            });
+                                        let obj = {};
+
+                                        obj["slug"] = req.params._id;
+
+                                        let ProductCategory = req.mongoose.model('ProductCategory');
+                                        let Settings = req.mongoose.model('Settings');
+                                        console.log('\n\nobj', obj)
+                                        Settings.findOne({}, "header_last", function (err, hea) {
+                                            // console.log('hea', hea)
+                                            ProductCategory.findOne(obj, "name metadescription metatitle excerpt thumbnail photos slug _id",
+                                                function (err, productCategory) {
+                                                    if (err || !productCategory) {
+                                                        // resolve({});
+                                                        return res.json({
+                                                            success: false,
+                                                            error: err
+                                                        });
+                                                    }
+
+
+
+                                                    let img = '';
+                                                    if (productCategory.photos && productCategory.photos[0]) {
+                                                        img = productCategory.photos[0]
+
+                                                    }
+                                                    if (productCategory.thumbnail) {
+                                                        img = productCategory.thumbnail
+                                                    }
+
+                                                    let obj = {
+                                                        _id: productCategory._id,
+                                                        image: img,
+                                                        keywords: "",
+                                                        metadescription: "",
+                                                    };
+                                                    if (productCategory["keywords"]) {
+                                                        obj["keywords"] = productCategory["keywords"][req.headers.lan] || productCategory["keywords"];
+
+                                                    }
+                                                    if (productCategory["metadescription"]) {
+                                                        obj["metadescription"] = productCategory["metadescription"][req.headers.lan] || '';
+
+                                                    }
+                                                    if (productCategory["name"] && productCategory["name"][req.headers.lan]) {
+                                                        obj["name"] = productCategory["name"][req.headers.lan];
+                                                    } else {
+                                                        obj["name"] = "";
+                                                    }
+                                                    if (productCategory["name"] && productCategory["name"][req.headers.lan]) {
+                                                        obj["productCategory_name"] = productCategory["name"][req.headers.lan];
+                                                    } else {
+                                                        obj["productCategory_name"] = "";
+                                                    }
+                                                    if (productCategory["description"] && productCategory["description"][req.headers.lan]) {
+                                                        obj["description"] = productCategory["description"][req.headers.lan];
+                                                    } else {
+                                                        obj["description"] = "";
+                                                    }
+                                                    if (productCategory["slug"]) {
+                                                        obj["slug"] = productCategory["slug"];
+                                                    }
+                                                    if (productCategory["labels"]) {
+                                                        obj["labels"] = productCategory["labels"];
+                                                    }
+                                                    if (!obj.metadescription) {
+                                                        obj.metadescription = obj["metadescription"] || ''
+                                                    }
+                                                    let mainTitle=obj.name;
+                                                    if(productCategory.metatitle){
+                                                        mainTitle=productCategory.metatitle[req.headers.lan] ? productCategory.metatitle[req.headers.lan] : obj.name
+                                                    }
+                                                    console.log('obj.metadescription',obj.metadescription)
+                                                    res.ssrParse().then(body => {
+                                                        body = body.replace('</head>', `<title>${mainTitle}</title></head>`);
+                                                        body = body.replace('</head>', `<meta name="description" content="${obj.metadescription}" /></head>`);
+                                                        body = body.replace('</head>', `<meta name="productCategory_id" content="${obj._id}" /></head>`);
+                                                        body = body.replace('</head>', `<meta name="productCategory_name" content="${obj.productCategory_name}" /></head>`);
+                                                        body = body.replace('</head>', `<meta name="productCategory_image" content="/${obj.image}" /></head>`);
+                                                        body = body.replace('</head>', `<link rel="canonical" href="${process.env.SHOP_URL}product-category/${req.params._id}/" /></head>`);
+                                                        body = body.replace('</head>', `<meta name="image" content="/${obj.image}" /></head>`);
+                                                        body = body.replace('</head>', `<meta name="og:image" content="/${obj.image}" /></head>`);
+                                                        body = body.replace('</head>', `<meta name="og:image:secure_url" content="/${obj.image}" /></head>`);
+                                                        body = body.replace('</head>', `<meta name="og:image:width" content="1200" /></head>`);
+                                                        body = body.replace('</head>', `<meta name="og:image:height" content="675" /></head>`);
+                                                        body = body.replace('</head>', `<meta name="og:locale" content="fa_IR" /></head>`);
+                                                        body = body.replace('</head>', `<meta name="og:type" content="website" /></head>`);
+                                                        body = body.replace('</head>', `<meta name="og:title" content="${mainTitle}" /></head>`);
+                                                        body = body.replace('</head>', `<meta name="og:description" content="${obj.metadescription}" /></head>`);
+                                                        body = body.replace('</head>', `<meta name="og:url" content="." /></head>`);
+                                                        body = body.replace('</head>', `<script type="application/ld+json">{"@context": "https://schema.org/","@type": "Product","name": "${mainTitle}","image": ["${process.env.SHOP_URL}${obj.image}"],"description": "${obj.metadescription}","offers": {"@type": "Offer","url": "${process.env.SHOP_URL}product-category/${req.params._id}","priceCurrency":"IRR","price": "${obj.productCategory_price}","priceValidUntil":"2024-07-22","availability": "https://schema.org/InStock","itemCondition": "https://schema.org/NewCondition"}}</script></head>`);
+                                                        body = body.replace('</head>', (hea && hea.header_last) ? hea.header_last : "" + `</head>`);
+
+                                                        res.status(200).send(body);
+                                                    })
+                                                }).lean();
+                                        })
+                                    },
+
+                                    layout: 'DefaultLayout',
+                                    element: 'DynamicPage',
+                                    elements: page.elements || [],
+                                });
+
+                            } else
+                                routes.push({
+                                    path: page.path,
+                                    method: 'get',
+                                    access: 'customer_all',
+                                    controller: (req, res, next) => {
+                                        console.log('show front, go visit ', process.env.SHOP_URL);
+                                        res.show()
+                                    },
+
+                                    layout: 'DefaultLayout',
+                                    element: 'DynamicPage',
+                                    elements: page.elements || [],
+                                });
                         }
                     })
 
