@@ -1,4 +1,6 @@
 // console.log('#global')
+import fs from "fs"
+import path from "path"
 import mongoose from "mongoose"
 import request from "#root/request";
 // const rp from 'request';
@@ -34,18 +36,237 @@ let global = {
     body: "",
     ip: process.env.BASE_URL,
     domain: process.env.BASE_URL,
+    capitalize: (str) => {
+        return `${str[0].toLowerCase()}${str.slice(1)}`
+        // return str[0].toUpperCase() + str.slice(1)   // without template string
+    },
+    updateThemeConfig: (props = {},__dirname=path.resolve()) => {
+        global.theme('admin', {props}, null).then((resp = {}) => {
+            global.updateFile("./theme/site_setting/", "config.js",
+                "window.BASE_URL='" + process.env.BASE_URL + "';\n" +
+                "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
+                "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
+                "window.SHOP_URL='" + process.env.SHOP_URL + "';\n" +
+                "window.theme=" + JSON.stringify(resp) + ";"
+                , __dirname)
+        }).catch(e => {
+            global.updateFile("./theme/site_setting/", "config.js",
+                "window.BASE_URL='" + process.env.BASE_URL + "';\n" +
+                "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
+                "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
+                "window.SHOP_URL='" + process.env.SHOP_URL + "';", __dirname)
+        })
+
+    },
     config: (setting) => (config),
     getTypeOfVariable: (variable) => {
         // console.log('variable',variable);
         return typeof variable;
     },
+    rules: (rules, req = {}) => {
+        req.props.entity.forEach((en) => {
+            let model = mongoose.model(en.modelName),
+                identifire = en.modelName.toLowerCase();
+            let schema = [];
+            Object.keys(model.schema.obj).forEach(y => {
+                // console.log('model.schema.obj[y]',model.schema.obj[y]);
+                schema.push({"name": y, "type": global.getTypeOfVariable(model.schema.obj[y])});
+            })
+            if (en.admin && typeof en.admin === 'object') {
+                rules[identifire] = en.admin;
+            } else {
+                rules[identifire] = {}
+            }
+            if (!rules[identifire].create) {
+                rules[identifire].create = {};
+            }
+            if (!rules[identifire].create.fields) {
+                rules[identifire].create.fields = schema;
+            }
+            if (!rules[identifire].edit) {
+                rules[identifire].edit = {};
+            }
+            if (!rules[identifire].edit.fields) {
+                rules[identifire].edit.fields = rules[identifire].create.fields;
+            }
+            if (!rules[identifire].list) {
+                rules[identifire].list = {};
+            }
+            if (!rules[identifire].list.header) {
+                rules[identifire].list.header = [];
+            }
+
+        })
+
+        return rules;
+    },
+    models: () => {
+        var models = mongoose.modelNames()
+        return models;
+    },
+    builderComponents: (rules, req) => {
+        let components = [];
+        req.props.entity.forEach((en) => {
+            if (en.components) {
+                en.components.forEach((com) => {
+                    components.push(com);
+                });
+            }
+        });
+        return components;
+
+    },
+    theme: (mode = 'admin', req, res, next) => {
+        console.log('get theme settings... ', mode);
+        // return;
+        return new Promise(function (resolve, reject) {
+
+            let Settings = mongoose.model('Settings');
+            let Template = mongoose.model('Template');
+            let Page = mongoose.model('Page');
+            Settings.findOne({}, 'currency tax taxAmount', function (err, setting) {
+                console.log('setting', setting)
+                Template.findOne({type: 'header'}, function (err, header) {
+                    Template.findOne({type: 'footer'}, function (err, footer) {
+                        let routes = [];
+                        Page.find({}, function (err, pages) {
+                            if (pages)
+                                pages.forEach((page) => {
+                                    if (page.path)
+                                        routes.push({
+                                            path: page.path,
+                                            exact: true,
+                                            layout: 'DefaultLayout',
+                                            element: 'DynamicPage',
+                                            elements: page.elements || [],
+                                        });
+                                })
+                            // console.log('footer error',err);
+                            // console.log('footer',footer);
+                            if (req.headers && req.headers.token) {
+
+                            }
+                            // let headerMaxWidth='100%';
+                            // if()
+                            let currency = 'rial';
+                            if (setting && setting.currency) {
+                                currency = setting.currency;
+                            }
+
+                            let tax = false;
+                            if (setting && setting.tax) {
+                                tax = setting.tax;
+                            }
+                            let taxAmount = 0;
+                            if (setting && setting.taxAmount) {
+                                taxAmount = setting.taxAmount;
+                            }
+                            let lastObj = {
+                                taxAmount: taxAmount,
+                                tax: tax,
+                                currency: currency,
+                                header: {
+                                    maxWidth: (header && header.maxWidth) ? header.maxWidth : '100%',
+                                    backgroundColor: (header && header.backgroundColor) ? header.backgroundColor : '',
+                                    classes: (header && header.classes) ? header.classes : '',
+                                    padding: (header && header.padding) ? header.padding : '',
+                                    showInDesktop: (header && header.showInDesktop) ? header.showInDesktop : '',
+                                    showInMobile: (header && header.showInMobile) ? header.showInMobile : '',
+                                    elements: header ? header.elements : []
+                                },
+                                body: [{name: 'MainContent'}],
+                                footer: {
+                                    maxWidth: (footer && footer.maxWidth) ? footer.maxWidth : '100%',
+                                    backgroundColor: (footer && footer.backgroundColor) ? footer.backgroundColor : '',
+                                    classes: (footer && footer.classes) ? footer.classes : '',
+                                    padding: (footer && footer.padding) ? footer.padding : '',
+                                    elements: footer ? footer.elements : []
+                                },
+                                routes: [
+                                    {
+                                        path: '/',
+                                        exact: true,
+                                        layout: 'DefaultLayout',
+                                        element: 'Home',
+                                    },
+
+                                    {
+                                        path: '/chat',
+                                        exact: true,
+                                        layout: 'Nohf',
+                                        element: 'Chat',
+                                    }, {
+                                        path: '/transaction/:method',
+                                        exact: true,
+                                        layout: 'Nohf',
+                                        element: 'Transaction',
+                                    }, {
+                                        path: '/transaction',
+                                        exact: true,
+                                        layout: 'Nohf',
+                                        element: 'Transaction',
+                                    },
+                                    {
+                                        path: '/admin',
+                                        exact: true,
+                                        layout: 'Nohf',
+                                        element: 'Admin',
+                                    }, {
+                                        path: '/admin/:model',
+                                        exact: true,
+                                        layout: 'Nohf',
+                                        element: 'Admin',
+                                    }, {
+                                        path: '/admin/:model/:action',
+                                        exact: true,
+                                        layout: 'Nohf',
+                                        element: 'Admin',
+                                    }, {
+                                        path: '/admin/:model/:action/:_id',
+                                        exact: true,
+                                        layout: 'Nohf',
+                                        element: 'Admin',
+                                    },
+                                    {
+                                        "path": "/a/:_entity/:_id/:_slug",
+                                        "method": "get",
+                                        "access": "customer_all",
+                                        "controller": (req, res, next) => {
+                                            console.log('show front, go visit ', process.env.SHOP_URL);
+                                            res.show()
+                                        },
+
+                                    },
+                                    ...routes
+                                ],
+                                components: global.builderComponents([], {props: req.props}),
+
+                            }
+                            if (mode == 'admin') {
+                                let rules = {};
+                                rules = global.rules(rules, {props: req.props});
+                                // console.log('global.models',global.models)
+                                lastObj['models'] = global.models()
+                                lastObj['rules'] = JSON.parse(JSON.stringify(rules))
+                            }
+                            if (res)
+                                return res.json(lastObj)
+                            else
+                                return resolve(lastObj)
+                        });
+
+                    });
+                });
+            });
+        })
+    },
     submitAction: (obj) => {
         return new Promise(function (resolve, reject) {
             let Action = mongoose.model('Action');
 
-            Action.create(obj,function(err,res) {
-                if(err || !res){
-                    console.log('xxx submitAction error:',err)
+            Action.create(obj, function (err, res) {
+                if (err || !res) {
+                    console.log('xxx submitAction error:', err)
                     reject({});
                 }
                 if (res.title)
@@ -53,16 +274,15 @@ let global = {
                 resolve(res);
             })
 
-        // .catch(err => {
-        //         console.error('==> Failed submitAction', res._id)
-        //
-        //         reject(err);
-        //     });
+            // .catch(err => {
+            //         console.error('==> Failed submitAction', res._id)
+            //
+            //         reject(err);
+            //     });
 
         });
 
     },
-    models: [],
     fireEvent: (event, params = {}, props = {}, req = null, res = null, next = null) => {
         console.log('Fire events...')
         let functions = [];
@@ -650,6 +870,20 @@ let global = {
         let m = today.getMinutes();
         let s = today.getSeconds();
         return y + "-" + mo + "-" + d + "-" + h + "-" + m + "-" + s;
+    },
+    updateFile: function (thePath, file_name, data, __dirname = path.resolve()) {
+        // const __dirname = path.resolve();
+        let filePath = path.join(__dirname, thePath, file_name);
+
+        try {
+            console.log('reading file:', filePath)
+            fs.promises.writeFile(filePath, data, "utf8");
+            console.log("\ndata is written successfully in the file\n" +
+                "filePath: " + filePath + " " + file_name);
+        }
+        catch (err) {
+            console.log("not able to write data in the file ", err);
+        }
     },
     authenticateCustomer: function (_id, token) {
         // console.log('==> authenticateCustomer ()');

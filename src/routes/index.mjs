@@ -191,26 +191,12 @@ function make_routes_safe(req, res, next, rou) {
         });
 
     };
-    req.models = () => {
-        var models = mongoose.modelNames()
-        return models;
-    };
+    req.models = () => global.models();
     req.adminRules = () => {
         // var models = mongoose.modelNames()
         return models;
     };
-    req.builderComponents = (rules) => {
-        let components = [];
-        req.props.entity.forEach((en) => {
-            if (en.components) {
-                en.components.forEach((com) => {
-                    components.push(com);
-                });
-            }
-        });
-        return components;
-
-    }
+    req.builderComponents = (rules,req) => global.builderComponents(rules,req)
     req.httpRequest = axios;
     req.fireEvent = (event, params = {}) => {
         return global.fireEvent(event, params, req.props, req, res, next);
@@ -243,43 +229,7 @@ function make_routes_safe(req, res, next, rou) {
     }
     req.submitAction = (obj) => global.submitAction(obj)
 
-    req.rules = (rules) => {
-        req.props.entity.forEach((en) => {
-            let model = req.mongoose.model(en.modelName),
-                identifire = en.modelName.toLowerCase();
-            let schema = [];
-            Object.keys(model.schema.obj).forEach(y => {
-                // console.log('model.schema.obj[y]',model.schema.obj[y]);
-                schema.push({"name": y, "type": global.getTypeOfVariable(model.schema.obj[y])});
-            })
-            if (en.admin && typeof en.admin === 'object') {
-                rules[identifire] = en.admin;
-            } else {
-                rules[identifire] = {}
-            }
-            if (!rules[identifire].create) {
-                rules[identifire].create = {};
-            }
-            if (!rules[identifire].create.fields) {
-                rules[identifire].create.fields = schema;
-            }
-            if (!rules[identifire].edit) {
-                rules[identifire].edit = {};
-            }
-            if (!rules[identifire].edit.fields) {
-                rules[identifire].edit.fields = rules[identifire].create.fields;
-            }
-            if (!rules[identifire].list) {
-                rules[identifire].list = {};
-            }
-            if (!rules[identifire].list.header) {
-                rules[identifire].list.header = [];
-            }
-
-        })
-
-        return rules;
-    };
+    req.rules = (rules) => global.rules(rules,{props});
     if (rou.access) {
         let accessList = rou.access.split(',');
         if (accessList.indexOf('customer_all') > -1) {

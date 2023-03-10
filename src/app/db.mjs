@@ -11,13 +11,14 @@ import mongoose from "mongoose";
 import path from "path";
 import fs from "fs";
 import shell from 'shelljs';
+import global from '#root/global';
 
 // console.log('sdfg',path.join(path.resolve('.'), '.env.local'));
 
 
 // console.log('process.env');
 
-mongoose.Promise = global.Promise;
+// mongoose.Promise = global.Promise;
 // console.log('process.env2');
 // console.log('process.env.RESET', process.env.RESET)
 // console.log('process.env.SERVER_PORT', process.env.SERVER_PORT)
@@ -53,7 +54,7 @@ export default (props = {}, app) => {
                 await console.log("==> db connection successful to", "'" + process.env.dbName + "'", new Date());
                 createPublicMediaFolder()
                 createAdminFolder()
-                createThemeFolder()
+                createThemeFolder(props)
                 createPluginFolder()
                 // let filePath = path.join(__dirname, thePath, file_name);
                 // try {
@@ -156,28 +157,39 @@ export default (props = {}, app) => {
     });
 }
 const updatePublicMediaConfig = function () {
-    updateFile("./public_media/site_setting/", "config.js",
+    global.updateFile("./public_media/site_setting/", "config.js",
         "window.BASE_URL='" + process.env.BASE_URL + "';\n" +
         "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
         "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
         "window.ADMIN_ROUTE='" + process.env.BASE_URL + "/admin" + "';\n" +
-        "window.SHOP_URL='" + process.env.SHOP_URL + "';")
+        "window.SHOP_URL='" + process.env.SHOP_URL + "';",__dirname)
 }
 const updateAdminConfig = function () {
-    updateFile("./admin/site_setting/", "config.js",
+    global.updateFile("./admin/site_setting/", "config.js",
         "window.BASE_URL='" + process.env.BASE_URL + "';\n" +
         "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
         "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
         "window.ADMIN_ROUTE='" + process.env.BASE_URL + "/admin" + "';\n" +
-        "window.SHOP_URL='" + process.env.SHOP_URL + "';")
+        "window.SHOP_URL='" + process.env.SHOP_URL + "';",__dirname)
 }
-const updateThemeConfig = function () {
-    updateFile("./theme/site_setting/", "config.js",
-        "window.BASE_URL='" + process.env.BASE_URL + "';\n" +
-        "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
-        "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
-        "window.SHOP_URL='" + process.env.SHOP_URL + "';")
-}
+// const updateThemeConfig = function (props={}) {
+//     global.theme('admin',{props},null).then((resp = {})=>{
+//         global.updateFile("./theme/site_setting/", "config.js",
+//             "window.BASE_URL='" + process.env.BASE_URL + "';\n" +
+//             "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
+//             "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
+//             "window.SHOP_URL='" + process.env.SHOP_URL + "';\n"+
+//             "window.theme=" + JSON.stringify(resp) + ";"
+//             ,__dirname)
+//     }).catch(e=>{
+//         global.updateFile("./theme/site_setting/", "config.js",
+//             "window.BASE_URL='" + process.env.BASE_URL + "';\n" +
+//             "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
+//             "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
+//             "window.SHOP_URL='" + process.env.SHOP_URL + "';",__dirname)
+//     })
+//
+// }
 const createPluginFolder = function () {
     let pluginPath = path.join(__dirname, "./plugins/");
     if (fs.existsSync(pluginPath)) {
@@ -188,7 +200,7 @@ const createPluginFolder = function () {
     }
 
 }
-const createThemeFolder = function () {
+const createThemeFolder = function (props={}) {
     const appDirectory = fs.realpathSync(process.cwd());
 
     const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
@@ -204,7 +216,7 @@ const createThemeFolder = function () {
         console.log('code: ', code);
         console.log('stdout: ', stdout);
         console.log('stderr: ', stderr);
-        updateThemeConfig()
+        global.updateThemeConfig(props)
 
     });
 
@@ -289,28 +301,4 @@ const createPublicMediaFolder = function () {
         });
     }
 }
-const updateFile = function (thePath, file_name, data) {
-    // const __dirname = path.resolve();
-    let filePath = path.join(__dirname, thePath, file_name);
 
-    try {
-        // fs.promises.ex
-        // let tt=fs.readFile(filePath)
-        console.log('reading file:', filePath)
-        // fs.promises.open(filePath).then(e=>{
-        //     console.log('tt',e)
-        //
-        // })
-        fs.promises.writeFile(filePath, data, "utf8");
-        console.log("\ndata is written successfully in the file\n" +
-            "filePath: " + filePath + " " + file_name);
-    }
-    catch (err) {
-        console.log("not able to write data in the file ", err);
-        // return res.json({
-        //   success: false,
-        //   err: err
-        // });
-    }
-
-}

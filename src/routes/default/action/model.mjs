@@ -18,7 +18,9 @@ export default (mongoose)=>{
         order: { type: mongoose.Schema.Types.ObjectId, ref: "Order" }, 
         transaction: { type: mongoose.Schema.Types.ObjectId, ref: "Transaction" }, 
         settings: { type: mongoose.Schema.Types.ObjectId, ref: "Settings" }, 
-        sms: { type: mongoose.Schema.Types.ObjectId, ref: "Sms" } 
+        page: { type: mongoose.Schema.Types.ObjectId, ref: "Page" },
+        template: { type: mongoose.Schema.Types.ObjectId, ref: "Template" },
+        sms: { type: mongoose.Schema.Types.ObjectId, ref: "Sms" }
 
     });
     return ModelSchema

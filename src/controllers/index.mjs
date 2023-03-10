@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
 import _ from 'lodash'
-const capitalize = (str) => {
-    return `${str[0].toLowerCase()}${str.slice(1)}`
-    // return str[0].toUpperCase() + str.slice(1)   // without template string
-}
+import global from '#root/global';
+
+
 var self = (Model) => {
     // console.log('Model', Model)
     return ({
@@ -149,7 +148,7 @@ var self = (Model) => {
                     return 0;
                 }
                 let modelName=Model.modelName;
-                modelName=capitalize(modelName)
+                modelName=global.capitalize(modelName)
                 // console.log('modelName',modelName,req.headers._id,req.headers.token)
                 if (req.headers._id && req.headers.token) {
                     let action = {
@@ -284,7 +283,7 @@ var self = (Model) => {
                     return 0;
                 }
                 let modelName=Model.modelName;
-                modelName=capitalize(modelName)
+                modelName=global.capitalize(modelName)
                 // console.log('modelName',modelName,req.headers._id,req.headers.token)
                 if (req.headers._id && req.headers.token) {
                     let action = {
