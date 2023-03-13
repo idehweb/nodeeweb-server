@@ -49,8 +49,20 @@ let global = {
                 "window.SHOP_URL='" + process.env.SHOP_URL + "';\n" +
                 "window.theme=" + JSON.stringify(resp) + ";"
                 , __dirname)
+            global.updateFile("./public_media/site_setting/", "config.js",
+                "window.BASE_URL='" + process.env.BASE_URL + "';\n" +
+                "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
+                "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
+                "window.SHOP_URL='" + process.env.SHOP_URL + "';\n" +
+                "window.theme=" + JSON.stringify(resp) + ";"
+                , __dirname)
         }).catch(e => {
             global.updateFile("./theme/site_setting/", "config.js",
+                "window.BASE_URL='" + process.env.BASE_URL + "';\n" +
+                "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
+                "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
+                "window.SHOP_URL='" + process.env.SHOP_URL + "';", __dirname)
+            global.updateFile("./public_media/site_setting/", "config.js",
                 "window.BASE_URL='" + process.env.BASE_URL + "';\n" +
                 "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
                 "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
@@ -284,11 +296,11 @@ let global = {
 
     },
     fireEvent: (event, params = {}, props = {}, req = null, res = null, next = null) => {
-        console.log('Fire events...')
+        console.log('Fire events...',event)
         let functions = [];
         props.entity.forEach((en, d) => {
             // console.log('en',en.name)
-            // if (en.functions) {
+            // if (en.functioŒns) {
             //     en.functions.forEach((fn) => {
             //         console.log('fn', fn)
             //         functions.push(fn);
@@ -296,7 +308,7 @@ let global = {
             // }
             if (en.hook) {
                 en.hook.forEach((hook) => {
-                    // console.log('hook',hook)
+                    console.log('hook',hook)
                     if (hook.event == event) {
                         console.log('run event ...', hook.name)
                         // if (req && res && next)

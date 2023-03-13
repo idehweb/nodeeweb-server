@@ -34,6 +34,9 @@ export default [
                         body = body.replace('</head>', `<meta name="description" content="${hea.description[req.headers.lan]}" /></head>`);
                     }
                     body = body.replace('</head>', `<link rel="canonical" href="${process.env.SHOP_URL}" /></head>`);
+                    body = body.replace('</head>', `<meta property="og:image" content="/site_setting/logo.png" /></head>`);
+                    body = body.replace('</head>', `<meta property="og:image:secure_url" content="/site_setting/logo.png" /></head>`);
+                    body = body.replace('</head>', `<meta property="twitter:image" content="/site_setting/logo.png" /></head>`);
                     body = body.replace('</head>', `<meta property="og:locale" content="fa_IR" /></head>`);
                     body = body.replace('</head>', `<meta property="og:type" content="website" /></head>`);
                     body = body.replace('</head>', `<meta property="og:title" content="${(hea.title && hea.title[req.headers.lan]) ? hea.title[req.headers.lan] : 'Nodeeweb'}" /></head>`);
@@ -410,6 +413,8 @@ export default [
                             body = body.replace('</head>', `<meta name="og:image:secure_url" content="/${obj.image}" /></head>`);
                             body = body.replace('</head>', `<meta name="og:image:width" content="1200" /></head>`);
                             body = body.replace('</head>', `<meta name="og:image:height" content="675" /></head>`);
+                            body = body.replace('</head>', `<meta property="twitter:image" content="/${obj.image}" /></head>`);
+
                             body = body.replace('</head>', `<meta name="og:locale" content="fa_IR" /></head>`);
                             body = body.replace('</head>', `<meta name="og:type" content="website" /></head>`);
                             body = body.replace('</head>', `<meta name="og:title" content="${mainTitle}" /></head>`);
@@ -575,19 +580,21 @@ export default [
                             body = body.replace('</head>', `<meta name="product_name" content="${obj.product_name}" /></head>`);
                             body = body.replace('</head>', `<meta name="product_price" content="${obj.product_price}" /></head>`);
                             body = body.replace('</head>', `<meta name="product_old_price" content="${obj.product_old_price}" /></head>`);
-                            body = body.replace('</head>', `<meta name="product_image" content="/${obj.image}" /></head>`);
+                            body = body.replace('</head>', `<meta name="product_image" content="${process.env.SHOP_URL}${obj.image}" /></head>`);
                             body = body.replace('</head>', `<link rel="canonical" href="${process.env.SHOP_URL}product/${req.params._slug}/" /></head>`);
-                            body = body.replace('</head>', `<meta name="image" content="/${obj.image}" /></head>`);
+                            body = body.replace('</head>', `<meta name="image" content="${process.env.SHOP_URL}${obj.image}" /></head>`);
                             body = body.replace('</head>', `<meta name="availability" content="${obj.availability}" /></head>`);
-                            body = body.replace('</head>', `<meta name="og:image" content="/${obj.image}" /></head>`);
-                            body = body.replace('</head>', `<meta name="og:image:secure_url" content="/${obj.image}" /></head>`);
+                            body = body.replace('</head>', `<meta name="og:image" content="${process.env.SHOP_URL}${obj.image}" /></head>`);
+                            body = body.replace('</head>', `<meta name="og:image:secure_url" content="${process.env.SHOP_URL}${obj.image}" /></head>`);
                             body = body.replace('</head>', `<meta name="og:image:width" content="1200" /></head>`);
                             body = body.replace('</head>', `<meta name="og:image:height" content="675" /></head>`);
                             body = body.replace('</head>', `<meta name="og:locale" content="fa_IR" /></head>`);
                             body = body.replace('</head>', `<meta name="og:type" content="website" /></head>`);
                             body = body.replace('</head>', `<meta name="og:title" content="${mainTitle}" /></head>`);
                             body = body.replace('</head>', `<meta name="og:description" content="${obj.metadescription}" /></head>`);
-                            body = body.replace('</head>', `<meta name="og:url" content="." /></head>`);
+                            body = body.replace('</head>', `<meta name="og:url" content="${process.env.SHOP_URL}product/${req.params._slug}/" /></head>`);
+                            body = body.replace('</head>', `<meta property="twitter:image" content="${process.env.SHOP_URL}${obj.image}" /></head>`);
+
                             body = body.replace('</head>', `<script type="application/ld+json">{"@context": "https://schema.org/","@type": "Product","name": "${mainTitle}","image": ["${process.env.SHOP_URL}${obj.image}"],"description": "${obj.metadescription}","offers": {"@type": "Offer","url": "${process.env.SHOP_URL}product/${req.params._slug}","priceCurrency":"IRR","price": "${obj.product_price}","priceValidUntil":"2024-07-22","availability": "https://schema.org/InStock","itemCondition": "https://schema.org/NewCondition"}}</script></head>`);
                             body = body.replace('</head>', (hea && hea.header_last) ? hea.header_last : "" + `</head>`);
 
@@ -694,18 +701,18 @@ export default [
                         res.ssrParse().then(body => {
                             body = body.replace('</head>', `<title>${obj.title}</title></head>`);
                             body = body.replace('</head>', `<meta name="description" content="${obj.metadescription}" /></head>`);
-                            body = body.replace('</head>', `<link rel="canonical" href="${process.env.SHOP_URL}/post/${req.params._slug}/" /></head>`);
-                            body = body.replace('</head>', `<meta name="image" content="/${obj.image}" /></head>`);
-                            body = body.replace('</head>', `<meta name="availability" content="${obj.availability}" /></head>`);
-                            body = body.replace('</head>', `<meta name="og:image" content="/${obj.image}" /></head>`);
-                            body = body.replace('</head>', `<meta name="og:image:secure_url" content="/${obj.image}" /></head>`);
+                            body = body.replace('</head>', `<link rel="canonical" href="${process.env.SHOP_URL}post/${req.params._slug}/" /></head>`);
+                            body = body.replace('</head>', `<meta name="image" content="${obj.image}" /></head>`);
+                            body = body.replace('</head>', `<meta name="og:image" content="${obj.image}" /></head>`);
+                            body = body.replace('</head>', `<meta name="og:image:secure_url" content="${obj.image}" /></head>`);
                             body = body.replace('</head>', `<meta name="og:image:width" content="1200" /></head>`);
                             body = body.replace('</head>', `<meta name="og:image:height" content="675" /></head>`);
                             body = body.replace('</head>', `<meta name="og:locale" content="fa_IR" /></head>`);
                             body = body.replace('</head>', `<meta name="og:type" content="website" /></head>`);
                             body = body.replace('</head>', `<meta name="og:title" content="${obj.title}" /></head>`);
                             body = body.replace('</head>', `<meta name="og:description" content="${obj.description}" /></head>`);
-                            body = body.replace('</head>', `<meta name="og:url" content="." /></head>`);
+                            body = body.replace('</head>', `<meta name="og:url" content="${process.env.SHOP_URL}post/${req.params._slug}/" /></head>`);
+                            body = body.replace('</head>', `<meta property="twitter:image" content="/${obj.image}" /></head>`);
                             body = body.replace('</head>', `<script type="application/ld+json">{ "@context": "https://schema.org", "@type": "BlogPosting", "mainEntityOfPage": { "@type": "WebPage", "@id": "${obj.url}" }, "headline": "${obj.title}", "description": "${obj.description}", "image": "${obj.image}", "datePublished": "${obj.createdAt}", "dateModified": "${obj.updatedAt}" }</script></head>`);
                             body = body.replace('</head>', (hea && hea.header_last) ? hea.header_last : "" + `</head>`);
 
@@ -900,7 +907,7 @@ export default [
                         res.ssrParse().then(body => {
                             body = body.replace('</head>', `<title>${obj.title}</title></head>`);
                             body = body.replace('</head>', `<meta name="description" content="${obj.metadescription}" /></head>`);
-                            body = body.replace('</head>', `<link rel="canonical" href="${process.env.SHOP_URL}/${req.params._slug}/" /></head>`);
+                            body = body.replace('</head>', `<link rel="canonical" href="${process.env.SHOP_URL}${req.params._slug}/" /></head>`);
                             body = body.replace('</head>', `<meta name="image" content="/${obj.image}" /></head>`);
                             body = body.replace('</head>', `<meta name="availability" content="${obj.availability}" /></head>`);
                             body = body.replace('</head>', `<meta name="og:image" content="/${obj.image}" /></head>`);

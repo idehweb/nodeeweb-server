@@ -253,7 +253,7 @@ export default function BaseApp(theProps = {}) {
                                                         body = body.replace('</head>', `<meta name="og:type" content="website" /></head>`);
                                                         body = body.replace('</head>', `<meta name="og:title" content="${mainTitle}" /></head>`);
                                                         body = body.replace('</head>', `<meta name="og:description" content="${obj.metadescription}" /></head>`);
-                                                        body = body.replace('</head>', `<meta name="og:url" content="." /></head>`);
+                                                        body = body.replace('</head>', `<meta name="og:url" content="${process.env.SHOP_URL}product-category/${req.params._id}/" /></head>`);
                                                         body = body.replace('</head>', `<script type="application/ld+json">{"@context": "https://schema.org/","@type": "Product","name": "${mainTitle}","image": ["${process.env.SHOP_URL}${obj.image}"],"description": "${obj.metadescription}","offers": {"@type": "Offer","url": "${process.env.SHOP_URL}product-category/${req.params._id}","priceCurrency":"IRR","price": "${obj.productCategory_price}","priceValidUntil":"2024-07-22","availability": "https://schema.org/InStock","itemCondition": "https://schema.org/NewCondition"}}</script></head>`);
                                                         body = body.replace('</head>', (hea && hea.header_last) ? hea.header_last : "" + `</head>`);
 
