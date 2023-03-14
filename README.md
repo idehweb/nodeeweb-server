@@ -198,6 +198,9 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.1.13
+    * add level 3 of menus
+
 - 0.1.12
     * handle schedule in plugins
 
