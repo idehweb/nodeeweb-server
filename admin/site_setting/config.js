@@ -1,11 +1,5 @@
-window.BASE_URL='https://arvandguarantee.shop';
-window.ADMIN_URL='https://arvandguarantee.shop';
-window.ADMIN_ROUTE='https://arvandguarantee.shop/admin';
-window.SHOP_URL='https://arvandguarantee.shop/';
-window.THEME_URL='https://arvandguarantee.shop/theme/';
-//
-// window.BASE_URL='https://arvandguarantee.shop';
-// window.ADMIN_URL='https://arvandguarantee.shop';
-// window.ADMIN_ROUTE='https://arvandguarantee.shop/admin';
-// window.SHOP_URL='https://arvandguarantee.shop/';
-// window.THEME_URL='https://arvandguarantee.shop/theme/';
+window.BASE_URL='http://localhost:3000';
+window.ADMIN_URL='http://localhost:3002';
+window.THEME_URL='http://localhost:3000/theme';
+window.ADMIN_ROUTE='http://localhost:3000/admin';
+window.SHOP_URL='http://localhost:3000/';

@@ -22,19 +22,26 @@ const initScheduledJobs = (props) => {
     props.schedules.forEach((item, i) => {
         // console.log('item.setting', item.setting)
         // console.log('item.action', item.action)
-        if (item.setting ) {
-            console.log('item.setting',item.setting)
-            scTemp[i]= CronJob.schedule(item.setting, () => {
-                console.log('cronjob by plugin...:', item.name, item.setting)
-                global.fireEvent(item.name, {}, props, {mongoose, httpRequest: axios,global:global});
-                // item.function=
-            }, {
-                timezone: process.env.TZ || "Asia/Tehran",
-                scheduled:false
+        if (item.path && item.variable)
+            global.getSetting('plugins').then(r => {
+                // console.log('my setting:', r[item.path][item.variable]);
+                if (!item.setting) {
+                    item.setting = "* * * * * *"
+                }
+                // console.log('item.setting', item.setting)
+                scTemp[i] = CronJob.schedule(r[item.path][item.variable] ? r[item.path][item.variable] : item.setting, () => {
+                    console.log('cronjob by plugin...:', item.name, item.setting)
+                    global.fireEvent(item.name, {}, props, {mongoose, httpRequest: axios, global: global});
+                    // item.function=
+                }, {
+                    timezone: process.env.TZ || "Asia/Tehran",
+                    scheduled: false
+                })
+                // .start();
+                scTemp[i].start()
+                // }
             })
-            // .start();
-            scTemp[i].start()
-        }
+
 
     })
     const scheduledJobFunction = CronJob.schedule("0 0 0 * * *", () => {
@@ -45,7 +52,7 @@ const initScheduledJobs = (props) => {
         // console.log('process.env.TZ',process.env.TZ)
 
         global.fireEvent('send-schedule-message-by-system', {}, props, {
-            mongoose, httpRequest: axios,global:global
+            mongoose, httpRequest: axios, global: global
         });
         // console.log("I'm executed on a schedule!",new Date());
         // let functions = [];

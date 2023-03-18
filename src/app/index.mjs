@@ -104,6 +104,7 @@ export default function BaseApp(theProps = {}) {
         db(props, app).then(e => {
             headerHandle(app);
             configHandle(express, app, props);
+            // props.global=global
             if (theProps.server)
                 theProps.server.forEach(serv => {
                     serv(app);

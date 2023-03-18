@@ -40,7 +40,8 @@ var self = ({
 
                     return res.json({err: error});
                 } else {
-                    return res.json({'success': true, 'message': 'ساخته شد'});
+                    user.success=true
+                    return res.json(user);
 
                 }
             });

@@ -273,6 +273,7 @@ let global = {
         })
     },
     submitAction: (obj) => {
+        console.log('==> submitAction for user',obj.user)
         return new Promise(function (resolve, reject) {
             let Action = mongoose.model('Action');
 
@@ -370,7 +371,7 @@ let global = {
                     return reject(err);
 
                 }
-                console.log('getSetting', setting[name])
+                // console.log('getSetting', setting[name])
                 if (setting[name])
                     return resolve(setting[name]);
                 else

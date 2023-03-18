@@ -196,7 +196,7 @@ function make_routes_safe(req, res, next, rou) {
         // var models = mongoose.modelNames()
         return models;
     };
-    req.builderComponents = (rules,req) => global.builderComponents(rules,req)
+    req.builderComponents = (rules, req) => global.builderComponents(rules, req)
     req.httpRequest = axios;
     req.fireEvent = (event, params = {}) => {
         return global.fireEvent(event, params, req.props, req, res, next);
@@ -229,7 +229,7 @@ function make_routes_safe(req, res, next, rou) {
     }
     req.submitAction = (obj) => global.submitAction(obj)
 
-    req.rules = (rules) => global.rules(rules,{props});
+    req.rules = (rules) => global.rules(rules, {props});
     if (rou.access) {
         let accessList = rou.access.split(',');
         if (accessList.indexOf('customer_all') > -1) {
@@ -257,10 +257,10 @@ function make_routes_safe(req, res, next, rou) {
             the_role[0] = the_role[0].charAt(0).toUpperCase() + the_role[0].slice(1)
             let theModel = mongoose.model(the_role[0]);
             let findObject = {"tokens.token": req.headers.token};
-            // if (the_role[1]) {
-            //     findObject['type'] = the_role[1];
-            // }
-            // console.log('check ' + j + '...', the_role[0], findObject)
+            if (the_role[0] == 'Admin')
+                findObject = {"token": req.headers.token};
+
+            console.log('check ' + j + '...', the_role[0], findObject)
             if (!isPassed)
                 theModel.findOne(
                     findObject,

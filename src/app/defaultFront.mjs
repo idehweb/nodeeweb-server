@@ -91,6 +91,24 @@ export default [
 
     },
     {
+        "path": "/category/:_slug/:_slug2",
+        "method": "get",
+        "access": "customer_all",
+        "controller": (req, res, next) => {
+            console.log('. we need to redirect')
+            res.redirect('/product-category/'+req.params._slug2)
+        }
+    },
+    {
+        "path": "/p/:_slug/:_slug2",
+        "method": "get",
+        "access": "customer_all",
+        "controller": (req, res, next) => {
+            console.log('. we need to redirect')
+            res.redirect('/product/'+req.params._slug2)
+        }
+    },
+    {
         "path": "/p/:_id",
         "method": "get",
         "access": "customer_all",
@@ -225,9 +243,9 @@ export default [
                         if (!obj.metadescription) {
                             obj.metadescription = obj["description"]
                         }
-                        let mainTitle=obj.title;
-                        if(product.metatitle && product.metatitle[req.headers.lan]){
-                            mainTitle=product.metatitle[req.headers.lan]
+                        let mainTitle = obj.title;
+                        if (product.metatitle && product.metatitle[req.headers.lan]) {
+                            mainTitle = product.metatitle[req.headers.lan]
                         }
                         res.ssrParse().then(body => {
                             body = body.replace('</head>', `<title>${mainTitle}</title></head>`);
@@ -394,9 +412,9 @@ export default [
                         if (!obj.metadescription) {
                             obj.metadescription = obj["description"]
                         }
-                        let mainTitle=obj.title;
-                        if(product.metatitle){
-                            mainTitle=product.metatitle
+                        let mainTitle = obj.title;
+                        if (product.metatitle) {
+                            mainTitle = product.metatitle
                         }
                         res.ssrParse().then(body => {
                             body = body.replace('</head>', `<title>${mainTitle}</title></head>`);
@@ -568,11 +586,11 @@ export default [
                         if (!obj.metadescription) {
                             obj.metadescription = obj["metadescription"] || ''
                         }
-                        let mainTitle=obj.title;
-                        if(product.metatitle){
-                            mainTitle=product.metatitle[req.headers.lan] ? product.metatitle[req.headers.lan] : obj.title
+                        let mainTitle = obj.title;
+                        if (product.metatitle) {
+                            mainTitle = product.metatitle[req.headers.lan] ? product.metatitle[req.headers.lan] : obj.title
                         }
-                        console.log('obj.metadescription',obj.metadescription)
+                        console.log('obj.metadescription', obj.metadescription)
                         res.ssrParse().then(body => {
                             body = body.replace('</head>', `<title>${mainTitle}</title></head>`);
                             body = body.replace('</head>', `<meta name="description" content="${obj.metadescription}" /></head>`);
@@ -929,6 +947,7 @@ export default [
         },
 
     },
+
     {
         "path": "/a/:_entity/:_id/:_slug",
         "method": "get",
