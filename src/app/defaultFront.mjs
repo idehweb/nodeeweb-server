@@ -957,4 +957,4 @@ export default [
             res.show()
         },
 
-    },]
+    }]
