@@ -1,5 +1,6 @@
 var self = ( {
     all: function (req, res, next) {
+        console.log('get all actions...')
         let Action = req.mongoose.model('Action');
 
         let offset = 0;
@@ -18,23 +19,24 @@ var self = ( {
             search['product']=req.query.product;
 
         }
-        Action.find(search,'user , customer , product , order , _id , title , createdAt', function (err, actions) {
+        console.log('search:',search,'limit:',req.params.limit,'offset:',offset)
 
-            if (err || !actions) {
-                res.json({
+        Action.find(search, function (err, actions) {
+            console.log('err',err)
+            console.log('actions',actions)
+            if (err) {
+                return res.json({
                     success: false,
                     message: 'error!',
                     actions: actions
                 });
-                return 0;
             }
             Action.countDocuments({}, function (err, count) {
                 if (err || !count) {
-                    res.json({
+                    return res.json({
                         success: false,
                         message: 'error!'
                     });
-                    return 0;
                 }
                 res.setHeader(
                     "X-Total-Count",

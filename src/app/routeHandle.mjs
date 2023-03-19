@@ -99,7 +99,7 @@ let routeHandle = (app, props = {}) => {
     //   });
     // }
 
-    list(1);
+    // list(1);
 
     function list(id) {
         // console.log('run list...')

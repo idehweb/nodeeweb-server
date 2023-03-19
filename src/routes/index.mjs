@@ -91,7 +91,7 @@ function returnThisRouteRules(path, method, routes) {
 }
 
 function make_routes_safe(req, res, next, rou) {
-    console.log('make_routes_safe:', rou);
+    console.log('make_routes_safe:', rou.path ? rou.path : 'no path',rou.method ? rou.method : 'no method',rou.access ? rou.access : 'no access',rou.controller ? rou.controller : 'no controller');
     req.mongoose = mongoose;
     req.props.entity.forEach((en, d) => {
         if (en.req) {
@@ -147,12 +147,12 @@ function make_routes_safe(req, res, next, rou) {
     };
     res.show = () => {
         // console.log('adminFolder',path.themeFolder+'/index.html')
-        console.log('show', path.themeFolder);
+        // console.log('show', path.themeFolder);
         // res.ssrParse(req,res,next);
         return res.sendFile(path.themeFolder + '/index.html')
     };
     res.admin = () => {
-        console.log('admin', path.adminFolder)
+        // console.log('admin', path.adminFolder)
         // console.log('adminFolder',path.adminFolder+'/index.html')
         return res.sendFile(path.adminFolder + '/index.html')
     };
@@ -160,13 +160,13 @@ function make_routes_safe(req, res, next, rou) {
     req.global = global;
 
     req.publishToTelegram = (message) => {
-        console.log('publishToTelegram====>', message);
+        // console.log('publishToTelegram====>', message);
         if (!process.env.telegramLink) {
-            console.log('process.env.telegramLink is empty')
+            console.error('process.env.telegramLink is empty')
             return
         }
         if (!process.env.telegramChatID) {
-            console.log('process.env.telegramChatID is empty')
+            console.error('process.env.telegramChatID is empty')
             return
         }
         return new Promise(function (resolve, reject) {
@@ -202,12 +202,12 @@ function make_routes_safe(req, res, next, rou) {
         return global.fireEvent(event, params, req.props, req, res, next);
     }
     req.functions = () => {
-        console.log('get functions...')
+        // console.log('get functions...')
         let functions = [];
         req.props.entity.forEach((en) => {
             if (en.functions) {
                 en.functions.forEach((fn) => {
-                    console.log('fn', fn)
+                    // console.log('fn', fn)
                     functions.push(fn);
                 });
             }
@@ -215,12 +215,12 @@ function make_routes_safe(req, res, next, rou) {
         return functions;
     }
     req.events = () => {
-        console.log('get events...')
+        // console.log('get events...')
         let events = [];
         req.props.entity.forEach((en) => {
             if (en.events) {
                 en.events.forEach((fn) => {
-                    console.log('fn', fn)
+                    // console.log('fn', fn)
                     events.push(fn);
                 });
             }
@@ -260,7 +260,7 @@ function make_routes_safe(req, res, next, rou) {
             if (the_role[0] == 'Admin')
                 findObject = {"token": req.headers.token};
 
-            console.log('check ' + j + '...', the_role[0], findObject)
+            // console.log('check ' + j + '...', the_role[0], findObject)
             if (!isPassed)
                 theModel.findOne(
                     findObject,
@@ -300,7 +300,7 @@ function make_routes_safe(req, res, next, rou) {
         })
         // console.log('rou.access',rou.access);
     } else {
-        console.log('return response...')
+        // console.log('return response...')
         return rou.controller(req, res, next)
 
     }
@@ -340,7 +340,7 @@ function handle_ssr(req, res, next) {
     // const renderedData = ReactDOMServer.renderToString(<Provider store={store}>
     //
     // </Provider>);
-    console.log('renderedData', renderedData)
+    // console.log('renderedData', renderedData)
 }
 
 //

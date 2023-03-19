@@ -213,9 +213,9 @@ const createThemeFolder = function (props={}) {
     // console.log("scripts ==> ", 'sh '+scripts+`/cp.sh ${adminModulePath} ${adminLocalPath}`);
 
     const child = shell.exec('sh ' + scripts + `/cp.sh ${adminModulePath} ${adminLocalPath} `, function (code, stdout, stderr) {
-        console.log('code: ', code);
-        console.log('stdout: ', stdout);
-        console.log('stderr: ', stderr);
+        // console.log('code: ', code);
+        // console.log('stdout: ', stdout);
+        // console.log('stderr: ', stderr);
         global.updateThemeConfig(props)
 
     });
@@ -234,9 +234,9 @@ const createAdminFolder = function () {
     // console.log("scripts ==> ", 'sh '+scripts+`/cp.sh ${adminModulePath} ${adminLocalPath}`);
 
     const child = shell.exec('sh ' + scripts + `/cp.sh ${adminModulePath} ${adminLocalPath} `, function (code, stdout, stderr) {
-        console.log('code: ', code);
-        console.log('stdout: ', stdout);
-        console.log('stderr: ', stderr);
+        // console.log('code: ', code);
+        // console.log('stdout: ', stdout);
+        // console.log('stderr: ', stderr);
         updateAdminConfig()
 
     });

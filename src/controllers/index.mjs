@@ -42,7 +42,7 @@ var self = (Model) => {
                 };
             }
             if (req.query) {
-                console.log(req.query);
+                // console.log(req.query);
             }
             // return res.json(Model.schema.paths);
             // console.log("Model.schema => ",Model.schema.paths);
@@ -64,21 +64,21 @@ var self = (Model) => {
 
                 }
                 else {
-                    console.log("filter doesnot exist => ", item);
+                    // console.log("filter doesnot exist => ", item);
                 }
             });
-            console.log('search', search);
+            // console.log('search', search);
             let thef = '';
             if (req.query.filter) {
                 if (JSON.parse(req.query.filter)) {
                     thef = JSON.parse(req.query.filter);
                 }
             }
-            console.log('thef', thef);
+            // console.log('thef', thef);
             if (thef && thef != '')
                 search = thef;
             // console.log(req.mongoose.Schema(Model))
-            console.log('search', search)
+            // console.log('search', search)
             if(req.query){
                 search={...search,...req.query}
             }
@@ -116,7 +116,7 @@ var self = (Model) => {
                 obj["slug"] = req.params.id;
 
             }
-            console.log('obj',obj)
+            // console.log('obj',obj)
             Model.findOne(obj,
                 function (err, menu) {
                     if (err || !menu) {
@@ -227,7 +227,7 @@ var self = (Model) => {
                             });
                         }
                         // return 0;
-                        console.log('imported...');
+                        // console.log('imported...');
                     });
                 })
                 return res.json(response['data'])

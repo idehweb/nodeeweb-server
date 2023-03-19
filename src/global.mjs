@@ -129,7 +129,7 @@ let global = {
 
     },
     theme: (mode = 'admin', req, res, next) => {
-        console.log('get theme settings... ', mode);
+        // console.log('get theme settings... ', mode);
         // return;
         return new Promise(function (resolve, reject) {
 
@@ -137,7 +137,7 @@ let global = {
             let Template = mongoose.model('Template');
             let Page = mongoose.model('Page');
             Settings.findOne({}, 'currency tax taxAmount', function (err, setting) {
-                console.log('setting', setting)
+                // console.log('setting', setting)
                 Template.findOne({type: 'header'}, function (err, header) {
                     Template.findOne({type: 'footer'}, function (err, footer) {
                         let routes = [];
@@ -279,11 +279,11 @@ let global = {
 
             Action.create(obj, function (err, res) {
                 if (err || !res) {
-                    console.log('xxx submitAction error:', err)
+                    // console.log('xxx submitAction error:', err)
                     reject({});
                 }
-                if (res.title)
-                    console.log('==> submitAction', res.title)
+                // if (res.title)
+                //     console.log('==> submitAction', res.title)
                 resolve(res);
             })
 
@@ -309,9 +309,9 @@ let global = {
             // }
             if (en.hook) {
                 en.hook.forEach((hook) => {
-                    console.log('hook',hook)
+                    // console.log('hook',hook)
                     if (hook.event == event) {
-                        console.log('run event ...', hook.name)
+                        // console.log('run event ...', hook.name)
                         // if (req && res && next)
                         hook.func(req, res, next, params);
                     }
@@ -321,7 +321,7 @@ let global = {
         let Automation = mongoose.model('Automation');
         Automation.find({trigger: event}, function (err, automations) {
             if (err || !automations) {
-                console.log('return...')
+                // console.log('return...')
                 return;
             }
             if (automations) {
@@ -889,13 +889,13 @@ let global = {
         let filePath = path.join(__dirname, thePath, file_name);
 
         try {
-            console.log('reading file:', filePath)
+            // console.log('reading file:', filePath)
             fs.promises.writeFile(filePath, data, "utf8");
-            console.log("\ndata is written successfully in the file\n" +
-                "filePath: " + filePath + " " + file_name);
+            // console.log("\ndata is written successfully in the file\n" +
+            //     "filePath: " + filePath + " " + file_name);
         }
         catch (err) {
-            console.log("not able to write data in the file ", err);
+            console.error("not able to write data in the file ", err);
         }
     },
     authenticateCustomer: function (_id, token) {
