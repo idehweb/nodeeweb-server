@@ -268,15 +268,15 @@ function make_routes_safe(req, res, next, rou) {
                         counter++;
                         // console.log('obj', obj)
                         if (err || !obj) {
-                            return res.json({
-                                theModel: theModel,
-                                findObject: findObject,
-                                obj: obj,
-                                err: err,
-                                success: false
-                            })
+                            // return res.json({
+                            //     theModel: theModel,
+                            //     findObject: findObject,
+                            //     obj: obj,
+                            //     err: err,
+                            //     success: false
+                            // })
                         }
-                        if (obj.type == the_role[1]) {
+                        if (obj && (obj.type == the_role[1])) {
                             isPassed = true;
                             the_id = obj._id;
 

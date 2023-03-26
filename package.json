@@ -1,6 +1,6 @@
 {
   "name": "@nodeeweb/server",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
@@ -53,6 +53,7 @@
     "wizard": "node wizard",
     "start": "set BABEL_CACHE_PATH=./node_modules/babel-cache.json && babel-node ./src/bin/www.js"
   },
+  "bin":"./cli.js",
   "devDependencies": {
     "@babel/cli": "^7.20.7",
     "@babel/core": "^7.20.12",

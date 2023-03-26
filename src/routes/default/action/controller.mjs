@@ -21,7 +21,7 @@ var self = ( {
         }
         console.log('search:',search,'limit:',req.params.limit,'offset:',offset)
 
-        Action.find(search, function (err, actions) {
+        Action.find(search,'_id user product order page title action createdAt updatedAt', function (err, actions) {
             console.log('err',err)
             console.log('actions',actions)
             if (err) {
