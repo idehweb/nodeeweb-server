@@ -78,74 +78,78 @@ export default (props = {}, app) => {
                 // }
 
 
-                if (process.env.RESET == 'true') {
-                    //if database does not have any records
-                    //create user...
-                    //& create default settings...
-                    let Admin = mongoose.model('Admin');
+                // if (process.env.RESET == 'true') {
+                //if database does not have any records
+                //create user...
+                //& create default settings...
+                let Admin = mongoose.model('Admin');
 
-                    Admin.exists({}, function (err, admin) {
-                        if (err || !admin) {
-                            reject(err);
-                        } else {
-                            let req = {
-                                body: {
-                                    email: process.env.ADMIN_EMAIL,
-                                    username: process.env.ADMIN_USERNAME,
-                                    password: process.env.ADMIN_PASSWORD
-                                }
-                            };
-                            if (req.body.email &&
-                                req.body.username &&
-                                req.body.password) {
-                                let Admin = mongoose.model('Admin');
+                Admin.exists({}, function (err, admin) {
+                    if (err) {
+                        console.log('err admin exists... db.mjs file', err);
+                    }
+                    if (!admin) {
+                        console.log('db is empty, let us import sample data...', err);
 
-                                let userData = req.body;
-                                userData.type = 'user';
-                                userData.token = global.generateUnid();
-
-
-                                Admin.create(userData, function (error, user) {
-                                    if (error) {
-
-                                        return res.json({err: error});
-                                    } else {
-                                        return res.json({'success': true, 'message': 'ساخته شد'});
-
-                                    }
-                                });
-
+                        let req = {
+                            body: {
+                                email: process.env.ADMIN_EMAIL,
+                                username: process.env.ADMIN_USERNAME,
+                                nickname: process.env.ADMIN_USERNAME,
+                                password: process.env.ADMIN_PASSWORD
                             }
+                        };
+                        if (req.body.email &&
+                            req.body.username &&
+                            req.body.password) {
+                            let Admin = mongoose.model('Admin');
+
+                            let userData = req.body;
+                            userData.type = 'user';
+                            userData.token = global.generateUnid();
+
+
+                            Admin.create(userData, function (error, user) {
+                                if (error) {
+
+                                    console.log({err: error});
+                                } else {
+                                    console.log({'success': true, 'message': 'admin created'});
+
+                                }
+                            });
+
                         }
-                    });
-                    // userController.exists().then((e) => {
-                    //     console.log('user exist...')
-                    // }).catch(e => {
-                    //     console.log('create user...')
-                    //
-                    //     //create user
-                    //     let req = {
-                    //         body: {
-                    //             email: process.env.ADMIN_EMAIL,
-                    //             username: process.env.ADMIN_USERNAME,
-                    //             password: process.env.ADMIN_PASSWORD
-                    //         }
-                    //     };
-                    //     userController.register(req);
-                    // })
-                    // settingsController.exists().then((e) => {
-                    //     console.log('setting exist...')
-                    //
-                    // }).catch(e => {
-                    //     //create setting
-                    //     console.log('create setting...')
-                    //     settingsController.create({
-                    //         body: {
-                    //             siteActive: true
-                    //         }
-                    //     })
-                    // })
-                }
+                    }
+                });
+                // userController.exists().then((e) => {
+                //     console.log('user exist...')
+                // }).catch(e => {
+                //     console.log('create user...')
+                //
+                //     //create user
+                //     let req = {
+                //         body: {
+                //             email: process.env.ADMIN_EMAIL,
+                //             username: process.env.ADMIN_USERNAME,
+                //             password: process.env.ADMIN_PASSWORD
+                //         }
+                //     };
+                //     userController.register(req);
+                // })
+                // settingsController.exists().then((e) => {
+                //     console.log('setting exist...')
+                //
+                // }).catch(e => {
+                //     //create setting
+                //     console.log('create setting...')
+                //     settingsController.create({
+                //         body: {
+                //             siteActive: true
+                //         }
+                //     })
+                // })
+                // }
                 // else {
                 //     console.log('no need to import database...')
                 // }
@@ -162,7 +166,7 @@ const updatePublicMediaConfig = function () {
         "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
         "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
         "window.ADMIN_ROUTE='" + process.env.BASE_URL + "/admin" + "';\n" +
-        "window.SHOP_URL='" + process.env.SHOP_URL + "';",__dirname)
+        "window.SHOP_URL='" + process.env.SHOP_URL + "';", __dirname)
 }
 const updateAdminConfig = function () {
     global.updateFile("./admin/site_setting/", "config.js",
@@ -170,7 +174,7 @@ const updateAdminConfig = function () {
         "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
         "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
         "window.ADMIN_ROUTE='" + process.env.BASE_URL + "/admin" + "';\n" +
-        "window.SHOP_URL='" + process.env.SHOP_URL + "';",__dirname)
+        "window.SHOP_URL='" + process.env.SHOP_URL + "';", __dirname)
 }
 // const updateThemeConfig = function (props={}) {
 //     global.theme('admin',{props},null).then((resp = {})=>{
@@ -200,7 +204,7 @@ const createPluginFolder = function () {
     }
 
 }
-const createThemeFolder = function (props={}) {
+const createThemeFolder = function (props = {}) {
     const appDirectory = fs.realpathSync(process.cwd());
 
     const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
@@ -275,28 +279,46 @@ const createAdminFolder2 = function () {
 const createPublicMediaFolder = function () {
     let public_mediaPath = path.join(__dirname, "./public_media/");
     let public_media_customerPath = path.join(__dirname, "./public_media/customer/");
+    let public_media_siteSettingPath = path.join(__dirname, "./public_media/site_setting/");
     if (fs.existsSync(public_mediaPath)) {
-        // console.log('public_mediaPath exist...')
-        updatePublicMediaConfig();
+        console.log('public_mediaPath exist...')
         if (fs.existsSync(public_media_customerPath)) {
-            // console.log('public_media_customerPath exist...')
+            console.log('public_media_customerPath exist...')
         }
         else {
             fs.mkdir(public_media_customerPath, () => {
-                // console.log('we created public_media_customerPath')
+                console.log('we created public_media_customerPath')
+            });
+            // Below code to create the folder, if its not there
+            // fs.mkdir('<folder_name>', cb function);
+        }
+        if (fs.existsSync(public_media_siteSettingPath)) {
+            console.log('public_media_siteSettingPath exist...')
+            updatePublicMediaConfig();
+
+        }
+        else {
+            fs.mkdir(public_media_siteSettingPath, () => {
+                console.log('we created public_media_siteSettingPath')
+                updatePublicMediaConfig();
+
             });
             // Below code to create the folder, if its not there
             // fs.mkdir('<folder_name>', cb function);
         }
     } else {
-        // console.log('we should create public_mediaPath')
+        console.log('we should create public_mediaPath')
         // console.log('we should create public_media_customerPath')
         // Below code to create the folder, if its not there
         fs.mkdir(public_mediaPath, () => {
-            // console.log('we created public_mediaPath')
-            updatePublicMediaConfig();
+            console.log('we created public_mediaPath')
             fs.mkdir(public_media_customerPath, () => {
-                // console.log('we created public_media_customerPath')
+                console.log('we created public_media_customerPath')
+            });
+            fs.mkdir(public_media_siteSettingPath, () => {
+                console.log('we created public_media_siteSettingPath')
+                updatePublicMediaConfig();
+
             });
         });
     }

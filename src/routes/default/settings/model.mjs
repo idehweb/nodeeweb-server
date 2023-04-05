@@ -12,6 +12,7 @@ export default (mongoose) => {
         siteActive: {type: Boolean, default: true},
         tax: {type: Boolean, default: true},
         taxAmount: Number,
+        defaultLanguage: String,
         factore_shop_name: String,
         factore_shop_site_name: String,
         factore_shop_site_address: String,

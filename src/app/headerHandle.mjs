@@ -88,7 +88,8 @@ const headerHandle = (app) => {
       // } else if (lngs.includes('en')) {
       //   req.headers.lan = 'en';
       // } else {
-      req.headers.lan = "fa";
+      req.headers.lan = process.env.defaultLanguage || "fa";
+      // req.headers.lan = "fa";
       // }
     }
     res.setHeader(

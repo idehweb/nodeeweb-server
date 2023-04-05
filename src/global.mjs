@@ -47,6 +47,7 @@ let global = {
                 "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
                 "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
                 "window.SHOP_URL='" + process.env.SHOP_URL + "';\n" +
+                "window.defaultLanguage='" + process.env.defaultLanguage + "';\n" +
                 "window.theme=" + JSON.stringify(resp) + ";"
                 , __dirname)
             global.updateFile("./public_media/site_setting/", "config.js",
@@ -54,6 +55,7 @@ let global = {
                 "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
                 "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
                 "window.SHOP_URL='" + process.env.SHOP_URL + "';\n" +
+                "window.defaultLanguage='" + process.env.defaultLanguage + "';\n" +
                 "window.theme=" + JSON.stringify(resp) + ";"
                 , __dirname)
         }).catch(e => {
@@ -61,11 +63,13 @@ let global = {
                 "window.BASE_URL='" + process.env.BASE_URL + "';\n" +
                 "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
                 "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
+                "window.defaultLanguage='" + process.env.defaultLanguage + "';\n" +
                 "window.SHOP_URL='" + process.env.SHOP_URL + "';", __dirname)
             global.updateFile("./public_media/site_setting/", "config.js",
                 "window.BASE_URL='" + process.env.BASE_URL + "';\n" +
                 "window.ADMIN_URL='" + process.env.ADMIN_URL + "';\n" +
                 "window.THEME_URL='" + process.env.BASE_URL + "/theme';\n" +
+                "window.defaultLanguage='" + process.env.defaultLanguage + "';\n" +
                 "window.SHOP_URL='" + process.env.SHOP_URL + "';", __dirname)
         })
 

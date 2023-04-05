@@ -17,7 +17,7 @@ var self = ( {
 
                 console.log("global.getFormattedTime() + filename", req.global.getFormattedTime(), filename["filename"]);
                 let name = (req.global.getFormattedTime() + filename.filename).replace(/\s/g, "");
-                let Media = req.mongoose.model('Media');
+                let Media = req.mongoose.model('Document');
 
                 let filePath = path.join(__dirname, "./public_media/customer/", name);
                 console.log("on file app filePath", filePath);

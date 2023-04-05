@@ -12,6 +12,7 @@ export default (mongoose)=>{
         slug: String,
         title: {},
         elements: {},
+        access: {type: String, default: 'public'},
         kind: {type: String, default: 'page'},
         classes: {type: String, default: ''},
         backgroundColor: String,
