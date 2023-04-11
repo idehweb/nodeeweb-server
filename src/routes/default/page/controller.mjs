@@ -119,7 +119,8 @@ var self = ({
                         console.log(' no token')
                         return res.json({
                             success: false,
-                            _id: menu._id,
+                            _id: (menu && menu._id) ? menu._id : null,
+                            slug: (menu && menu.slug) ? menu.slug : null,
                             access: 'private',
                             message: 'login please'
                         });
@@ -136,7 +137,8 @@ var self = ({
                                 console.log('==> authenticateCustomer() got error',err,customer);
                                 return res.json({
                                     success: false,
-                                    _id: menu._id,
+                                    _id: (menu && menu._id) ? menu._id : null,
+                                    slug: (menu && menu.slug) ? menu.slug : null,
                                     access: 'private',
                                     message: 'login please'
                                 });

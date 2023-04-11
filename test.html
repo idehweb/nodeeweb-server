@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head><title>وب اپلیکیشن اسنپ</title>
+    <script id="config">window.configuration = {
+        PWA_API_ACKERMAN: "/api/api-ackerman",
+        PWA_API_ANALYTICS: "/api/analytics/events",
+        PWA_API_BASE: "/api/api-base",
+        PWA_API_BIFROST: "https://api.teh-1.snappmaps.ir/client-route/v1",
+        PWA_API_BLACKGATE: "/api/api-blackgate",
+        PWA_API_EVENTS: "/api/api-events",
+        PWA_API_GABRIEL: "/api/api-gabriel",
+        PWA_API_GUARDIAN: "/api/guardian",
+        PWA_API_HOME: "/api/api-home",
+        PWA_API_LOCATIONS: "/api/api-locations",
+        PWA_API_LOYALTY: "/api/api-loyalty",
+        PWA_API_MAP: "https://api.teh-1.snappmaps.ir/client-search/v1",
+        PWA_API_MURCHE: "/api/api-locations",
+        PWA_API_OAUTH: "/api/api-passenger-oauth",
+        PWA_API_SMAPP_SHOT: "https://smappshot.snappmaps.ir",
+        PWA_API_TAXI: "/api/api-taxi",
+        PWA_API_USER_AUTH: "/api/userauth-ap/passengers/api",
+        PWA_API_VILYA: "/api/vilya",
+        PWA_MAP_API_TILE_METRICS: "https://tile-metrics-gatherer.apps.public.okd4.teh-1.snappcloud.io",
+        PUBLIC_CONFIG_PWA_APP_ENV: "production",
+    };
+    window.rawConfiguration = {
+        PWA_API_ACKERMAN: "/api/api-ackerman",
+        PWA_API_ANALYTICS: "/api/analytics/events",
+        PWA_API_BASE: "/api/api-base",
+        PWA_API_BIFROST: "https://api.teh-1.snappmaps.ir/client-route/v1",
+        PWA_API_BLACKGATE: "/api/api-blackgate",
+        PWA_API_EVENTS: "/api/api-events",
+        PWA_API_GABRIEL: "/api/api-gabriel",
+        PWA_API_GUARDIAN: "/api/guardian",
+        PWA_API_HOME: "/api/api-home",
+        PWA_API_LOCATIONS: "/api/api-locations",
+        PWA_API_LOYALTY: "/api/api-loyalty",
+        PWA_API_MAP: "https://api.teh-1.snappmaps.ir/client-search/v1",
+        PWA_API_MURCHE: "/api/api-locations",
+        PWA_API_OAUTH: "/api/api-passenger-oauth",
+        PWA_API_SMAPP_SHOT: "https://smappshot.snappmaps.ir",
+        PWA_API_TAXI: "/api/api-taxi",
+        PWA_API_USER_AUTH: "/api/userauth-ap/passengers/api",
+        PWA_API_VILYA: "/api/vilya",
+        PWA_MAP_API_TILE_METRICS: "https://tile-metrics-gatherer.apps.public.okd4.teh-1.snappcloud.io",
+        PUBLIC_CONFIG_PWA_APP_ENV: "production",
+    }</script>
+    <link rel="preconnect" href="https://www.googletagmanager.com"/>
+    <link rel="preconnect" href="https://www.google-analytics.com"/>
+    <link rel="preconnect" href="https://passenger-pwa-cdn.snapp.ir"/>
+    <meta name="description"
+          content="وب‌اپلیکیشن اسنپ: درخواست آنلاین خودرو و پیک موتوری با مرورگر موبایل یا رایانه بدون نیاز به نصب اپلیکیشن"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"/>
+    <script>dataLayer = []</script>
+    <script>!function () {
+        (function (e, t, a, n, i) {
+            e[n] = e[n] || [], e[n].push({"gtm.start": (new Date).getTime(), event: "gtm.js"});
+            var r = t.getElementsByTagName(a)[0], c = t.createElement(a);
+            c.async = !0, c.src = "https://www.googletagmanager.com/gtm.js?id=GTM-TBK4ZS5", r.parentNode.insertBefore(c, r)
+        })(window, document, "script", "dataLayer");
+        window.screen.availWidth <= 320 && document.querySelector('meta[name="viewport"]').setAttribute("content", "width=device-width, initial-scale=0.8281, user-scalable=no")
+    }()</script>
+    <meta charset="utf-8"/>
+    <link rel="icon" href="/favicon.ico"/>
+    <meta name="theme-color" content="#000000"/>
+    <link rel="apple-touch-icon" sizes="144x144"
+          href="https://passenger-pwa-cdn.snapp.ir/logos/square-minimal-144.png"/>
+    <link rel="apple-touch-icon" sizes="180x180"
+          href="https://passenger-pwa-cdn.snapp.ir/logos/square-minimal-180.png"/>
+    <link rel="apple-touch-icon" sizes="192x192"
+          href="https://passenger-pwa-cdn.snapp.ir/logos/square-minimal-192.png"/>
+    <link rel="apple-touch-icon" sizes="384x384"
+          href="https://passenger-pwa-cdn.snapp.ir/logos/square-minimal-384.png"/>
+    <link rel="apple-touch-icon" sizes="512x512"
+          href="https://passenger-pwa-cdn.snapp.ir/logos/square-minimal-512.png"/>
+    <link rel="icon" type="image/png" sizes="192x192"
+          href="https://passenger-pwa-cdn.snapp.ir/logos/square-minimal-192.png"/>
+    <link rel="manifest" href="/manifest.json?v=v16.0.7"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+    <link href="https://passenger-pwa-cdn.snapp.ir/backgrounds/splash/iphone5-splash.png"
+          media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image"/>
+    <link href="https://passenger-pwa-cdn.snapp.ir/backgrounds/splash/iphone6-splash.png"
+          media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image"/>
+    <link href="https://passenger-pwa-cdn.snapp.ir/backgrounds/splash/iphoneplus-splash.png"
+          media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)"
+          rel="apple-touch-startup-image"/>
+    <link href="https://passenger-pwa-cdn.snapp.ir/backgrounds/splash/iphonex-splash.png"
+          media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)"
+          rel="apple-touch-startup-image"/>
+    <link href="https://passenger-pwa-cdn.snapp.ir/backgrounds/splash/ipad-splash.png"
+          media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image"/>
+    <link href="https://passenger-pwa-cdn.snapp.ir/backgrounds/splash/ipadpro1-splash.png"
+          media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image"/>
+    <link href="https://passenger-pwa-cdn.snapp.ir/backgrounds/splash/ipadpro2-splash.png"
+          media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image"/>
+    <script>console.log("---------------- snapp PWA ----------------"), console.log("v16.0.7", "c534cb5d"), console.log("-------------------------------------------"), window.__app = {
+        version: "v16.0.7",
+        lastCommit: "c534cb5d"
+    }</script>
+    <script defer="defer" src="/static/js/main.24cd5023.js"></script>
+    <link href="/static/css/main.6f69d8e0.css" rel="stylesheet">
+</head>
+<body>
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TBK4ZS5" height="0" width="0"
+            style="display:none;visibility:hidden"/>
+</noscript>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="portal"></div>
+<div id="root">
+    <style>body, html {
+        padding: 0;
+        margin: 0
+    }
+
+    .intro {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        background-color: #00cc6d
+    }
+
+    .intro img {
+        width: 119px
+    }
+
+    .intro .version {
+        position: fixed;
+        font-family: arial;
+        font-size: 11.9px !important;
+        color: #fff;
+        bottom: 28px
+    }</style>
+    <div class="intro"><img src="https://passenger-pwa-cdn.snapp.ir/logos/snapp-white.svg"/> <span class="version">v16.0.7</span>
+    </div>
+</div>
+</body>
+</html>
