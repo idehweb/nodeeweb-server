@@ -10,6 +10,13 @@ window.THEME_URL='https://parts.arvandguarantee.shop/theme/';
 // window.SHOP_URL='https://felafel.cafe/';
 // window.THEME_URL='https://felafel.cafe/theme/';
 
+// window.BASE_URL='https://fixche.shop';
+// window.ADMIN_URL='https://fixche.shop';
+// window.ADMIN_ROUTE='https://fixche.shop/admin';
+// window.SHOP_URL='https://fixche.shop/';
+// window.THEME_URL='https://fixche.shop/theme/';
+
+
 // window.BASE_URL='https://alvarstrading.com';
 // window.ADMIN_URL='https://alvarstrading.com';
 // window.ADMIN_ROUTE='https://alvarstrading.com/admin';
