@@ -19,6 +19,7 @@ export default (mongoose)=>{
             type: String
         },
         firstName: String,
+        expire: Date,
         lastName: String,
         birth_day: String,
         birth_month: String,

@@ -115,7 +115,7 @@ var self = ({
                     return 0;
                 }
                 if (menu.access && menu.access == 'private') {
-                    if(!req.headers.token){
+                    if (!req.headers.token) {
                         console.log(' no token')
                         return res.json({
                             success: false,
@@ -127,6 +127,7 @@ var self = ({
                     }
                     console.log('req,headers', req.headers.token);
                     let Customer = req.mongoose.model('Customer');
+                    let Admin = req.mongoose.model('Admin');
 
                     Customer.findOne(
                         {
@@ -134,16 +135,29 @@ var self = ({
                         },
                         function (err, customer) {
                             if (err || !customer) {
-                                console.log('==> authenticateCustomer() got error',err,customer);
-                                return res.json({
-                                    success: false,
-                                    _id: (menu && menu._id) ? menu._id : null,
-                                    slug: (menu && menu.slug) ? menu.slug : null,
-                                    access: 'private',
-                                    message: 'login please'
-                                });
+                                console.log('==> authenticateCustomer() got error', err, customer);
+                                Admin.findOne(
+                                    {
+                                        "token": req.headers.token
+                                    },
+                                    function (err, admin) {
+                                        if (err || !admin) {
+                                            console.log('==> authenticateAdmin() got error', err, customer);
+                                            return res.json({
+                                                success: false,
+                                                _id: (menu && menu._id) ? menu._id : null,
+                                                slug: (menu && menu.slug) ? menu.slug : null,
+                                                access: 'private',
+                                                message: 'login please'
+                                            });
+                                        } else {
+                                            return res.json(menu);
+                                        }
+                                    }
+                                );
+                            } else {
+                                return res.json(menu);
                             }
-                            return res.json(menu);
                         }
                     );
 
