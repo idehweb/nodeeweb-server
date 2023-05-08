@@ -55,7 +55,7 @@ var self = ({
                 // console.log("item exists ====>> ",item);
                 // console.log("instance of item ===> ",Model.schema.paths[item].instance);
                 let split = req.query[item].split(',');
-                if (mongoose.isValidObjectId(split[0])) {
+                if (req.mongoose.isValidObjectId(split[0])) {
                     search[item] = {
                         $in: split
                     }

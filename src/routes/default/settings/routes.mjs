@@ -43,6 +43,12 @@ export default [{
     "controller": controller.customerStatus,
 
 }, {
+    "path": "/formStatus",
+    "method": "get",
+    "access": "admin_user",
+    "controller": controller.formStatus,
+
+}, {
     "path": "/configuration",
     "method": "put",
     "access": "admin_user",

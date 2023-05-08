@@ -198,6 +198,14 @@ Nodeeweb is licensed under the GNU GENERAL PUBLIC LICENSE, sponsored and support
 
 ## Changelogs
 
+- 0.1.39
+    * form tracking code (front)
+    * dynamic entities in menu (admin)
+    * form filters
+
+- 0.1.38
+    * add formStatus
+
 - 0.1.33
     * create/edit form
     * export customers/products &...
