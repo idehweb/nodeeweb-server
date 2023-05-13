@@ -253,7 +253,7 @@ console.log('req.props[\'plugin\']',req.props['plugin'])
     formStatus: function (req, res, next) {
         let Settings = req.mongoose.model('Settings');
 
-        console.log("last setting ==> ");
+        console.log("formStatus ==> ");
         let offset = 0;
         if (req.params.offset) {
             offset = parseInt(req.params.offset);
