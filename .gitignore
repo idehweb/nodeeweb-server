@@ -116,3 +116,4 @@ admin-panel/build/variables.js
 admin/variables.js
 
 /**/*.map
+node_modules
