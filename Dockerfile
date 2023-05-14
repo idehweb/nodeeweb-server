@@ -27,7 +27,8 @@ ENV SERVER_MODE client
 ENV RESET false
 ENV ADMIN_EMAIL admin@idehweb.com
 ENV ADMIN_USERNAME admin
-ENV ADMIN_PASSWORD_FILE /run/secrets/admin-pass
+# ENV ADMIN_PASSWORD_FILE /run/secrets/admin-pass
+ENV ADMIN_PASSWORD 123456
 ENV TZ "Asia/Tehran"
 
 # Expose All Ports
@@ -69,5 +70,5 @@ COPY . .
 # Copy Docker EntryPoint
 COPY ./docker/docker-entrypoint-pro.sh /usr/local/bin
 
-ENTRYPOINT ["docker-entrypoint-pro.sh" , "ADMIN_PASSWORD_FILE" ]
+ENTRYPOINT ["docker-entrypoint-pro.sh" ]
 CMD ["npm","start"]

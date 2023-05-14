@@ -117,3 +117,4 @@ admin/variables.js
 
 /**/*.map
 node_modules
+/docker/*.key

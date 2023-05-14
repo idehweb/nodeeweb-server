@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  nodeweb:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      secrets:
+        - admin-pass
+      target: pro
+      # tags:
+      #   - nodeweb:pro-1.0.1
+    ports:
+      - 3000:3000
+      - 3001:3001
+      - 3002:3002
+
+secrets:
+  admin-pass:
+    file: ./docker/admin.key

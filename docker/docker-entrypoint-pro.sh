@@ -25,12 +25,12 @@ file_env(){
 _main(){
   echo "####### PRODUCTION ENTRYPOINT START #######"
   build
-  echo "set secrets to envs"
-  argsArr=( "$@" )
-  for i in "${argsArr[@]}"
-    do :
-        file_env "$i"
-    done
+#   echo "set secrets to envs"
+#   file_env "ADMIN_PASSWORD"
+#   argsArr=( "$@" )
+#   for i in "${argsArr[@]}"
+#     do :
+#     done
   echo "####### PRODUCTION ENTRYPOINT END #######"
 }
 
