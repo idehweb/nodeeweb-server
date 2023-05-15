@@ -23,10 +23,6 @@
     "static/media/IRANSansWebUltraLight.woff2": "./static/media/IRANSansWebUltraLight.f781adf3ac1352b3bffa.woff2",
     "static/media/IRANSansWebMedium.woff2": "./static/media/IRANSansWebMedium.c400362906c0fefcc862.woff2",
     "static/media/IRANSansWebBold.woff2": "./static/media/IRANSansWebBold.62df0689da0baf986fba.woff2",
-    "static/media/warranty.png": "./static/media/warranty.1f19ca91bf1d28335943.png",
-    "static/media/fory.png": "./static/media/fory.f85a5398fb5f601d28eb.png",
-    "static/media/secure.png": "./static/media/secure.b042d8aa5a0fa0529918.png",
-    "static/media/hozori.png": "./static/media/hozori.648c76f245409140b535.png",
     "index.html": "./index.html"
   },
   "entrypoints": [

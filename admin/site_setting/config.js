@@ -1,8 +1,8 @@
-// window.BASE_URL='https://parts.arvandguarantee.shop';
-// window.ADMIN_URL='https://parts.arvandguarantee.shop';
-// window.ADMIN_ROUTE='https://parts.arvandguarantee.shop/admin';
-// window.SHOP_URL='https://parts.arvandguarantee.shop/';
-// window.THEME_URL='https://parts.arvandguarantee.shop/theme/';
+window.BASE_URL='https://parts.arvandguarantee.shop';
+window.ADMIN_URL='https://parts.arvandguarantee.shop';
+window.ADMIN_ROUTE='https://parts.arvandguarantee.shop/admin';
+window.SHOP_URL='https://parts.arvandguarantee.shop/';
+window.THEME_URL='https://parts.arvandguarantee.shop/theme/';
 
 // window.BASE_URL='https://arvandguarantee.shop';
 // window.ADMIN_URL='https://arvandguarantee.shop';
@@ -29,8 +29,8 @@
 // window.SHOP_URL='https://alvarstrading.com/';
 // window.THEME_URL='https://alvarstrading.com/theme/';
 
-window.BASE_URL='https://gomrok24.com';
-window.ADMIN_URL='https://gomrok24.com';
-window.ADMIN_ROUTE='https://gomrok24.com/admin';
-window.SHOP_URL='https://gomrok24.com/';
-window.THEME_URL='https://gomrok24.com/theme/';
+// window.BASE_URL='https://gomrok24.com';
+// window.ADMIN_URL='https://gomrok24.com';
+// window.ADMIN_ROUTE='https://gomrok24.com/admin';
+// window.SHOP_URL='https://gomrok24.com/';
+// window.THEME_URL='https://gomrok24.com/theme/';
