@@ -2,7 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 import mongoose from 'mongoose';
-import request from '#root/request';
+import request from './request.mjs';
 // const rp from 'request';
 // const randtoken from 'rand-token';
 // import User from "#models/user";

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import _ from 'lodash'
-import global from '#root/global';
+import global from '../global.mjs';
 
 
 var self = (Model) => {

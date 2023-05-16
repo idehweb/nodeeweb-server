@@ -2,7 +2,7 @@
 import "ignore-styles";
 import _ from "lodash";
 import React from 'react';
-import global from '#root/global';
+import global from '../global.mjs';
 
 
 export default [

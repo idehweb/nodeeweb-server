@@ -1,6 +1,6 @@
 import persianJs from "persianjs";
 import _ from 'lodash';
-import global from '#root/global';
+import global from '../../../global.mjs';
 import bcrypt from 'bcrypt';
 
 var self = ({

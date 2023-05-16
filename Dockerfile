@@ -53,10 +53,10 @@ ENV NODE_ENV development
 COPY . .
 
 # Copy Docker EntryPoint
-COPY ./docker/docker-entrypoint-pro.sh /usr/local/bin
+COPY ./docker/docker-entrypoint-dev.sh /usr/local/bin
 
-ENTRYPOINT ["docker-entrypoint-pro.sh" ]
-CMD ["babel-node","./src/bin/www.js"]
+ENTRYPOINT ["docker-entrypoint-dev.sh" ]
+CMD ["npm","start"]
 
 # ENV DB_NAME vilibook_dev
 # ENV DB_USER admin
@@ -81,4 +81,4 @@ COPY . .
 COPY ./docker/docker-entrypoint-pro.sh /usr/local/bin
 
 ENTRYPOINT ["docker-entrypoint-pro.sh" ]
-CMD ["babel-node","./src/bin/www.js"]
+CMD ["node","./src/bin/www.bundle.js"]

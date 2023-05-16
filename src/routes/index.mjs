@@ -4,12 +4,12 @@
 import express from 'express';
 import path from 'path';
 import axios from 'axios';
-import controller from '#controllers/index';
+import controller from '../controllers/index.mjs';
 // import post from "#routes/post";
 // import settings from "#routes/settings";
 import mongoose from 'mongoose';
 // import user from "#routes/default/user/index";
-import global from '#root/global';
+import global from '../global.mjs';
 import fs from 'fs';
 // const publicFolder = path.join(__dirname, "./public");
 // import _ from 'loadash';

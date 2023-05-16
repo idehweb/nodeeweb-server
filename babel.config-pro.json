@@ -8,7 +8,9 @@
         "admin",
         "public_media",
         "theme",
-        "public"
+        "public",
+        ".bundle.js",
+        "**/*.bundle.js"
     ],
     "plugins": [
         "@babel/plugin-transform-modules-commonjs",
@@ -17,7 +19,8 @@
             {
                 "moduleNameMapper": {
                     "(.*).mjs": "$1.bundle.js",
-                    "(.*)\\.js":"$1.bundle.js"
+                    "(.*)\\.js":"$1.bundle.js",
+                    "(?!.*\\.m?js)^(\\.|#)(.+)$":"$1$2.bundle.js"
                 }
             }
         ]

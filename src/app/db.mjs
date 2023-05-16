@@ -11,7 +11,7 @@ import mongoose from 'mongoose';
 import path from 'path';
 import fs from 'fs';
 import shell from 'shelljs';
-import global from '#root/global';
+import global from '../global.mjs';
 
 // console.log('sdfg',path.join(path.resolve('.'), '.env.local'));
 

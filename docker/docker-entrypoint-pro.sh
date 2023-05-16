@@ -3,8 +3,8 @@ set -e
 
 build(){
 #  npm run prebuild
-#  npm run build
-  npm cache clean --force
+ npm run build
+ npm cache clean --force
 #  date > buildtime
 
 }
