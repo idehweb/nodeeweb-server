@@ -13,7 +13,6 @@ import configHandle from '#root/app/configHandle';
 import routeHandle from '#root/app/routeHandle';
 import headerHandle from '#root/app/headerHandle';
 import Action from '#routes/default/action/index';
-import Health from '../routes/default/health/index.mjs';
 import Automation from '#routes/default/automation/index';
 import Admin from '#routes/default/admin/index';
 import Settings from '#routes/default/settings/index';
@@ -75,9 +74,6 @@ export default function BaseApp(theProps = {}) {
   props['entity'].push(Document);
   props['entity'].push(Note);
   props['entity'].push(Category);
-
-  //  set API healthy state
-  props.entity.push(Health);
 
   //make routes standard
   // console.log('rules',rules);

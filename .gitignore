@@ -119,3 +119,5 @@ admin/variables.js
 node_modules
 /docker/*.key
 dist
+
+*.bundle.js

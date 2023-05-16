@@ -35,7 +35,7 @@ ENV BABEL_CACHE_PATH ./node_modules/babel-cache.json
 EXPOSE ${SERVER_PORT}
 
 HEALTHCHECK --interval=1m --timeout=15s --retries=3 --start-period=2m \
-    CMD curl -fk http://localhost:${PORT}/customer/health || exit 1
+    CMD curl -fk http://localhost:${PORT}/customer/settings/health || exit 1
 
 # Change Work directory
 WORKDIR /app

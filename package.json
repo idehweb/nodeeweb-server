@@ -51,9 +51,9 @@
   },
   "scripts": {
     "babel-version": "babel-node --version",
-    "build": "babel . -d dist",
+    "build": "babel . --config-file ./babel.config-pro.json -d . --out-file-extension .bundle.js",
     "wizard": "node wizard",
-    "start": "set BABEL_CACHE_PATH=./node_modules/babel-cache.json && babel-node ./src/bin/www.js",
+    "start": "set BABEL_CACHE_PATH=./node_modules/babel-cache.json && babel-node --config-file ./babel.config-dev.json ./src/bin/www.js",
     "serve": "node dist/bin/www.js"
   },
   "bin": "./cli.js",
