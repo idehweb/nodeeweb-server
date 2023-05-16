@@ -4,7 +4,7 @@ set -e
 build(){
 #  npm run prebuild
 #  npm run build
- npm cache clean --force
+  npm cache clean --force
 #  date > buildtime
 
 }

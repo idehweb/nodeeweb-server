@@ -1,0 +1,24 @@
+{
+    "presets": [
+        "@babel/preset-env",
+        "@babel/preset-react"
+    ],
+    "ignore": [
+        "node_modules",
+        "admin",
+        "public_media",
+        "theme",
+        "public"
+    ],
+    "plugins": [
+        "@babel/plugin-transform-modules-commonjs",
+        [
+            "module-name-mapper",
+            {
+                "moduleNameMapper": {
+                    "(.*).mjs": "$1.js"
+                }
+            }
+        ]
+    ]
+}

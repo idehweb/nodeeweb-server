@@ -2,15 +2,15 @@
 // import React from 'react';
 
 import express from 'express';
-import path from "path";
-import axios from "axios";
-import controller from "#controllers/index";
+import path from 'path';
+import axios from 'axios';
+import controller from '#controllers/index';
 // import post from "#routes/post";
 // import settings from "#routes/settings";
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 // import user from "#routes/default/user/index";
 import global from '#root/global';
-import fs from "fs";
+import fs from 'fs';
 // const publicFolder = path.join(__dirname, "./public");
 // import _ from 'loadash';
 // import menu from "#routes/menu";
@@ -36,311 +36,381 @@ const __dirname = path.resolve();
 //     });
 // };
 export function returnDefaultModels() {
-//     return user.model(mongoose)
+  //     return user.model(mongoose)
 }
 
 var Models = [];
 
 export function createRoute(modelName, routes, label) {
-    let router = express.Router();
-    // console.log('in createRoute...', label, modelName)
-    let model = mongoose.model(modelName);
-    Models[modelName] = model;
-    let cont = controller(Models[modelName]);
-    router = create_standard_route('', routes, router);
-    router.get('/', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.all, ...returnThisRouteRules('/', 'get', routes)}));
-    router.get('/count', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.all, ...returnThisRouteRules('/count', 'get', routes)}));
-    router.post('/copy/:id', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.copy, ...returnThisRouteRules('/copy/:id', 'post', routes)}));
+  let router = express.Router();
+  router = create_standard_route('', routes, router);
+  // console.log('in createRoute...', label, modelName)
 
-    router.get('/:offset/:limit', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.all, ...returnThisRouteRules('/:offset/:limit', 'get', routes)}));
-    router.get('/:offset/:limit/:search', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.all, ...returnThisRouteRules('/:offset/:limit/:search', 'get', routes)}));
-    router.get('/:id', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.viewOne, ...returnThisRouteRules('/:id', 'get', routes)}));
-    router.post('/', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.create, ...returnThisRouteRules('/', 'post', routes)}));
-    router.post('/import', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.importEntity, ...returnThisRouteRules('/import', 'post', routes)}));
-    router.post('/export', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.exportEntity, ...returnThisRouteRules('/export', 'post', routes)}));
-    router.put('/:id', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.edit, ...returnThisRouteRules('/:id', 'put', routes)}));
-    router.delete('/:id', (req, res, next) => make_routes_safe(req, res, next, {controller: cont.destroy, ...returnThisRouteRules('/:id', 'delete', routes)}));
+  // No Model
+  if (!modelName) {
+    return router;
+  }
 
-    return router
+  let model = mongoose.model(modelName);
+  Models[modelName] = model;
+  let cont = controller(Models[modelName]);
+  router.get('/', (req, res, next) =>
+    make_routes_safe(req, res, next, {
+      controller: cont.all,
+      ...returnThisRouteRules('/', 'get', routes),
+    })
+  );
+  router.get('/count', (req, res, next) =>
+    make_routes_safe(req, res, next, {
+      controller: cont.all,
+      ...returnThisRouteRules('/count', 'get', routes),
+    })
+  );
+  router.post('/copy/:id', (req, res, next) =>
+    make_routes_safe(req, res, next, {
+      controller: cont.copy,
+      ...returnThisRouteRules('/copy/:id', 'post', routes),
+    })
+  );
 
+  router.get('/:offset/:limit', (req, res, next) =>
+    make_routes_safe(req, res, next, {
+      controller: cont.all,
+      ...returnThisRouteRules('/:offset/:limit', 'get', routes),
+    })
+  );
+  router.get('/:offset/:limit/:search', (req, res, next) =>
+    make_routes_safe(req, res, next, {
+      controller: cont.all,
+      ...returnThisRouteRules('/:offset/:limit/:search', 'get', routes),
+    })
+  );
+  router.get('/:id', (req, res, next) =>
+    make_routes_safe(req, res, next, {
+      controller: cont.viewOne,
+      ...returnThisRouteRules('/:id', 'get', routes),
+    })
+  );
+  router.post('/', (req, res, next) =>
+    make_routes_safe(req, res, next, {
+      controller: cont.create,
+      ...returnThisRouteRules('/', 'post', routes),
+    })
+  );
+  router.post('/import', (req, res, next) =>
+    make_routes_safe(req, res, next, {
+      controller: cont.importEntity,
+      ...returnThisRouteRules('/import', 'post', routes),
+    })
+  );
+  router.post('/export', (req, res, next) =>
+    make_routes_safe(req, res, next, {
+      controller: cont.exportEntity,
+      ...returnThisRouteRules('/export', 'post', routes),
+    })
+  );
+  router.put('/:id', (req, res, next) =>
+    make_routes_safe(req, res, next, {
+      controller: cont.edit,
+      ...returnThisRouteRules('/:id', 'put', routes),
+    })
+  );
+  router.delete('/:id', (req, res, next) =>
+    make_routes_safe(req, res, next, {
+      controller: cont.destroy,
+      ...returnThisRouteRules('/:id', 'delete', routes),
+    })
+  );
 
+  return router;
 }
 
 export function createPublicRoute(suf = '', routes) {
-    // console.log('createPublicRoute ...');
-    const router = express.Router();
+  // console.log('createPublicRoute ...');
+  const router = express.Router();
 
-    return create_standard_route(suf, routes, router)
-    // return [router];
+  return create_standard_route(suf, routes, router);
+  // return [router];
 }
 
 function returnThisRouteRules(path, method, routes) {
-    let obj = {
-        path: path,
-        method: method,
-    };
-    routes.forEach((ro) => {
-        if (ro.method == method && ro.path == path) {
-            obj['access'] = ro.access;
-            if (ro.controller) {
-                obj['controller'] = ro.controller;
-            }
-        }
-    });
-    return obj;
+  let obj = {
+    path: path,
+    method: method,
+  };
+  routes.forEach((ro) => {
+    if (ro.method == method && ro.path == path) {
+      obj['access'] = ro.access;
+      if (ro.controller) {
+        obj['controller'] = ro.controller;
+      }
+    }
+  });
+  return obj;
 }
 
 function make_routes_safe(req, res, next, rou) {
-    console.log('make_routes_safe:', rou.path ? rou.path : 'no path',rou.method ? rou.method : 'no method',rou.access ? rou.access : 'no access',rou.controller ? rou.controller : 'no controller');
-    req.mongoose = mongoose;
-    req.props.entity.forEach((en, d) => {
-        if (en.req) {
-            let op = Object.keys(en.req);
-            op.forEach((o) => {
-                req[o] = en.req[o];
-            })
-        }
-    })
-    // console.log('req',req);
-    res.ssrParse = (req, res, next) => {
-
-
-        // return res.json(req);
-        return new Promise(function (resolve, reject) {
-            fs.readFile(path.themeFolder + '/index.html', "utf8", (err, body) => {
-
-                if (err) {
-                    console.error(err);
-                    return res.status(500).send("An error occurred");
-                }
-                let obj = {}
-                // resolve();
-                // body = body.replace('</head>', `<title>${obj.title}</title></head>`);
-                // body = body.replace('</head>', `<meta name="description" content="${obj.metadescription}" /></head>`);
-                // body = body.replace('</head>', `<meta name="product_id" content="${obj._id}" /></head>`);
-                // body = body.replace('</head>', `<meta name="product_name" content="${obj.product_name}" /></head>`);
-                // body = body.replace('</head>', `<meta name="product_price" content="${obj.product_price}" /></head>`);
-                // body = body.replace('</head>', `<meta name="product_old_price" content="${obj.product_old_price}" /></head>`);
-                // body = body.replace('</head>', `<meta name="product_image" content="${obj.product_image}" /></head>`);
-                // body = body.replace('</head>', `<meta name="image" content="${obj.image}" /></head>`);
-                // body = body.replace('</head>', `<meta name="availability" content="${obj.availability}" /></head>`);
-                // body = body.replace('</head>', `<meta name="og:image" content="${obj.image}" /></head>`);
-                // body = body.replace('</head>', `<meta name="og:image:secure_url" content="${obj.image}" /></head>`);
-                // body = body.replace('</head>', `<meta name="og:image:width" content="1200" /></head>`);
-                // body = body.replace('</head>', `<meta name="og:image:height" content="675" /></head>`);
-                // body = body.replace('</head>', `<meta name="og:locale" content="fa_IR" /></head>`);
-                // body = body.replace('</head>', `<meta name="og:type" content="website" /></head>`);
-                // body = body.replace('</head>', `<meta name="og:title" content="${obj.title}" /></head>`);
-                // body = body.replace('</head>', `<meta name="og:description" content="${obj.description}" /></head>`);
-                // body = body.replace('</head>', `<meta name="og:url" content="." /></head>`);
-                // body = body.replace('</head>', `<meta name="og:site_name" content="Arvandshop" /></head>`);
-                // body = body.replace('</head>', `<meta name="og:site_name" content="Arvandshop" /></head>`);
-                // if(req.route.path=='/product/:_id/:_slug'){
-                //
-                // }
-                // handle_ssr(req, res, next)
-                // const renderedData = (<div></div>);
-                // return res.status(200).send(body);
-                resolve(body);
-            });
-        });
-    };
-    res.show = () => {
-        // console.log('adminFolder',path.themeFolder+'/index.html')
-        // console.log('show', path.themeFolder);
-        // res.ssrParse(req,res,next);
-        return res.sendFile(path.themeFolder + '/index.html')
-    };
-    res.admin = () => {
-        // console.log('admin', path.adminFolder)
-        // console.log('adminFolder',path.adminFolder+'/index.html')
-        return res.sendFile(path.adminFolder + '/index.html')
-    };
-
-    req.global = global;
-
-    req.publishToTelegram = (message) => {
-        // console.log('publishToTelegram====>', message);
-        if (!process.env.telegramLink) {
-            console.error('process.env.telegramLink is empty')
-            return
-        }
-        if (!process.env.telegramChatID) {
-            console.error('process.env.telegramChatID is empty')
-            return
-        }
-        return new Promise(function (resolve, reject) {
-            let url = encodeURI(process.env.telegramLink);
-            req.httpRequest({
-                method: "post",
-                url: url,
-                data: {message, chatId: process.env.telegramChatID},
-                json: true
-            }).then(function (parsedBody) {
-                resolve({
-                    success: true
-                    // body:parsedBody
-                });
-            }).catch(function (err) {
-                reject({
-                    success: false
-                });
-            });
-
-
-        });
-
-    };
-    req.models = () => global.models();
-    req.adminRules = () => {
-        // var models = mongoose.modelNames()
-        return models;
-    };
-    req.builderComponents = (rules, req) => global.builderComponents(rules, req)
-    req.httpRequest = axios;
-    req.fireEvent = (event, params = {}) => {
-        return global.fireEvent(event, params, req.props, req, res, next);
+  console.log(
+    'make_routes_safe:',
+    rou.path ? rou.path : 'no path',
+    rou.method ? rou.method : 'no method',
+    rou.access ? rou.access : 'no access',
+    rou.controller ? rou.controller : 'no controller'
+  );
+  req.mongoose = mongoose;
+  req.props.entity.forEach((en, d) => {
+    if (en.req) {
+      let op = Object.keys(en.req);
+      op.forEach((o) => {
+        req[o] = en.req[o];
+      });
     }
-    req.functions = () => {
-        // console.log('get functions...')
-        let functions = [];
-        req.props.entity.forEach((en) => {
-            if (en.functions) {
-                en.functions.forEach((fn) => {
-                    // console.log('fn', fn)
-                    functions.push(fn);
-                });
-            }
+  });
+  // console.log('req',req);
+  res.ssrParse = (req, res, next) => {
+    // return res.json(req);
+    return new Promise(function (resolve, reject) {
+      fs.readFile(path.themeFolder + '/index.html', 'utf8', (err, body) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send('An error occurred');
+        }
+        let obj = {};
+        // resolve();
+        // body = body.replace('</head>', `<title>${obj.title}</title></head>`);
+        // body = body.replace('</head>', `<meta name="description" content="${obj.metadescription}" /></head>`);
+        // body = body.replace('</head>', `<meta name="product_id" content="${obj._id}" /></head>`);
+        // body = body.replace('</head>', `<meta name="product_name" content="${obj.product_name}" /></head>`);
+        // body = body.replace('</head>', `<meta name="product_price" content="${obj.product_price}" /></head>`);
+        // body = body.replace('</head>', `<meta name="product_old_price" content="${obj.product_old_price}" /></head>`);
+        // body = body.replace('</head>', `<meta name="product_image" content="${obj.product_image}" /></head>`);
+        // body = body.replace('</head>', `<meta name="image" content="${obj.image}" /></head>`);
+        // body = body.replace('</head>', `<meta name="availability" content="${obj.availability}" /></head>`);
+        // body = body.replace('</head>', `<meta name="og:image" content="${obj.image}" /></head>`);
+        // body = body.replace('</head>', `<meta name="og:image:secure_url" content="${obj.image}" /></head>`);
+        // body = body.replace('</head>', `<meta name="og:image:width" content="1200" /></head>`);
+        // body = body.replace('</head>', `<meta name="og:image:height" content="675" /></head>`);
+        // body = body.replace('</head>', `<meta name="og:locale" content="fa_IR" /></head>`);
+        // body = body.replace('</head>', `<meta name="og:type" content="website" /></head>`);
+        // body = body.replace('</head>', `<meta name="og:title" content="${obj.title}" /></head>`);
+        // body = body.replace('</head>', `<meta name="og:description" content="${obj.description}" /></head>`);
+        // body = body.replace('</head>', `<meta name="og:url" content="." /></head>`);
+        // body = body.replace('</head>', `<meta name="og:site_name" content="Arvandshop" /></head>`);
+        // body = body.replace('</head>', `<meta name="og:site_name" content="Arvandshop" /></head>`);
+        // if(req.route.path=='/product/:_id/:_slug'){
+        //
+        // }
+        // handle_ssr(req, res, next)
+        // const renderedData = (<div></div>);
+        // return res.status(200).send(body);
+        resolve(body);
+      });
+    });
+  };
+  res.show = () => {
+    // console.log('adminFolder',path.themeFolder+'/index.html')
+    // console.log('show', path.themeFolder);
+    // res.ssrParse(req,res,next);
+    return res.sendFile(path.themeFolder + '/index.html');
+  };
+  res.admin = () => {
+    // console.log('admin', path.adminFolder)
+    // console.log('adminFolder',path.adminFolder+'/index.html')
+    return res.sendFile(path.adminFolder + '/index.html');
+  };
+
+  req.global = global;
+
+  req.publishToTelegram = (message) => {
+    // console.log('publishToTelegram====>', message);
+    if (!process.env.telegramLink) {
+      console.error('process.env.telegramLink is empty');
+      return;
+    }
+    if (!process.env.telegramChatID) {
+      console.error('process.env.telegramChatID is empty');
+      return;
+    }
+    return new Promise(function (resolve, reject) {
+      let url = encodeURI(process.env.telegramLink);
+      req
+        .httpRequest({
+          method: 'post',
+          url: url,
+          data: { message, chatId: process.env.telegramChatID },
+          json: true,
         })
-        return functions;
-    }
-    req.events = () => {
-        // console.log('get events...')
-        let events = [];
-        req.props.entity.forEach((en) => {
-            if (en.events) {
-                en.events.forEach((fn) => {
-                    // console.log('fn', fn)
-                    events.push(fn);
-                });
-            }
+        .then(function (parsedBody) {
+          resolve({
+            success: true,
+            // body:parsedBody
+          });
         })
-        return events;
+        .catch(function (err) {
+          reject({
+            success: false,
+          });
+        });
+    });
+  };
+  req.models = () => global.models();
+  req.adminRules = () => {
+    // var models = mongoose.modelNames()
+    return models;
+  };
+  req.builderComponents = (rules, req) => global.builderComponents(rules, req);
+  req.httpRequest = axios;
+  req.fireEvent = (event, params = {}) => {
+    return global.fireEvent(event, params, req.props, req, res, next);
+  };
+  req.functions = () => {
+    // console.log('get functions...')
+    let functions = [];
+    req.props.entity.forEach((en) => {
+      if (en.functions) {
+        en.functions.forEach((fn) => {
+          // console.log('fn', fn)
+          functions.push(fn);
+        });
+      }
+    });
+    return functions;
+  };
+  req.events = () => {
+    // console.log('get events...')
+    let events = [];
+    req.props.entity.forEach((en) => {
+      if (en.events) {
+        en.events.forEach((fn) => {
+          // console.log('fn', fn)
+          events.push(fn);
+        });
+      }
+    });
+    return events;
+  };
+  req.submitAction = (obj) => global.submitAction(obj);
+
+  req.rules = (rules) => global.rules(rules, { props });
+  if (rou.access) {
+    let accessList = rou.access.split(',');
+    if (accessList.indexOf('customer_all') > -1) {
+      return rou.controller(req, res, next);
     }
-    req.submitAction = (obj) => global.submitAction(obj)
+    let isPassed = false,
+      the_id = null;
+    // console.log('we need check access...', accessList, req.headers.token);
+    if (!req.headers.token) {
+      // console.log('we have no token...');
+      if (req.headers.response !== 'json') {
+        return res.redirect('/admin/login');
+      } else {
+        return res.status(403).json({
+          success: false,
+          message: 'You have to authorize',
+        });
+      }
+    }
+    let counter = 0;
+    accessList.forEach((al, j) => {
+      let the_role = al.split('_');
 
-    req.rules = (rules) => global.rules(rules, {props});
-    if (rou.access) {
-        let accessList = rou.access.split(',');
-        if (accessList.indexOf('customer_all') > -1) {
-            return rou.controller(req, res, next)
+      the_role[0] = the_role[0].trim().toLowerCase();
+      the_role[0] = the_role[0].charAt(0).toUpperCase() + the_role[0].slice(1);
+      let theModel = mongoose.model(the_role[0]);
+      let findObject = { 'tokens.token': req.headers.token };
+      if (the_role[0] == 'Admin') findObject = { token: req.headers.token };
 
-        }
-        let isPassed = false, the_id = null;
-        // console.log('we need check access...', accessList, req.headers.token);
-        if (!req.headers.token) {
-            // console.log('we have no token...');
-            if (req.headers.response !== "json") {
-                return res.redirect('/admin/login')
+      // console.log('check ' + j + '...', the_role[0], findObject)
+      if (!isPassed)
+        theModel.findOne(findObject, function (err, obj) {
+          counter++;
+          // console.log('obj', obj)
+          if (err || !obj) {
+            // return res.json({
+            //     theModel: theModel,
+            //     findObject: findObject,
+            //     obj: obj,
+            //     err: err,
+            //     success: false
+            // })
+          }
+          if (obj && obj.type == the_role[1]) {
+            isPassed = true;
+            the_id = obj._id;
+          } else {
+            // console.log('#' + j + ' is not...')
+          }
+          if (counter === accessList.length) {
+            if (isPassed && the_id) {
+              // console.log('#' + j + ' is passed...', ' counter:', counter)
+              req.headers._id = the_id;
+              return rou.controller(req, res, next);
             } else {
-                return res.status(403).json({
-                    success: false,
-                    message: 'You have to authorize'
-                });
+              return res.json({
+                success: false,
+                message: 'You do not have access!',
+              });
             }
-        }
-        let counter = 0;
-        accessList.forEach((al, j) => {
-            let the_role = al.split('_');
-
-            the_role[0] = the_role[0].trim().toLowerCase();
-            the_role[0] = the_role[0].charAt(0).toUpperCase() + the_role[0].slice(1)
-            let theModel = mongoose.model(the_role[0]);
-            let findObject = {"tokens.token": req.headers.token};
-            if (the_role[0] == 'Admin')
-                findObject = {"token": req.headers.token};
-
-            // console.log('check ' + j + '...', the_role[0], findObject)
-            if (!isPassed)
-                theModel.findOne(
-                    findObject,
-                    function (err, obj) {
-                        counter++;
-                        // console.log('obj', obj)
-                        if (err || !obj) {
-                            // return res.json({
-                            //     theModel: theModel,
-                            //     findObject: findObject,
-                            //     obj: obj,
-                            //     err: err,
-                            //     success: false
-                            // })
-                        }
-                        if (obj && (obj.type == the_role[1])) {
-                            isPassed = true;
-                            the_id = obj._id;
-
-                        } else {
-                            // console.log('#' + j + ' is not...')
-                        }
-                        if (counter === accessList.length) {
-                            if (isPassed && the_id) {
-                                // console.log('#' + j + ' is passed...', ' counter:', counter)
-                                req.headers._id = the_id;
-                                return rou.controller(req, res, next)
-                            } else {
-                                return res.json({
-                                    success: false,
-                                    message: "You do not have access!"
-                                })
-                            }
-                        }
-                    }
-                );
-        })
-        // console.log('rou.access',rou.access);
-    } else {
-        // console.log('return response...')
-        return rou.controller(req, res, next)
-
-    }
+          }
+        });
+    });
+    // console.log('rou.access',rou.access);
+  } else {
+    // console.log('return response...')
+    return rou.controller(req, res, next);
+  }
 }
 
 function create_standard_route(suf = '/', routes = [], router) {
-    // console.log('create_standard_route suf:',suf)
-    if (routes)
-        routes.forEach((rou) => {
-
-            if (rou.path && rou.controller) {
-
-                if (rou.method === 'get') {
-
-                    router.get(suf + rou.path, (req, res, next) => make_routes_safe(req, res, next, {...returnThisRouteRules(suf + rou.path, 'get', routes)}));
-                }
-                if (rou.method === 'post') {
-
-                    router.post(suf + rou.path, (req, res, next) => make_routes_safe(req, res, next, {...returnThisRouteRules(suf + rou.path, 'post', routes)}));
-                }
-                if (rou.method === 'put') {
-                    router.put(suf + rou.path, (req, res, next) => make_routes_safe(req, res, next, {...returnThisRouteRules(suf + rou.path, 'put', routes)}));
-                }
-                if (rou.method === 'delete') {
-                    router.delete(suf + rou.path, (req, res, next) => make_routes_safe(req, res, next, {...returnThisRouteRules(suf + rou.path, 'delete', routes)}));
-                }
-            }
-        })
-    return router
+  // console.log('create_standard_route suf:',suf)
+  if (routes)
+    routes.forEach((rou) => {
+      if (rou.path && rou.controller) {
+        if (rou.method === 'get') {
+          router.get(suf + rou.path, (req, res, next) =>
+            make_routes_safe(req, res, next, {
+              ...returnThisRouteRules(suf + rou.path, 'get', routes),
+            })
+          );
+        }
+        if (rou.method === 'post') {
+          router.post(suf + rou.path, (req, res, next) =>
+            make_routes_safe(req, res, next, {
+              ...returnThisRouteRules(suf + rou.path, 'post', routes),
+            })
+          );
+        }
+        if (rou.method === 'put') {
+          router.put(suf + rou.path, (req, res, next) =>
+            make_routes_safe(req, res, next, {
+              ...returnThisRouteRules(suf + rou.path, 'put', routes),
+            })
+          );
+        }
+        if (rou.method === 'delete') {
+          router.delete(suf + rou.path, (req, res, next) =>
+            make_routes_safe(req, res, next, {
+              ...returnThisRouteRules(suf + rou.path, 'delete', routes),
+            })
+          );
+        }
+      }
+    });
+  return router;
 }
 
 function handle_ssr(req, res, next) {
-    {/*<StaticRouter context={context} location={req.url}>*/
-    }
-    {/*<AppSSR url={req.url}/></StaticRouter>*/
-    }
-    // const renderedData = ReactDOMServer.renderToString(<Provider store={store}>
-    //
-    // </Provider>);
-    // console.log('renderedData', renderedData)
+  {
+    /*<StaticRouter context={context} location={req.url}>*/
+  }
+  {
+    /*<AppSSR url={req.url}/></StaticRouter>*/
+  }
+  // const renderedData = ReactDOMServer.renderToString(<Provider store={store}>
+  //
+  // </Provider>);
+  // console.log('renderedData', renderedData)
 }
 
 //

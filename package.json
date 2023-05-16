@@ -5,6 +5,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "axios": "^0.27.2",
+    "babel-plugin-module-name-mapper": "^1.2.0",
     "bcrypt": "^5.0.1",
     "commondir": "^1.0.1",
     "connect-busboy": "^1.0.0",
@@ -50,14 +51,17 @@
   },
   "scripts": {
     "babel-version": "babel-node --version",
+    "build": "babel . -d dist",
     "wizard": "node wizard",
-    "start": "set BABEL_CACHE_PATH=./node_modules/babel-cache.json && babel-node ./src/bin/www.js"
+    "start": "set BABEL_CACHE_PATH=./node_modules/babel-cache.json && babel-node ./src/bin/www.js",
+    "serve": "node dist/bin/www.js"
   },
-  "bin":"./cli.js",
+  "bin": "./cli.js",
   "devDependencies": {
     "@babel/cli": "^7.20.7",
     "@babel/core": "^7.20.12",
     "@babel/node": "^7.20.7",
+    "@babel/plugin-transform-modules-commonjs": "^7.21.5",
     "@craco/craco": "^6.4.3",
     "define-variable-webpack-plugin": "^1.0.1",
     "dotenv": "^16.0.3",

@@ -14,28 +14,28 @@ ENV BABEL_CACHE_PATH "./node_modules/babel-cache.json"
 ENV defaultLanguage en
 ENV language fa
 ENV GENERATE_SOURCEMAP false
-ENV mongodbConnectionUrl mongodb://127.0.0.1:27017
+ENV mongodbConnectionUrl mongodb://mongodb:27017
 ENV SERVER_PORT 3000
-ENV CLIENT_PORT 3001
-ENV ADMIN_PORT 3002
+# ENV CLIENT_PORT 3001
+# ENV ADMIN_PORT 3002
 ENV dbName Idehweb
 ENV SITE_NAME Idehweb
 ENV BASE_URL http://localhost:$SERVER_PORT
 ENV SHOP_URL http://localhost:$SERVER_PORT/
-ENV ADMIN_URL http://localhost:$ADMIN_PORT
-ENV SERVER_MODE client
+# ENV ADMIN_URL http://localhost:$ADMIN_PORT
+# ENV SERVER_MODE client
 ENV RESET false
 ENV ADMIN_EMAIL admin@idehweb.com
 ENV ADMIN_USERNAME admin
-# ENV ADMIN_PASSWORD_FILE /run/secrets/admin-pass
-ENV ADMIN_PASSWORD 123456
+ENV ADMIN_PASSWORD admin
 ENV TZ "Asia/Tehran"
+ENV BABEL_CACHE_PATH ./node_modules/babel-cache.json
 
 # Expose All Ports
-EXPOSE ${SERVER_PORT} ${CLIENT_PORT} ${ADMIN_PORT}
+EXPOSE ${SERVER_PORT}
 
-# HEALTHCHECK --interval=1m --timeout=15s --retries=3 --start-period=2m \
-#     CMD curl -fk http://localhost:${PORT}/health || exit 1
+HEALTHCHECK --interval=1m --timeout=15s --retries=3 --start-period=2m \
+    CMD curl -fk http://localhost:${PORT}/customer/health || exit 1
 
 # Change Work directory
 WORKDIR /app
@@ -46,8 +46,18 @@ COPY package*.json ./
 # Install production packages
 RUN npm ci && npm cache clean --force
 
-# FROM base as dev
-# ENV NODE_ENV development
+FROM base as dev
+ENV NODE_ENV development
+
+# Copy source codes
+COPY . .
+
+# Copy Docker EntryPoint
+COPY ./docker/docker-entrypoint-pro.sh /usr/local/bin
+
+ENTRYPOINT ["docker-entrypoint-pro.sh" ]
+CMD ["babel-node","./src/bin/www.js"]
+
 # ENV DB_NAME vilibook_dev
 # ENV DB_USER admin
 # ENV APP_JWT_FILE /run/secrets/app-jwt-dev
@@ -71,4 +81,4 @@ COPY . .
 COPY ./docker/docker-entrypoint-pro.sh /usr/local/bin
 
 ENTRYPOINT ["docker-entrypoint-pro.sh" ]
-CMD ["npm","start"]
+CMD ["babel-node","./src/bin/www.js"]

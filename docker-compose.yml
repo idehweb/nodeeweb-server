@@ -13,6 +13,48 @@ services:
       - 3000:3000
       - 3001:3001
       - 3002:3002
+    networks:
+      - back
+  mongodb:
+    container_name: mongodb
+    image: "mongo:6.0.2-focal"
+    ports:
+      - 27017:27017
+    # environment:
+    #   - MONGO_INITDB_ROOT_USERNAME=admin
+    #   - MONGO_INITDB_ROOT_PASSWORD_FILE=/run/secrets/mongo-admin-admin
+    # secrets:
+    #   - mongo-admin-admin
+    # deploy:
+    #   <<: *deploy-configs
+    #   replicas: 1
+    volumes:
+      - ./data/mongodb:/data/db
+      # - ./conf/mongo/keyfile.key:/etc/mongo/keyfile.key
+      # - ./entrypoints/mongo-entrypoint.sh:/bin/mongo-entrypoint.sh
+      # - ./healthchecks/mongo-healthcheck.sh:/usr/local/bin/mongo-healthcheck.sh
+    networks:
+      - back
+      # healthcheck:
+      # test: [ "CMD", "mongo-healthcheck.sh" ]
+      # interval: 45s
+      # timeout: 30s
+      # retries: 5
+      # start_period: 2m30s
+      # configs:
+      #   - source: mongo
+      #     target: "/etc/mongo/mongod.conf"
+      # entrypoint: [ "mongo-entrypoint.sh" ]
+      # command: [ "--config", "/etc/mongo/mongod.conf" ]
+      # profiles:
+      #   - db
+      #   - db-only
+      #   - application
+      #   - all
+
+networks:
+  back:
+
 
 secrets:
   admin-pass:
