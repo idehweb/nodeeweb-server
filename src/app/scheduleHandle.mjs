@@ -2,6 +2,7 @@ import CronJob from 'node-cron';
 import global from '../global.mjs';
 import mongoose from 'mongoose';
 import axios from 'axios';
+import { SingleJobProcess } from '../job/index.mjs';
 
 const initScheduledJobs2 = (props) => {};
 const initScheduledJobs = (props) => {
@@ -31,7 +32,7 @@ const initScheduledJobs = (props) => {
           r[item.path][item.variable]
             ? r[item.path][item.variable]
             : item.setting,
-          () => {
+          SingleJobProcess.builderAsync(`${item.name}_${item.setting}`, () => {
             console.log('cronjob by plugin...:', item.name, item.setting);
             global.fireEvent(item.name, {}, props, {
               mongoose,
@@ -39,7 +40,7 @@ const initScheduledJobs = (props) => {
               global: global,
             });
             // item.function=
-          },
+          }),
           {
             timezone: process.env.TZ || 'Asia/Tehran',
             scheduled: false,
@@ -52,7 +53,7 @@ const initScheduledJobs = (props) => {
   });
   const scheduledJobFunction = CronJob.schedule(
     '0 0 0 * * *',
-    () => {
+    SingleJobProcess.builderAsync('send-schedule-message-by-system', () => {
       // const scheduledJobFunction = CronJob.schedule("0,15,30,45 * * * * *", () => {
       // process.env.TZ="Asia/Tehran";
 
@@ -83,7 +84,7 @@ const initScheduledJobs = (props) => {
       //     }
       // })
       // Add your custom logic here
-    },
+    }),
     {
       timezone: process.env.TZ || 'Asia/Tehran',
     }

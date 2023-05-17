@@ -35,7 +35,7 @@ ENV BABEL_CACHE_PATH ./node_modules/babel-cache.json
 EXPOSE ${SERVER_PORT}
 
 HEALTHCHECK --interval=1m --timeout=15s --retries=3 --start-period=2m \
-    CMD curl -fk http://localhost:${PORT}/customer/settings/health || exit 1
+    CMD curl -fk http://localhost:${SERVER_PORT}/customer/settings/health || exit 1
 
 # Change Work directory
 WORKDIR /app
@@ -49,6 +49,9 @@ RUN npm ci && npm cache clean --force
 FROM base as dev
 ENV NODE_ENV development
 
+RUN npm i --only=development \
+    && npm cache clean --force
+
 # Copy source codes
 COPY . .
 
@@ -57,18 +60,6 @@ COPY ./docker/docker-entrypoint-dev.sh /usr/local/bin
 
 ENTRYPOINT ["docker-entrypoint-dev.sh" ]
 CMD ["npm","start"]
-
-# ENV DB_NAME vilibook_dev
-# ENV DB_USER admin
-# ENV APP_JWT_FILE /run/secrets/app-jwt-dev
-# ENV SMS_CODE_JWT_FILE /run/secrets/sms-code-jwt-dev
-# ENV DB_PASS_FILE /run/secrets/mongo-${DB_NAME}-${DB_USER}
-# RUN npm i --only=development \
-#     && npm cache clean --force
-# COPY . .
-# COPY ./docker/docker-entrypoint-dev.sh /usr/local/bin
-# ENTRYPOINT ["docker-entrypoint-dev.sh" ]
-# CMD ["npm" , "run", "start"]
 
 
 FROM base as pro

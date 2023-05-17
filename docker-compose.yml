@@ -4,15 +4,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      secrets:
-        - admin-pass
       target: pro
       # tags:
       #   - nodeweb:pro-1.0.1
     ports:
       - 3000:3000
-      - 3001:3001
-      - 3002:3002
     networks:
       - back
   mongodb:
@@ -20,16 +16,16 @@ services:
     image: "mongo:6.0.2-focal"
     ports:
       - 27017:27017
-    # environment:
-    #   - MONGO_INITDB_ROOT_USERNAME=admin
-    #   - MONGO_INITDB_ROOT_PASSWORD_FILE=/run/secrets/mongo-admin-admin
-    # secrets:
-    #   - mongo-admin-admin
-    # deploy:
-    #   <<: *deploy-configs
-    #   replicas: 1
+      # environment:
+      #   - MONGO_INITDB_ROOT_USERNAME=admin
+      #   - MONGO_INITDB_ROOT_PASSWORD_FILE=/run/secrets/mongo-admin-admin
+      # secrets:
+      #   - mongo-admin-admin
+      # deploy:
+      #   <<: *deploy-configs
+      #   replicas: 1
     volumes:
-      - ./data/mongodb:/data/db
+      - mongodb-ideeweb:/data/db
       # - ./conf/mongo/keyfile.key:/etc/mongo/keyfile.key
       # - ./entrypoints/mongo-entrypoint.sh:/bin/mongo-entrypoint.sh
       # - ./healthchecks/mongo-healthcheck.sh:/usr/local/bin/mongo-healthcheck.sh
@@ -56,6 +52,5 @@ networks:
   back:
 
 
-secrets:
-  admin-pass:
-    file: ./docker/admin.key
+volumes:
+  mongodb-ideeweb:

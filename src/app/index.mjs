@@ -33,7 +33,7 @@ import Note from '../routes/default/note/index';
 import Document from '../routes/default/document/index';
 import defaultFront from '../app/defaultFront';
 import defaultAdmin from '../app/defaultAdmin';
-import initScheduledJobs from '../app/scheduleHandle';
+import initScheduledJobs from '../app/scheduleHandle.mjs';
 
 // import router from "../routes/public/p";
 // import uploadHandle from "../app/uploadHandle";

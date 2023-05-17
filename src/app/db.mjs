@@ -12,6 +12,7 @@ import path from 'path';
 import fs from 'fs';
 import shell from 'shelljs';
 import global from '../global.mjs';
+import { SingleJobProcess } from '../job/index.mjs';
 
 // console.log('sdfg',path.join(path.resolve('.'), '.env.local'));
 
@@ -92,31 +93,33 @@ export default (props = {}, app) => {
             console.log('err admin exists... db.mjs file', err);
           }
           if (!admin) {
-            console.log('db is empty, let us import sample data...', err);
+            SingleJobProcess.builderAsync('initial-db', () => {
+              console.log('db is empty, let us import sample data...', err);
 
-            let req = {
-              body: {
-                email: process.env.ADMIN_EMAIL,
-                username: process.env.ADMIN_USERNAME,
-                nickname: process.env.ADMIN_USERNAME,
-                password: process.env.ADMIN_PASSWORD,
-              },
-            };
-            if (req.body.email && req.body.username && req.body.password) {
-              let Admin = mongoose.model('Admin');
+              let req = {
+                body: {
+                  email: process.env.ADMIN_EMAIL,
+                  username: process.env.ADMIN_USERNAME,
+                  nickname: process.env.ADMIN_USERNAME,
+                  password: process.env.ADMIN_PASSWORD,
+                },
+              };
+              if (req.body.email && req.body.username && req.body.password) {
+                let Admin = mongoose.model('Admin');
 
-              let userData = req.body;
-              userData.type = 'user';
-              userData.token = global.generateUnid();
+                let userData = req.body;
+                userData.type = 'user';
+                userData.token = global.generateUnid();
 
-              Admin.create(userData, function (error, user) {
-                if (error) {
-                  console.log({ err: error });
-                } else {
-                  console.log({ success: true, message: 'admin created' });
-                }
-              });
-            }
+                Admin.create(userData, function (error, user) {
+                  if (error) {
+                    console.log({ err: error });
+                  } else {
+                    console.log({ success: true, message: 'admin created' });
+                  }
+                });
+              }
+            })();
           }
         });
         // userController.exists().then((e) => {
