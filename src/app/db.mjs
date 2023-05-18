@@ -156,7 +156,7 @@ export default (props = {}, app) => {
       })
       .catch((err) => {
         console.error(err, 'db name:', process.env.dbName);
-        return process.exit(0);
+        return process.exit(1);
       });
   });
 };
