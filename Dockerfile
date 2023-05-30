@@ -16,6 +16,7 @@ ENV language fa
 ENV GENERATE_SOURCEMAP false
 ENV mongodbConnectionUrl mongodb://mongodb:27017
 ENV SERVER_PORT 3000
+
 # ENV CLIENT_PORT 3001
 # ENV ADMIN_PORT 3002
 ENV dbName Idehweb

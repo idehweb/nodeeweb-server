@@ -15,6 +15,7 @@ You can do many things.
 * [API](#api)
 * [Testing](#testing)
 * [Plugins](#plugins)
+* [Deployment](#deployment)
 * [Support](#support)
 * [Changelog](https://github.com/idehweb/nodeeweb-server/releases)
 * [Contributing](https://github.com/idehweb/nodeeweb-server/blob/master/CONTRIBUTING.md)
@@ -180,7 +181,15 @@ These routes are your default routes:
 </details>
 ## presets , examples , demo
 
+## Deployment
+for create Docker image:
+```sh
+# production
+$ docker image build --target prod -t <TAG_NAME> .
 
+# development
+$ docker image build --target dev -t <TAG_NAME> .
+```
 ## Sponsors
 
 If you like the project and you wish to see it grow, please consider supporting us with a donation of your choice or become a backer/sponsor.
