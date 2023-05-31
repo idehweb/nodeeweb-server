@@ -4,9 +4,6 @@ import fs from 'fs';
 import _ from 'lodash';
 
 var self = {
-  health(req, res) {
-    return res.json({ message: 'healthy!' });
-  },
   functions: function (req, res, next) {
     let functions = req.functions() || [];
     return res.json(functions);
@@ -15,139 +12,12 @@ var self = {
     let events = req.events() || [];
     return res.json(events);
   },
-  deactivatePlugin: function (req, res, next) {
-    console.log('deactivatePlugin');
-    let plugin = req.body;
-    if (plugin && plugin.path && plugin.name) {
-      let __dirname = path.resolve();
-      let pluginPath = path.join(__dirname, './plugins', plugin.name);
-      let newPluginPath = path.join(
-        __dirname,
-        './plugins',
-        plugin.name + '-deactive'
-      );
-      const scripts = path.join(
-        __dirname,
-        'node_modules/@nodeeweb/server/scripts'
-      );
-
-      shell.exec('sh ' + scripts + `/mv.sh ${pluginPath} ${newPluginPath}`);
-      // console.log('newPluginPath', newPluginPath)
-      return res.json({
-        success: true,
-      });
-    } else {
-      return res.json({
-        success: false,
-      });
-    }
-  },
-  activatePlugin: function (req, res, next) {
-    console.log('activatePlugin');
-    let plugin = req.body;
-    if (plugin && plugin.path && plugin.name) {
-      let __dirname = path.resolve();
-      let pluginPath = path.join(__dirname, './plugins', plugin.name);
-      let newPluginPath = path.join(
-        __dirname,
-        './plugins',
-        plugin.name.replace('-deactive', '')
-      );
-      const scripts = path.join(
-        __dirname,
-        'node_modules/@nodeeweb/server/scripts'
-      );
-
-      shell.exec('sh ' + scripts + `/mv.sh ${pluginPath} ${newPluginPath}`);
-      // console.log('newPluginPath', newPluginPath)
-      return res.json({
-        success: true,
-      });
-    } else {
-      return res.json({
-        success: false,
-      });
-    }
-  },
-  plugins: function (req, res, next) {
-    let __dirname = path.resolve();
-    let pluginPath = path.join(__dirname, './plugins/');
-    const getDirectories = (source, callback) =>
-      fs.readdir(source, { withFileTypes: true }, (err, files) => {
-        if (err) {
-          callback(err);
-        } else {
-          callback(
-            files.filter((dirent) => {
-              return (
-                dirent.isDirectory() && dirent.name.indexOf('deactive') == -1
-              );
-            })
-          );
-        }
-      });
-    getDirectories(pluginPath, function (f) {
-      let p = _.map(f, (item) => {
-        item.path = '/' + item.name + '/index.js';
-        item.image = '/' + item.name + '/image.jpg';
-      });
-      return res.json(f);
-    });
-  },
+  deactivatePlugin: function (req, res, next) {},
+  activatePlugin: function (req, res, next) {},
+  plugins: function (req, res, next) {},
   market: function (req, res, next) {},
-  updatePluginRules: function (req, res, next) {
-    let pluginName = req.params.plugin;
-    let Settings = req.mongoose.model('Settings');
-
-    Settings.findOne({}, 'plugins', function (err, setting) {
-      if (!setting.plugins) {
-        setting.plugins = {};
-      }
-      setting.plugins[pluginName] = req.body;
-      console.log('setting.plugins', setting.plugins);
-      Settings.findOneAndUpdate(
-        {},
-        { $set: { plugins: setting.plugins } },
-        {
-          projection: {
-            plugins: 1,
-          },
-        },
-        function (err, setting) {
-          if (err && !setting) {
-            res.json({
-              err: err,
-              success: false,
-              message: 'error',
-            });
-          }
-          res.json({ success: true, setting });
-        }
-      );
-    });
-  },
-  pluginRules: function (req, res, next) {
-    // let Settings = req.mongoose.model('Settings');
-    if (req.props['plugin'] && req.props['plugin'][req.params.plugin]) {
-      let Settings = req.mongoose.model('Settings');
-
-      Settings.findOne({}, 'plugins', function (err, setting) {
-        if (!setting.plugins) {
-          setting.plugins = [];
-        }
-
-        // console.log('setting.plugins[req.params.plugin]', setting.plugins[req.params.plugin])
-        console.log("req.props['plugin']", req.props['plugin']);
-        _.forEach(req.props['plugin'][req.params.plugin], (item, j) => {
-          if (setting.plugins[req.params.plugin]) {
-            req.props['plugin'][req.params.plugin][j].value =
-              setting.plugins[req.params.plugin][item.name];
-          }
-        });
-        return res.json({ fields: req.props['plugin'][req.params.plugin] });
-      });
-    } else return res.json({ fields: [] });
-  },
+  updatePluginRules: function (req, res, next) {},
+  pluginRules: function (req, res, next) {},
   deActivePlugins: function (req, res, next) {
     let __dirname = path.resolve();
     let pluginPath = path.join(__dirname, './plugins/');
@@ -261,7 +131,7 @@ var self = {
   formStatus: function (req, res, next) {
     let Settings = req.mongoose.model('Settings');
 
-    console.log('last setting ==> ');
+    console.log('formStatus ==> ');
     let offset = 0;
     if (req.params.offset) {
       offset = parseInt(req.params.offset);
@@ -334,22 +204,7 @@ var self = {
     });
     shell.exec('sh ' + scripts + `/restart.sh ${site}`);
   },
-  update: function (req, res, next) {
-    const _dirname = path.resolve();
-    let site = process.env.SITE_NAME;
-    site = site.toLowerCase();
-    console.log('Site ==> ', site);
-    // console.log("dirname ===> " ,_dirname);
-    const scripts = path.join(
-      _dirname,
-      'node_modules/@nodeeweb/server/scripts'
-    );
-    console.log('scripts ==> ', 'sh ' + scripts + `/update.sh ${site}`);
-    res.json({
-      success: true,
-    });
-    shell.exec('sh ' + scripts + `/update.sh ${site}`);
-  },
+  update: function (req, res, next) {},
   fileUpload: function (req, res, next) {
     let Settings = req.mongoose.model('Settings');
     let Media = req.mongoose.model('Media');
