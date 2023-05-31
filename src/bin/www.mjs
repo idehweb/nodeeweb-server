@@ -2,7 +2,7 @@
  * Module dependencies.
  */
 import './../../loadEnv.mjs';
-
+import Shop from '@nodeeweb/shop';
 import appBuilder from '../../appBuilder.mjs';
 // import debugLib from 'debug';
 // import VARIABLE from '#v/variables';
@@ -11,10 +11,10 @@ import appBuilder from '../../appBuilder.mjs';
 /**
  * Get port from environment and store in Express.
  */
-const theApp=(props)=> {
-    // console.log('www props:', props);
-    let app = appBuilder(props);
-    // console.log('app is ready...');
+const theApp = (props) => {
+  // console.log('www props:', props);
+  let app = appBuilder(props);
+  // console.log('app is ready...');
 };
-theApp({})
-export default theApp
+theApp({ entity: [...Shop] });
+export default theApp;

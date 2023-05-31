@@ -73,4 +73,4 @@ COPY . .
 COPY ./docker/docker-entrypoint-pro.sh /usr/local/bin
 
 ENTRYPOINT ["docker-entrypoint-pro.sh" ]
-CMD ["node","./src/bin/www.bundle.js"]
+CMD ["node","./src/bin/www.mjs"]
