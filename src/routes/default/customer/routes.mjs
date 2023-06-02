@@ -58,7 +58,13 @@ export default [
         "controller": controller.removeDuplicatesCustomers,
 
     },
+    {
+        "path": "/getme",
+        "method": "get",
+        "access": "customer_user",
+        "controller": controller.getme,
 
+    },
     {
         "path": "/status/:_id",
         "method": "put",
