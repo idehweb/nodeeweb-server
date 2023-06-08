@@ -28,17 +28,23 @@ export class SingleJobProcess {
   #free() {
     try {
       fs.rmSync(getSharedPath(`single-job-${this.id}`));
-    } catch (err) {}
+    } catch (err) {
+      console.log('single job free error', err);
+    }
   }
   async runTask() {
     // block other process with same task id
     const canBlock = this.#block();
-    if (!canBlock) return;
+    if (!canBlock) {
+      return;
+    }
 
     // execute tasks
     try {
       await this.job();
-    } catch (err) {}
+    } catch (err) {
+      console.log('single job error', err);
+    }
 
     // free others
     this.#free();

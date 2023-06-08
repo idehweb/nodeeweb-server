@@ -91,8 +91,5 @@ const initScheduledJobs = (props) => {
   );
 
   scheduledJobFunction.start();
-  // scTemp.forEach((process, key) => {
-  //     process.start();
-  // });
 };
 export default initScheduledJobs;

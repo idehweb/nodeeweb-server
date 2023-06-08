@@ -60,6 +60,8 @@
     "build": "babel . --config-file ./babel.config-pro.json -d . --out-file-extension .bundle.js",
     "wizard": "node wizard",
     "start": "set BABEL_CACHE_PATH=./node_modules/babel-cache.json && babel-node --config-file ./babel.config-dev.json ./src/bin/www.mjs",
+    "dev": "nodemon",
+    "dev:script": "node src/bin/www.mjs",
     "serve": "node src/bin/www.mjs"
   },
   "bin": "./cli.js",
@@ -69,6 +71,7 @@
     "@babel/node": "^7.20.7",
     "@babel/plugin-transform-modules-commonjs": "^7.21.5",
     "@craco/craco": "^6.4.3",
+    "@types/node-cron": "^3.0.7",
     "define-variable-webpack-plugin": "^1.0.1",
     "dotenv": "^16.0.3",
     "eslint": "^8.15.0",
