@@ -29,8 +29,6 @@ ENV RESET false
 ENV ADMIN_EMAIL admin@idehweb.com
 ENV ADMIN_USERNAME admin
 ENV ADMIN_PASSWORD admin
-ENV SMS_USERNAME 09120518691
-ENV SMS_PASSWORD Zxcd1245#\$%^
 ENV TZ "Asia/Tehran"
 ENV BABEL_CACHE_PATH ./node_modules/babel-cache.json
 
