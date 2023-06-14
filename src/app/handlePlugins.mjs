@@ -33,8 +33,10 @@ export default (props = {}, app) => {
           if (item.name && item.name.indexOf('deactive') == -1) {
             const importedFile = await import(pluginPath);
             let module;
-            if (os.platform() === 'win32') module = importedFile.default;
-            else module = importedFile.default.default;
+            module = importedFile.default;
+            console.log(module, module.default);
+            // if (os.platform() === 'win32')
+            // else module = importedFile.default.default;
             props = module(props);
           }
           r++;
