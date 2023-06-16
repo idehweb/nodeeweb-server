@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 
 let Admin = {};
 import global from '../../../global.mjs';
+import config from '../../../../config.mjs';
 
 var self = {
   login: function (req, res, next) {
@@ -116,6 +117,21 @@ var self = {
         self.mainEdit(req, res, next);
       }
     });
+  },
+  async changeConfig(req, res) {
+    let temp = {};
+    for (const [co_name, co_conf] of Object.entries(req.body)) {
+      if (!co_conf || typeof co_conf !== 'object') continue;
+      temp[co_name] = temp[co_name] ?? config.config[co_name] ?? {};
+      for (const [co_conf_key, co_conf_value] of Object.entries(co_conf)) {
+        temp[co_name][co_conf_key] = co_conf_value;
+      }
+    }
+    config.change(temp);
+    await config.write();
+    return res
+      .status(200)
+      .json({ status: 'success', message: 'update successfully' });
   },
 };
 export default self;

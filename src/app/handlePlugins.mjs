@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import path from 'path';
 import fs from 'fs';
-import os from 'os';
 
 export default (props = {}, app) => {
   return new Promise(function (resolve, reject) {
@@ -34,9 +33,6 @@ export default (props = {}, app) => {
             const importedFile = await import(pluginPath);
             let module;
             module = importedFile.default;
-            console.log(module, module.default);
-            // if (os.platform() === 'win32')
-            // else module = importedFile.default.default;
             props = module(props);
           }
           r++;

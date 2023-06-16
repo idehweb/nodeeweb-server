@@ -20,6 +20,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "express": "^4.18.1",
     "express-sitemap-xml": "^3.0.1",
+    "googleapis": "^118.0.0",
     "ignore-styles": "^5.0.1",
     "isbot": "^3.4.6",
     "js2xmlparser": "^5.0.0",

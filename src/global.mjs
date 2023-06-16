@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import mongoose from 'mongoose';
 import request from './request.mjs';
+import myConfig from '../config.mjs';
 // const rp from 'request';
 // const randtoken from 'rand-token';
 // import User from "#models/user";
@@ -202,7 +203,7 @@ let global = {
       let Settings = mongoose.model('Settings');
       let Template = mongoose.model('Template');
       let Page = mongoose.model('Page');
-      Settings.findOne({}, 'currency tax taxAmount', function (err, setting) {
+      Settings.findOne({}, 'currency tax taxAmount ', function (err, setting) {
         // console.log('setting', setting)
         Template.findOne({ type: 'header' }, function (err, header) {
           Template.findOne({ type: 'footer' }, function (err, footer) {
@@ -239,6 +240,11 @@ let global = {
                 taxAmount = setting.taxAmount;
               }
               let lastObj = {
+                sso: {
+                  google: {
+                    client_id: myConfig.config.sso?.google?.['client-id'],
+                  },
+                },
                 taxAmount: taxAmount,
                 tax: tax,
                 currency: currency,
