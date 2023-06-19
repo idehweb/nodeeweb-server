@@ -31,6 +31,14 @@ import Category from '../routes/default/category/index.mjs';
 import Task from '../routes/default/task/index.mjs';
 import Note from '../routes/default/note/index.mjs';
 import Document from '../routes/default/document/index.mjs';
+import Order from '../routes/order/index.mjs'
+import Product from '../routes/product/index.mjs'
+import ProductCategory from '../routes/productCategory/index.mjs'
+import Attributes from '../routes/attributes/index.mjs'
+import Discount from '../routes/discount/index.mjs'
+import Transaction from '../routes/transaction/index.mjs'
+
+
 import defaultFront from '../app/defaultFront.mjs';
 import defaultAdmin from '../app/defaultAdmin.mjs';
 import initScheduledJobs from '../app/scheduleHandle.mjs';
@@ -75,6 +83,12 @@ export default function BaseApp(theProps = {}) {
   props['entity'].push(Document);
   props['entity'].push(Note);
   props['entity'].push(Category);
+  props['entity'].push(Order);
+  props['entity'].push(Product);
+  props['entity'].push(ProductCategory);
+  props['entity'].push(Attributes);
+  props['entity'].push(Discount);
+  props['entity'].push(Transaction);
 
   //make routes standard
   // console.log('rules',rules);
