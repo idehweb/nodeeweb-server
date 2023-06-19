@@ -38,6 +38,21 @@ EXPOSE ${SERVER_PORT}
 HEALTHCHECK --interval=1m --timeout=15s --retries=3 --start-period=2m \
     CMD curl -fk http://localhost:${SERVER_PORT}/customer/settings/health || exit 1
 
+
+# Pre-Requirements for mongoshell , mongotools
+RUN wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | apt-key add - \
+    && apt-get install gnupg \ 
+    && wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | apt-key add - \
+    && echo "deb https://repo.mongodb.org/apt/debian/ bullseye/mongodb-org/6.0 main" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+
+# Install mongosh , mongotools
+RUN apt-get update \ 
+    && apt-get install -y --no-install-recommends \ 
+    mongodb-mongosh \
+    mongodb-database-tools \
+    && rm -rf /var/lib/apt/lists/*
+
+
 # Change Work directory
 WORKDIR /app
 

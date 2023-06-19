@@ -1,4 +1,5 @@
 import './loadEnv.mjs';
+import './config.mjs';
 import Shop from '@nodeeweb/shop';
 import appBuilder from './appBuilder.mjs';
 

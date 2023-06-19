@@ -43,6 +43,7 @@ import defaultFront from '../app/defaultFront.mjs';
 import defaultAdmin from '../app/defaultAdmin.mjs';
 import initScheduledJobs from '../app/scheduleHandle.mjs';
 import { initiateAutomation } from '../routes/default/automation/utils.mjs';
+import config from '../../config.mjs';
 
 // import router from "../routes/public/p";
 // import uploadHandle from "../app/uploadHandle";
@@ -118,6 +119,7 @@ export default function BaseApp(theProps = {}) {
       initiateAutomation(mongoose.model('Automation'));
       headerHandle(app);
       configHandle(express, app, props);
+      config.props = props;
       // props.global=global
       if (theProps.server)
         theProps.server.forEach((serv) => {
