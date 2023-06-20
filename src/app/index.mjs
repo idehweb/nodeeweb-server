@@ -3,12 +3,12 @@ import 'ignore-styles';
 import express from 'express';
 import React from 'react';
 
+import global from '../global.mjs';
 import db from '../app/db.mjs';
 import handlePlugins from '../app/handlePlugins.mjs';
 import path from 'path';
 import mongoose from 'mongoose';
 // import ssrHandle from "../app/ssrHandle";
-import global from '../global.mjs';
 import configHandle from '../app/configHandle.mjs';
 import routeHandle from '../app/routeHandle.mjs';
 import headerHandle from '../app/headerHandle.mjs';

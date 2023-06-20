@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import mongoose from 'mongoose';
 import request from './request.mjs';
+import '../prepare.mjs';
 import myConfig from '../config.mjs';
 // const rp from 'request';
 // const randtoken from 'rand-token';
