@@ -1,6 +1,6 @@
 {
   "name": "@nodeeweb/server",
-  "version": "0.1.50",
+  "version": "0.1.51",
   "type": "module",
   "dependencies": {
     "@emotion/react": "^11.10.5",
