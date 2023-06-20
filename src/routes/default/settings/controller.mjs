@@ -2,6 +2,8 @@ import shell from 'shelljs';
 import path from 'path';
 import fs from 'fs';
 import _ from 'lodash';
+import { getScriptFile } from '../../../helpers/utils.mjs';
+import { exec } from 'child_process';
 
 var self = {
   functions: function (req, res, next) {
@@ -202,7 +204,7 @@ var self = {
     res.json({
       success: true,
     });
-    shell.exec('sh ' + scripts + `/restart.sh ${site}`);
+    exec(`${getScriptFile('restart')} ${site}`, { shell: true });
   },
   update: function (req, res, next) {},
   fileUpload: function (req, res, next) {

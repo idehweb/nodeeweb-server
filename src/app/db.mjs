@@ -11,8 +11,10 @@ import mongoose from 'mongoose';
 import path from 'path';
 import fs from 'fs';
 import shell from 'shelljs';
+import { exec } from 'child_process';
 import global from '../global.mjs';
 import { SingleJobProcess } from '../job/index.mjs';
+import { getScriptFile } from '../helpers/utils.mjs';
 
 // console.log('sdfg',path.join(path.resolve('.'), '.env.local'));
 
@@ -238,19 +240,20 @@ const createThemeFolder = function (props = {}) {
   //
   const adminLocalPath = resolveApp('./theme');
   const adminModulePath = resolveApp('./node_modules/@nodeeweb/server/theme');
-  const scripts = resolveApp('./node_modules/@nodeeweb/server/scripts');
   // console.log('adminLocalPath:',adminLocalPath)
   // console.log('adminModulePath:',adminModulePath)
-  // console.log("scripts ==> ", 'sh '+scripts+`/cp.sh ${adminModulePath} ${adminLocalPath}`);
+  // console.log("scripts ==> ", 'sh '+scripts+`${getScriptFile('cp')} ${adminModulePath} ${adminLocalPath}`);
 
-  const child = shell.exec(
-    'sh ' + scripts + `/cp.sh ${adminModulePath} ${adminLocalPath} `,
+  const child = exec(
+    `${getScriptFile('cp')} ${adminModulePath} ${adminLocalPath} `,
     function (code, stdout, stderr) {
       // console.log('code: ', code);
       // console.log('stdout: ', stdout);
       // console.log('stderr: ', stderr);
+      if (code !== 0) throw new Error('cp exec failed ,' + String(stderr));
       global.updateThemeConfig(props);
-    }
+    },
+    { shell: true }
   );
 };
 const createAdminFolder = function () {
@@ -260,19 +263,20 @@ const createAdminFolder = function () {
   //
   const adminLocalPath = resolveApp('./admin');
   const adminModulePath = resolveApp('./node_modules/@nodeeweb/server/admin');
-  const scripts = resolveApp('./node_modules/@nodeeweb/server/scripts');
   // console.log('adminLocalPath:',adminLocalPath)
   // console.log('adminModulePath:',adminModulePath)
-  // console.log("scripts ==> ", 'sh '+scripts+`/cp.sh ${adminModulePath} ${adminLocalPath}`);
+  // console.log("scripts ==> ", 'sh '+scripts+`${getScriptFile('cp')} ${adminModulePath} ${adminLocalPath}`);
 
-  const child = shell.exec(
-    'sh ' + scripts + `/cp.sh ${adminModulePath} ${adminLocalPath} `,
+  const child = exec(
+    `${getScriptFile('cp')} ${adminModulePath} ${adminLocalPath} `,
     function (code, stdout, stderr) {
       // console.log('code: ', code);
       // console.log('stdout: ', stdout);
       // console.log('stderr: ', stderr);
+      if (code !== 0) throw new Error('cp exec failed ,' + String(stderr));
       updateAdminConfig();
-    }
+    },
+    { shell: true }
   );
 };
 const createAdminFolder2 = function () {
