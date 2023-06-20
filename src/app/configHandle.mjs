@@ -119,9 +119,9 @@ export const allAsXml = async function (Model) {
           id: p._id,
           changefreq: 'hourly',
         });
-        console.log(posts.length + 1, '===', XTL.length);
+        // console.log(posts.length + 1, '===', XTL.length);
         if (posts.length + 1 === XTL.length) {
-          console.log('xtl', XTL.length);
+          // console.log('xtl', XTL.length);
           resolve(XTL);
         }
       });
