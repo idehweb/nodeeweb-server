@@ -1,10 +1,13 @@
 import { join, resolve } from 'path';
 import * as os from 'os';
+import * as fs from 'fs';
+
 
 export function getSharedPath(path) {
   return join(process.env.SHARED_PATH || '.', path);
 }
 export function getScriptFile(scriptName) {
+  const appDirectory = fs.realpathSync(process.cwd());
   const resolveApp = (relativePath) => resolve(appDirectory, relativePath);
   const scripts = resolveApp('./node_modules/@nodeeweb/server/scripts');
   return join(

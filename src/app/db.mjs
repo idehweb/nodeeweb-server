@@ -15,6 +15,7 @@ import { exec } from 'child_process';
 import global from '../global.mjs';
 import { SingleJobProcess } from '../job/index.mjs';
 import { getScriptFile } from '../helpers/utils.mjs';
+import { USE_ENV } from '../../prepare.mjs';
 
 // console.log('sdfg',path.join(path.resolve('.'), '.env.local'));
 
@@ -234,46 +235,41 @@ const createPluginFolder = function () {
   }
 };
 const createThemeFolder = function (props = {}) {
+  // run this command only if npm i nodeeweb server
+  if (process.env.USE_ENV !== USE_ENV.NPM) return;
+
   const appDirectory = fs.realpathSync(process.cwd());
-
   const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
-  //
-  const adminLocalPath = resolveApp('./theme');
-  const adminModulePath = resolveApp('./node_modules/@nodeeweb/server/theme');
-  // console.log('adminLocalPath:',adminLocalPath)
-  // console.log('adminModulePath:',adminModulePath)
-  // console.log("scripts ==> ", 'sh '+scripts+`${getScriptFile('cp')} ${adminModulePath} ${adminLocalPath}`);
+  const themeLocalPath = resolveApp('./theme');
+  const themeModulePath = resolveApp('./node_modules/@nodeeweb/server/theme');
 
-  const child = exec(
-    `${getScriptFile('cp')} ${adminModulePath} ${adminLocalPath} `,
+  exec(
+    `${getScriptFile('mkdir')} ${themeLocalPath} && ${getScriptFile(
+      'cp'
+    )} ${themeModulePath} ${themeLocalPath} `,
     function (code, stdout, stderr) {
-      // console.log('code: ', code);
-      // console.log('stdout: ', stdout);
-      // console.log('stderr: ', stderr);
-      if (code !== 0) throw new Error('cp exec failed ,' + String(stderr));
+      if (code && code !== 0)
+        throw new Error('cp exec failed ,' + String(stderr));
       global.updateThemeConfig(props);
     },
     { shell: true }
   );
 };
 const createAdminFolder = function () {
-  const appDirectory = fs.realpathSync(process.cwd());
+  // run this command only if npm i nodeeweb server
+  if (process.env.USE_ENV !== USE_ENV.NPM) return;
 
+  const appDirectory = fs.realpathSync(process.cwd());
   const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
-  //
   const adminLocalPath = resolveApp('./admin');
   const adminModulePath = resolveApp('./node_modules/@nodeeweb/server/admin');
-  // console.log('adminLocalPath:',adminLocalPath)
-  // console.log('adminModulePath:',adminModulePath)
-  // console.log("scripts ==> ", 'sh '+scripts+`${getScriptFile('cp')} ${adminModulePath} ${adminLocalPath}`);
-
-  const child = exec(
-    `${getScriptFile('cp')} ${adminModulePath} ${adminLocalPath} `,
+  exec(
+    `${getScriptFile('mkdir')} ${adminLocalPath} && ${getScriptFile(
+      'cp'
+    )} ${adminModulePath} ${adminLocalPath} `,
     function (code, stdout, stderr) {
-      // console.log('code: ', code);
-      // console.log('stdout: ', stdout);
-      // console.log('stderr: ', stderr);
-      if (code !== 0) throw new Error('cp exec failed ,' + String(stderr));
+      if (code && code !== 0)
+        throw new Error('cp exec failed , ' + String(stderr));
       updateAdminConfig();
     },
     { shell: true }

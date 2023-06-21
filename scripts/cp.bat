@@ -2,6 +2,4 @@
 
 SET "SOURCE=%~1"
 SET "DEST=%~2"
-
-DEL /S "%DEST%" && COPY  "%SOURCE%" "%DEST%"
-exit "0"
+DEL /S /Q "%DEST%" && xcopy /y /s  "%SOURCE%" "%DEST%"
