@@ -1,5 +1,6 @@
 // console.log('#model setting')
 import bcrypt from 'bcrypt';
+import global from '#root/global';
 
 export const CUSTOMER_PROJECTION =
   'photos , nickname , firstName , lastName , email , password , tokens  , phoneNumber , address , authCustomerWithPassword , internationalCode';
@@ -109,6 +110,15 @@ export default (mongoose) => {
             if (user.tokens && user.tokens.length) {
               user.token = user.tokens[user.tokens.length - 1].token;
             }
+              if (!user.tokens || !user.tokens.length) {
+                  console.log('no token found',user.tokens)
+
+                  let Token = global.generateUnid();
+                  Customer.findByIdAndUpdate(user._id, {
+                      $push: {tokens: {token: Token}}
+                  }, function (err, post) {})
+                  user.token = Token;
+              }
             delete user.tokens;
 
             return callback(null, user);
