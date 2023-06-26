@@ -16,6 +16,7 @@ import global from '../global.mjs';
 import { SingleJobProcess } from '../job/index.mjs';
 import { getScriptFile } from '../helpers/utils.mjs';
 import { USE_ENV } from '../../prepare.mjs';
+import { isExists, isExistsSync } from '../utils/helpers.js';
 
 // console.log('sdfg',path.join(path.resolve('.'), '.env.local'));
 
@@ -43,7 +44,7 @@ export default (props = {}, app) => {
       .map(async (e) => {
         // console.log('run db...', e.modelName, e.model);
 
-        await mongoose.model(e.modelName, e.model(mongoose));
+        mongoose.model(e.modelName, e.model(mongoose));
         // await
         // e.model(mongoose);
         // arr[e.name]=
@@ -55,7 +56,7 @@ export default (props = {}, app) => {
       .connect(connection, options)
       .then(async () => {
         resolve();
-        await console.log(
+        console.log(
           '==> db connection successful to',
           "'" + process.env.dbName + "'",
           new Date()
@@ -243,13 +244,19 @@ const createThemeFolder = function (props = {}) {
   const themeLocalPath = resolveApp('./theme');
   const themeModulePath = resolveApp('./node_modules/@nodeeweb/server/theme');
 
+  // check if directory exist before
+  if (isExistsSync(themeLocalPath)) {
+    console.log(themeLocalPath, ' exists before');
+    return;
+  }
+
   exec(
     `${getScriptFile('mkdir')} ${themeLocalPath} && ${getScriptFile(
       'cp'
     )} ${themeModulePath} ${themeLocalPath} `,
     function (code, stdout, stderr) {
       if (code && code !== 0)
-        throw new Error('cp exec failed ,' + String(stderr));
+        throw new Error('cp exec failed , ' + String(stderr));
       global.updateThemeConfig(props);
     },
     { shell: true }
@@ -263,6 +270,13 @@ const createAdminFolder = function () {
   const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
   const adminLocalPath = resolveApp('./admin');
   const adminModulePath = resolveApp('./node_modules/@nodeeweb/server/admin');
+
+  // check if directory exist before
+  if (isExistsSync(adminLocalPath)) {
+    console.log(adminLocalPath, ' exists before');
+    return;
+  }
+
   exec(
     `${getScriptFile('mkdir')} ${adminLocalPath} && ${getScriptFile(
       'cp'
