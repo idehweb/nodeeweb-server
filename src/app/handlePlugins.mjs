@@ -28,7 +28,7 @@ export default (props = {}, app) => {
       let r = 0;
       if (f && f.length > 0)
         _.map(f, async (item) => {
-          let pluginPath = `../../plugins/${item.name}/index.js`;
+          let pluginPath = path.join(pluginPath, `${item.name}/index.js`);
           if (item.name && item.name.indexOf('deactive') == -1) {
             const importedFile = await import(pluginPath);
             let module;
